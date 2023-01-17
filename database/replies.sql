@@ -14,6 +14,6 @@ CREATE TABLE replies (
     FOREIGN KEY (post_id) REFERENCES posts(id),
     image_id INTEGER,
     FOREIGN KEY (image_id) REFERENCES images(id),
-    content TEXT
+    content TEXT,
+    reference_id INTEGER
 );
-
