@@ -23,7 +23,7 @@ values
 ('yurayura', 'yurayura@123.456', false, true, false),
 ('1機械人一', 'bot1@botbot.com', false, true, true),
 ('2機械人二', 'bot2@botbot.com', false, true, true),
-('3機械人三', 'bot3@botbot.com', false, true, true)
+('3機械人三', 'bot3@botbot.com', false, true, true);
 
 
 
