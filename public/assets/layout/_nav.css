@@ -1,0 +1,31 @@
+.offcanvas {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.nav .btn-bar {
+    width: 50px;
+    height: 100%;
+    background-color: chartreuse;
+}
+
+.nav .btn-bar div {
+    background-color: chartreuse;
+    border: 1px solid;
+
+}
+
+.nav .offcanvas-body {
+    height: 100%;
+}
+
+.offcanvas-hd {
+    background-color: coral;
+}
+
+.offcanvas-bd div {
+    border: 1px solid;
+    background-color: cornflowerblue;
+    line-height: 40px;
+}
+
