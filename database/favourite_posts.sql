@@ -6,5 +6,4 @@ create table favourite_posts(
     FOREIGN KEY (post_id) REFERENCES posts(id),
     created_at timestamp not null default now(),
     updated_at timestamp not null default now()
-
 );
