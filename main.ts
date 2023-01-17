@@ -29,7 +29,7 @@ app.use(express.static("public"));
 app.use(express.static("uploads")); //photos in folder can be found
 
 app.get("/", (req: Request, res: Response) => {
-    const homePages = path.join(__dirname, 'public/lihkgclone_home_pages.html');
+    const homePages = path.join(__dirname, 'public/home.html');
     if (!homePages) {
         res.status(404).json({
             message: 'Not Found'
