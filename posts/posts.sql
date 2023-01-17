@@ -6,11 +6,8 @@ CREATE TABLE posts (
     created_at timestamp not null default now(),
     updated_at timestamp not null default now(),
     post_title TEXT not null,
+    station_id INTEGER not null,
     FOREIGN KEY (station_id) REFERENCES stations(id),
+    user_id INTEGER not null,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
-
--- After replies
-
-ALTER TABLE posts
-    ADD COLUMN FOREIGN KEY (last_reply_time) REFERENCES replies(created_at);
