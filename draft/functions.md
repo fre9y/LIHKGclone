@@ -30,6 +30,7 @@ FUNCTIONS:
 - R (trace/home)
 - U (user/admin)
 - D (admin)
+- isP: if and only if now-created_at < 180
 
 ## POST
 
