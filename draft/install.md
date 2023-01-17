@@ -1,11 +1,12 @@
-//npm init
-//npm install node-fetch
-//npm install -D ts-node typescript @types/node
-//npm install express
-//npm install -D @types/express
-//npm install -D nodemon
-//npm install jsonfile @types/jsonfile
-//npm install formidable @types/formidable
+npm init
+npm install node-fetch
+npm install -D ts-node typescript @types/node
+npm install express
+npm install -D @types/express
+npm install express-session
+npm install ts-node-dev 
+npm install jsonfile @types/jsonfile
+npm install formidable @types/formidable
 
 npm install pg dotenv
 npm install -D @types/pg
