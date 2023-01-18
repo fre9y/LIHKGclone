@@ -10,40 +10,49 @@
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/main.css">
     <style>
-        .container-fluid {
-            background-color: blue;
+        body {
+            background-color: #000000;
         }
 
         .post-bar {
-            background-color: coral;
+            background-color: #1d1d1d;
+            height: 100vh;
         }
 
         .post-container {
-            background-color: blueviolet;
+            background-color: #151515;
+            height: 100vh;
         }
 
+        div {
+            color:#c2bcb7;
+        }
         
     </style>
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="row d-flex justify-content-center">
-            <div class="post-bar col-3">
-                <div class="first-line">
-                    <nav class="nav">
+    <div class="container-xxl"><!--container-fluid-->
+        <div class="col-12 d-flex justify-content-center"><!--row-->
+            <div class="post-bar d-sm-none d-md-block col-md-4 col-xl-3"><!--col-4-->
+                <div class="first-line ">
+                    <nav class="nav position-relative">
                         <button class="nav-btn" type="button" data-bs-toggle="offcanvas"
                             data-bs-target="#offcanvasWithBothOptions"
                             aria-controls="offcanvasWithBothOptions">nav-btn</button>
 
-                        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-                            <div class="btn-bar">
-                                <div>btn</div>
-                                <div>btn</div>
-                                <div>btn</div>
-                                <div>btn</div>
-                                <div>btn</div>
-                                <div>btn</div>
+                        <div class="offcanvas offcanvas-start position-absolute start-0" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+                            <div class="btn-bar col-3 d-flex flex-column justify-content-between">
+                                <div>
+                                    <div>icon-btn</div>
+                                    <div>btn</div>
+                                    <div>btn</div>
+                                    <div>btn</div>
+                                    <div>btn</div>
+                                </div>
+                                <div>
+                                    <div>btn</div>
+                                </div>
                             </div>
 
                             <div class="offcanvas-container">
@@ -56,22 +65,22 @@
                                 </div>
 
                                 <div class="offcanvas-bd">
-                                    <div>
+                                    <div class="d-flex justify-content-between">
                                         <div class="leftSide">
-                                            <div class="d-inline">吹水台</div>
-                                            <div class="d-inline">創意台</div>
-                                            <div class="d-inline">講故台</div>
-                                            <div class="d-inline">學術台</div>
+                                            <div>吹水台</div>
+                                            <div>創意台</div>
+                                            <div>講故台</div>
+                                            <div>學術台</div>
                                         </div>
                                         <div class="rightSide">
-                                            <div class="d-inline">自選台</div>
-                                            <div class="d-inline">熱門台</div>
-                                            <div class="d-inline">最新</div>
+                                            <div>自選台</div>
+                                            <div>熱門台</div>
+                                            <div>最新</div>
                                         </div>
                                     </div>
                                     
-                                    <div>
-                                        新聞
+                                    <p>新聞</p>
+                                    <div class="d-flex justify-content-between">
                                         <div class="leftSide">
                                             <div>時事台</div>
                                             <div>政事台</div>
@@ -84,8 +93,8 @@
                                         </div>
                                     </div>
 
-                                    <div>
-                                        科技
+                                    <p>科技</p>
+                                    <div class="d-flex justify-content-between">
                                         <div class="leftSide">
                                             <div>手機台</div>
                                             <div>Apps台</div>
@@ -97,8 +106,8 @@
                                         </div>
                                     </div>
 
-                                    <div>
-                                        生活
+                                    <p>生活</p>
+                                    <div class="d-flex justify-content-between">
                                         <div class="leftSide">
                                             <div>創意台</div>
                                             <div>飲食台</div>
@@ -113,8 +122,8 @@
                                         </div>
                                     </div>
 
-                                    <div>
-                                        興趣
+                                    <p>興趣</p>
+                                    <div class="d-flex justify-content-between">
                                         <div class="leftSide">
                                             <div>體育台</div>
                                             <div>講故台</div>
@@ -134,8 +143,8 @@
                                         </div>
                                     </div>
 
-                                    <div>
-                                        其他
+                                    <p>其他</p>
+                                    <div class="d-flex justify-content-between">
                                         <div class="leftSide">
                                             <div>站務台</div>
                                         </div>
@@ -166,7 +175,7 @@
             </div>
 
 
-            <div class="post-container col-7">
+            <div class="post-container col-12 col-md-9 col-xl-9">
                 <div>post-title</div>
                 <div>post</div>
             </div>
