@@ -26,7 +26,7 @@ FUNCTIONS:
 
  
 ## USERS
-- C (google login) LOGIN
+- C (google login) LOGIN half ok
 - R (trace/home)
 - U (user/admin)
 - D (admin)
@@ -39,7 +39,7 @@ FUNCTIONS:
 - R (list comment by post)
 - U (update content / update status)
 - Youtube/Instagram/Twitter Preview
-- Story Mode (Filter)
+- Story Mode (Filter) ok
 - (Optional: Share including paste to clipboard & to social media)
 - (Very Optional: Polling)
 

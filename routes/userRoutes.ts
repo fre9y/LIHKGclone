@@ -21,21 +21,22 @@ async function loginGoogle (req:express.Request, res:express.Response){
             await client.query(
             `SELECT * FROM users WHERE users.email = $1`,
             [googleUserProfile.email])).rows;
-    
+
         let user = users[0];
         console.log("b");
         if(!user){
             // Create the user when the user does not exist
             console.log("no user");
+            let emailPrefix = googleUserProfile.email.split('@')[0];
             user = ( await client.query(
                     `INSERT INTO users (email,nickname) VALUES ($1,$2) RETURNING *`,
-                    [googleUserProfile.email,"asdfgh"])
+                    [googleUserProfile.email, emailPrefix])
                 ).rows[0]
         }
         
-        req.session['user'] = user
+        req.session['user'] = user 
     
-        return res.redirect('/home.html')
+        return res.redirect('/register.html')
     } catch(error) {
         console.log(error)
 		res.status(500).json({
