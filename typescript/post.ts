@@ -1,5 +1,5 @@
 import express from 'express'
-// import { logger } from '../util/logger'
+import { logger } from '../util/logger'
 import { Post } from '../typescript/model'
 import { isLoggedInAPI } from '../typescript/guard'
 import { client } from '../typescript/main'
@@ -139,8 +139,24 @@ export async function getUserPosts(
 		let userPosts = (
 			await client.query(
 				`
-				select * from posts 
-				where users.id = $1
+				select (select nickname 
+                    from users 
+                    where users.id = posts.user_id) as nickname, 
+                    (select max(updated_at)
+                    from replies
+                    where posts.id = replies.post_id) as updated_at, 
+                    (select sum(likes - dislikes)
+                    from replies
+                    where posts.id = replies.post_id) as likes, 
+                    (select count(post_id) 
+                    from replies
+                    where posts.id = replies.post_id) as number_of_replies, 
+                    post_title, 
+                    (select name 
+                    from stations
+                    where posts.station_id = stations.id) as station_name
+				from posts
+				where user_id = $1
 				`,
 				[Number(userId)]
 			)
@@ -196,4 +212,3 @@ export async function getHotPosts(req: express.Request, res: express.Response) {
 // in main.ts
 // import { postRoutes } from '../typescript/post'
 // app.use('/posts', postRoutes)
-// app.use('/replies', replyRoutes)
