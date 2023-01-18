@@ -36,10 +36,13 @@ const form = formidable({
     },
 })
 
+app.use(express.static("uploads")); //photos in folder can be found
+
 app.get('/getImages', (req, res) => {
-    const getImagesHTML = path.join(__dirname,'images.html');
+    const getImagesHTML = path.resolve(__dirname, '../html/images.html');
     res.sendFile(getImagesHTML);
 })
+
 
 const port = 8100;
 app.listen(port,() => {

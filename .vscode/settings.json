@@ -5,9 +5,9 @@
             "server": "localhost",
             "port": 5432,
             "driver": "PostgreSQL",
-            "name": "postgres",
+            "name": "lihkgclone",
+            "database": "lihkgclone",
             "username": "postgres",
-            "database": "hkligclone",
             "password": "postgres"
         }
     ]
