@@ -77,13 +77,33 @@ Line3 (class = reply-footer)
 - Comment Button
 
 # Navbar
-/NotLoggedIn
+LEFT SIDE : class = navbar-left-wrapper
+<br></br>
+RIGHT SIDE : class = navbar-right-wrapper
+## /NotLoggedIn
+class = non-member-function-container
+- Search
 - Login
-- All stations 
+- Rewind
+### All stations:
+- class = main-station-container
+- class = news-station-container
+- class = tech-station-container
+- class = living-station-container
+- class = hobby-station-container
+- class = other-station-container
 
-/IsLoggedIn
+## /IsLoggedIn
+class = member-function-container
 - Rewind
 - Following Users
 - Post Created
 - Starred
-- All stations 
+
+### All stations:
+- class = main-station-container
+- class = news-station-container
+- class = tech-station-container
+- class = living-station-container
+- class = hobby-station-container
+- class = other-station-container
