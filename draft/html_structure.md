@@ -95,10 +95,11 @@ class = non-member-function-container
 
 ## /IsLoggedIn
 class = member-function-container
-- Rewind
-- Following Users
-- Post Created
-- Starred
+- Search
+- Rewind posts
+- Following Users'posts
+- Replies Created
+- Starred posts
 
 ### All stations:
 - class = main-station-container
