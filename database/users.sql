@@ -1,3 +1,4 @@
+/*
 create table users(
     id serial primary key,
     nickname varchar(255) not null unique,
@@ -25,7 +26,7 @@ values
 ('2機械人二', 'bot2@botbot.com', false, true, true),
 ('3機械人三', 'bot3@botbot.com', false, true, true),
 ('漢語多功能字庫', 'bbb@cuhk.edu.hk', false, true, false)
-
+*/
 
 
 -- select * from users;
