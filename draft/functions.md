@@ -48,6 +48,11 @@ FUNCTIONS:
 - R (list by replies)
 - U (update image status)
 
+##Stations
+- C (Create Stations)
+- R (list stations)
+- U (admin only change stations status)/ users change stations position
+
 
 # WORDING
 ## HTML
