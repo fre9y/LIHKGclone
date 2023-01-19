@@ -12,33 +12,25 @@
     <form class="image-container">
         <input type="file">
         <input type="submit" value="submit">
-        <div> <img src="" alt="preview" id="preview"></div>
+        <div> <img src="" width="50%" alt="preview" id="preview"></div>
     </form>
 
     <script>
         async function fileToDataURL(file) {
-            console.log(file);
             const reader = new FileReader();
 
             reader.onload = function (event) {
                 const dataURL = event.target.value;
-                console.log(dataURL);
-                // Now dataURL is here.
             };
             reader.readAsDataURL(file);
         }
 
-
         function getObjectURL(file) {
             const objectURL = URL.createObjectURL(file);
-            console.log(objectURL)
-            return objectURL
+            return objectURL;
         }
 
-
         document.querySelector('.image-container [type=file]').addEventListener('change', (e) => {
-
-            console.log('file field changed');
             let image = e.target.files[0]
             let imageURL = getObjectURL(image)
             document.querySelector('#preview').src = imageURL
