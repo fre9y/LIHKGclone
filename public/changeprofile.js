@@ -31,5 +31,6 @@ updateProfileElem.addEventListener('submit', async (e) => {
 	if (!res.ok) {
 		return
 	}
+	window.location = "/home.html"
 })
 

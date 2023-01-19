@@ -62,10 +62,12 @@ export async function updateUser(
             `UPDATE users SET nickname = $1, is_male = $2 WHERE id = $3`,
             [req.body.nickname,req.body.gender,user.id]
         );
-        res.status(200).json({
-            message: '[USER UPDATED]'
-        })
+        // res.status(200).json({
+        //     message: '[USER UPDATED]'
+        // })
         console.log("d",req.body.nickname,req.body.gender,user.id);
+        res.json('[REDIRECTED TO HOME]')
+        
     } catch (error) {
         console.log("ERR0R",error);
         res.status(500).json({
