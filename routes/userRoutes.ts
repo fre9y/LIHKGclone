@@ -58,17 +58,14 @@ export async function updateUser(
         //console.log(res)
         let user = req.session['user'];
         console.log(user.id);
-        console.log("d",req.body.nickname,req.body.gender,user.id);
         const updatedUser = await client.query(
             `UPDATE users SET nickname = $1, is_male = $2 WHERE id = $3`,
-
             [req.body.nickname,req.body.gender,user.id]
         );
-        // res.status(200).json({
-        //     message: 'User updated',
-        //     user: updateUser.rows[0]
-        // })
-        console.log("e" , updatedUser);
+        res.status(200).json({
+            message: '[USER UPDATED]'
+        })
+        console.log("d",req.body.nickname,req.body.gender,user.id);
     } catch (error) {
         console.log("ERR0R",error);
         res.status(500).json({
@@ -76,3 +73,24 @@ export async function updateUser(
         })
     }
 }
+
+
+//READ USERS
+// export async function getUsers(
+//     req: express.Request, 
+//     res: express.Response
+//     ) {
+//     try {
+//         const users = await client.query(
+//             `SELECT * FROM users`
+//         );
+//         res.status(200).json({
+//             message: 'Users found',
+//             users: users.rows
+//         })
+//     } catch (error) {
+//         res.status(500).json({
+//             message: '[SERVER ERROR]'
+//         })
+//     }
+// }
