@@ -1,14 +1,23 @@
 <> == non click event
 
-# Left side
-## First Row:
-- Navbar button (class = navbar-btn)
-- <where:WhichStationCurrently> (class = station-name)
-- Refresh button (class = refresh-btn)
-- Create Post button (class = create-post-btn)
+# Hidden navigation slide(class = offcanvas)
+## left-side(button bar):
+    - Navbar button (class = btn-bar)
+        lihkg icon, bell, user, game center, themes, setting
+## right-side(button bar & stations)(class = offcanvas-container):
+    - search input, review post, log-in/sign-up (class = offcanvas-hd)
+    - all station(class = offcanvas-bd)
 
-## Second Row:
-- Latest (leave it first)
+
+## left side:
+## top
+    - Navbar button (class = navbar_btn)
+    - <where:WhichStationCurrently> (class = station_name)
+    - Refresh button (class = refresh_btn)
+    - Create Post button (class = create_post_btn)
+## bottom 
+    - latest btn, hit btn(class = latest_btn)
+    - latest post (class = latest_post)
 
 ## N Rows = Posts
 (post-wrapper) wrap line1 and line2

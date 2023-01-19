@@ -1,45 +1,25 @@
-.container-xxl {
-    /* overflow: scroll; */
-    width: 100vw;
-}
-.post-bar {
-    padding-left: 0px;
-    min-width: 300px;
+/* first_row */
+.first_row {
+    height: 6%;
+    border: 1px solid rgb(255, 255, 255);
 }
 
-.offcanvas {
-    display: flex;
-    flex-wrap: wrap;
-}
 
-.nav .btn-bar {
-    height: 100vh;
-    background-color: #151515;
-}
 
-.nav .btn-bar div {
-    background-color: #151515;
-    
-    /* border: 1px solid; */
-}
-
-.offcanvas-container {
-    height: 100vh;
-    background-color: #1e1e1e;
-}
-
-.offcanvas-bd {
-    height:89%;
-    /* overflow: auto; */
+.second_row {
+    height:94%;
     overflow-y: scroll;
 }
 
-.offcanvas-bd div {
-    border: 1px solid;
+.latest_btn button {
+    /* border: none; */
     background-color: #1e1e1e;
-    line-height: 40px;
+    color: white;
+    padding: 3% 0;
+    width: 50%;
 }
 
-.offcanvas-bd p {
-    background-color: #1e1e1e;
+.latest_posts div {
+    padding: 20% 0;
+    border: 1px solid white;
 }
