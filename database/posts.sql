@@ -1,6 +1,3 @@
--- Users -> stations -> images -> posts -> replies -> favourite
-
-
 CREATE TABLE posts (
     id SERIAL primary key,
     created_at timestamp not null default now(),
@@ -9,7 +6,8 @@ CREATE TABLE posts (
     station_id INTEGER not null,
     FOREIGN KEY (station_id) REFERENCES stations(id),
     user_id INTEGER not null,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    show Boolean not null default true
 );
 
 insert into posts
