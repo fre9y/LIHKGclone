@@ -28,7 +28,7 @@ async function connectDatabase() {
       })
     await client.connect();
     console.log("db connected");
-    console.log("db disconnected");
+
 }
 connectDatabase();
 //

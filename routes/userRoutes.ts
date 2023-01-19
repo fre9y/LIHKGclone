@@ -33,7 +33,9 @@ async function loginGoogle (req:express.Request, res:express.Response){
                     [googleUserProfile.email, emailPrefix])
                 ).rows[0]
         }
-        
+        //await client.query(`UPDATE users (,nickname) 
+        //VALUES ($1) RETURNING *`,
+        //[filled variable])
         req.session['user'] = user 
     
         return res.redirect('/register.html')
