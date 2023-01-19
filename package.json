@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node-dev typescript/main.ts",
+    "stations": "nodemon typescript/stations.ts",
     "images": "nodemon typescript/images.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

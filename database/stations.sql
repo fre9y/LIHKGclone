@@ -43,3 +43,6 @@ insert into stations (name) values ('吹水台'),
                                     ('站務台'),
                                     ('黑洞');
 
+select * from stations;
+SELECT id FROM stations;
+SELECT id FROM stations WHERE id = 3;

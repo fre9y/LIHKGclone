@@ -1,7 +1,8 @@
 import express from 'express';
 import session from 'express-session';
-import path from 'path';
-import formidable from 'formidable';
+// import path from 'path';
+import { client } from './main';
+// import { QueryResult } from 'pg';
 
 
 const app = express();
@@ -18,12 +19,15 @@ declare module "express-session" {
     }
 }
 
-app.get("/stations/:stations", (req, res) => {
-    const stations = req.params.stations;
-    const stationsID = req.query.stationsID;
-    const stationsNUM = 
+app.get("/stations/:stations", async (req, res) => {
+    let stationsID = req.params.stations;
+    const stationsNUM = await client.query(
+        `SELECT * FROM stations WHERE id = ${stationsID}`
+    );
+console.table(stationsNUM);
+    // if (stationsID == stationsNUM.rows[0]) {
 
-    if (stationsID == stationsNUM) {}
+    // }
 })
 
 
