@@ -63,7 +63,7 @@ const grantExpress = grant.express({
 
 
 
-
+//user CRUD
 app.use('/user', userRoutes)
 app.use(express.static("public"));
 app.use(express.static("uploads")); //photos in folder can be found

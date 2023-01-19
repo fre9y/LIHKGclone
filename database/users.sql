@@ -39,5 +39,4 @@ values
 
 
 
-
 select * from users;
