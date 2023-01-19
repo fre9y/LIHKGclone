@@ -5,7 +5,7 @@ import { Client } from "pg";
 import dotenv from "dotenv";
 import grant from "grant";
 import expressSession from "express-session";
-import { userRoutes } from '../routes/userRoutes';
+import { userRoutes } from './routes/userRoutes';
 
 let app = express();
 app.use(express.urlencoded({ extended: true }));

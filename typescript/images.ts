@@ -3,7 +3,7 @@ import session from 'express-session';
 import path from 'path';
 import formidable from 'formidable';
 import fs from 'fs';
-import { client } from './main';
+import { client } from '../main';
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));

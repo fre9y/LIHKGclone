@@ -1,6 +1,6 @@
 import express from 'express'
 import fetch from 'cross-fetch'
-import { client } from '../typescript/main'
+import { client } from '../main'
 export const userRoutes = express.Router();
 userRoutes.get('/login/google', loginGoogle);
 userRoutes.put('/profile', updateUser);

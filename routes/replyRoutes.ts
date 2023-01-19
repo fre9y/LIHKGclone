@@ -1,9 +1,9 @@
 import express from 'express'
 import { logger } from '../util/logger'
-import { Reply } from '../typescript/model'
-import { isLoggedInAPI } from '../typescript/guard'
-import { client } from '../typescript/main'
-import { formParsePromise } from '../typescript/formidable'
+import { Reply } from '../model/model'
+import { isLoggedInAPI } from '../util/guard'
+import { client } from '../main'
+import { formParsePromise } from '../util/formidable'
 
 export const replyRoutes = express.Router()
 
