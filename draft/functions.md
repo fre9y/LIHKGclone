@@ -46,7 +46,7 @@ FUNCTIONS:
 ## IMAGES
 - C (Create Images)
 - R (list by replies)
-- D (Delete Image)
+- U (update image status)
 
 
 # WORDING
