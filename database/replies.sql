@@ -1,3 +1,7 @@
+-- Users -> stations -> images -> posts -> replies -> favourite
+
+SELECT * FROM replies;
+
 CREATE TABLE replies (
     id SERIAL primary key,
     created_at timestamp not null default now(),
