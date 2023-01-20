@@ -9,7 +9,7 @@ export const postRoutes = express.Router()
 
 postRoutes.get('/', getPosts)
 postRoutes.post('/', isP, createPosts)
-// postRoutes.put('/:id', isLoggedInAPI, updatePostById)
+postRoutes.put('/:id', isP, isYourPost, updatePostById)
 postRoutes.put('/:id', isAdmin, hidePostById)
 postRoutes.put('/:id', isAdmin, showPostById)
 postRoutes.get('/like/user/:userId', getUserPosts)
@@ -80,27 +80,27 @@ export async function createPosts(req: express.Request, res: express.Response) {
 	}
 }
 
-// export async function updatePostById(
-// 	req: express.Request,
-// 	res: express.Response
-// ) {
-// 	try {
-// 		let postId = req.params.id
-// 		let postTitle = req.body.title
+export async function updatePostById(
+	req: express.Request,
+	res: express.Response
+) {
+	try {
+		let postId = req.params.id
+		let postTitle = req.body.title
 
-// 		await client.query(`update posts set post_title = $1 where id = $2`, [
-// 			postTitle,
-// 			postId
-// 		])
+		await client.query(`update posts set post_title = $1 where id = $2`, [
+			postTitle,
+			postId
+		])
 
-// 		res.json({ message: 'ok' })
-// 	} catch (error) {
-// 		logger.error(error)
-// 		res.status(500).json({
-// 			message: '[POS002] - Server error'
-// 		})
-// 	}
-// }
+		res.json({ message: 'ok' })
+	} catch (error) {
+		logger.error(error)
+		res.status(500).json({
+			message: '[POS002] - Server error'
+		})
+	}
+}
 
 export async function hidePostById(
 	req: express.Request,

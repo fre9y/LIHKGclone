@@ -238,6 +238,50 @@ export async function getHotReplies(req: express.Request, res: express.Response)
 	}
 }
 
+export async function likeReplyById(
+	req: express.Request,
+	res: express.Response
+) {
+	try {
+		let replyId = req.params.id
+		let replyLike = req.body.like
+
+		await client.query(`update replies set likes = $2 + 1 where id = $1`, [
+			replyLike,
+			replyId
+		])
+
+		res.json({ message: 'ok' })
+	} catch (error) {
+		logger.error(error)
+		res.status(500).json({
+			message: '[REP002] - Server error'
+		})
+	}
+}
+
+export async function dislikeReplyById(
+	req: express.Request,
+	res: express.Response
+) {
+	try {
+		let replyId = req.params.id
+		let replyDislike = req.body.dislike
+
+		await client.query(`update replies set dislikes = $2 + 1 where id = $1`, [
+			replyDislike,
+			replyId
+		])
+
+		res.json({ message: 'ok' })
+	} catch (error) {
+		logger.error(error)
+		res.status(500).json({
+			message: '[REP002] - Server error'
+		})
+	}
+}
+
 // in main.ts
 // import { replyRoutes } from '../typescript/reply'
 // app.use('/replies', replyRoutes)
