@@ -20,8 +20,8 @@
 
     <script>
         async function createImgEle() {
-            const res = await fetch("/post/1/media", {
-                method: "GET", // Specify your HTTP method
+            const res = await fetch("/post/:post/media", {
+                method: "GET", 
             });
             let resData = await res.json()
             asd = resData.asd
