@@ -4,7 +4,7 @@ import { client } from '../main'
 export const userRoutes = express.Router();
 userRoutes.get('/login/google', loginGoogle);
 userRoutes.put('/profile', updateUser);
-
+userRoutes.get('/profile', getUser);
 //LOGIN + CREATE USER
 async function loginGoogle (req:express.Request, res:express.Response){
     console.log('123');
@@ -25,7 +25,7 @@ async function loginGoogle (req:express.Request, res:express.Response){
             [googleUserProfile.email])).rows;
 
         let user = users[0];
-        console.log("b");
+        console.log("b",user);
         if(!user){
             // Create the user when the user does not exist
             console.log("no user");
@@ -38,7 +38,7 @@ async function loginGoogle (req:express.Request, res:express.Response){
 
         req.session['user'] = user 
         console.log(req.session['user']);
-        return res.redirect('/changeprofile.html')
+        return res.redirect('/profile.html')
     } catch(error) {
         console.log("ERR0R: " + error)
 		res.status(500).json({
@@ -57,14 +57,13 @@ export async function updateUser(
         console.log("c",req.body);
         //console.log(res)
         let user = req.session['user'];
-        console.log(user.id);
+        console.log("SESSION",user);
+        //        console.log(user.id);
         const updatedUser = await client.query(
             `UPDATE users SET nickname = $1, is_male = $2 WHERE id = $3`,
             [req.body.nickname,req.body.gender,user.id]
         );
-        // res.status(200).json({
-        //     message: '[USER UPDATED]'
-        // })
+        
         console.log("d",req.body.nickname,req.body.gender,user.id);
         res.json('[REDIRECTED TO HOME]')
         
@@ -77,22 +76,30 @@ export async function updateUser(
 }
 
 
-//READ USERS
-// export async function getUsers(
-//     req: express.Request, 
-//     res: express.Response
-//     ) {
-//     try {
-//         const users = await client.query(
-//             `SELECT * FROM users`
-//         );
-//         res.status(200).json({
-//             message: 'Users found',
-//             users: users.rows
-//         })
-//     } catch (error) {
-//         res.status(500).json({
-//             message: '[SERVER ERROR]'
-//         })
-//     }
-// }
+//READ USER
+export async function getUser(
+    req: express.Request, 
+    res: express.Response
+    ) {
+    try {
+        let user = req.session['user'];
+        // const users = (
+        //     await client.query(
+        //     `SELECT * FROM users WHERE users.id = $1`,
+        //     [user])).rows;
+        console.log(user);
+        if (!user) {
+             res.status(404).json({
+                message: '[USER NOT FOUND]'
+            })
+            return
+        }
+        res.json(user)
+        return
+    } catch (error) {
+        res.status(500).json({
+            message: '[SERVER ERROR]'
+        })
+        return
+    }
+}

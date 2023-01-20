@@ -10,6 +10,8 @@ CREATE TABLE posts (
     show Boolean not null default true
 );
 
+
+
 insert into posts
 (post_title, station_id, user_id)
 values
@@ -18,3 +20,5 @@ values
 ('第一次買樓，首選第一城，希望大家畀少少意見', 13, 2),
 ('李家超冀今年內取消口罩令', 8, 3),
 ('召喚痴線西 (216)', 10, 1);
+
+SELECT * FROM posts WHERE id = 1;

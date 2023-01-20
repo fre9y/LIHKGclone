@@ -75,7 +75,7 @@ app.use(express.static("public/assets"));
 app.use(express.static("uploads")); //photos in folder can be found
 
 app.get("/", (req: Request, res: Response) => {
-    const homePages = path.resolve(__dirname, '../public/home.html');
+    const homePages = path.resolve(__dirname, 'public/home.html');
     if (!homePages) {
         res.status(404).json({
             message: 'Not Found'

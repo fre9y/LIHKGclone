@@ -38,42 +38,25 @@ const form = formidable({
 })
 
 
-app.use(express.static("uploads/image")); //photos in folder can be found
+app.use(express.static("uploads/image"));
+app.use(express.static("html"));
 
 app.get('/getImages', (req, res) => {
     const getImagesHTML = path.resolve(__dirname, '../html/images.html');
     res.sendFile(getImagesHTML);
 })
 
-function 
+
 
 app.get('/post/:post/media', async (req, res) => {
-    let stations = req.params.stations;
-    let post = req.params.post;
-
-    const stationsID = await client.query(
-        `SELECT * FROM stations WHERE id = ${stations}`
-    );
-    const imagePath = await client.query(
-        'SELECT name FROM images'
+    let postId = req.params.post;
+    const images = await client.query(
+        'SELECT name FROM images where posts_id = ' + postId
     )
 
-    res.redirect()
-
-    if (!stations || !stationsID) {
-        res.status(400).json({
-            message: 'opps'
-        });
-        return;
-    }
-
-    if (!post) {
-        res.status(400).json({
-            message: 'opps'
-        });
-        return;
-    }
-
+    res.json({
+        asd: images.rows
+    })
 })
 
 
