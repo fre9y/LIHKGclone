@@ -50,13 +50,14 @@ app.get('/getImages', (req, res) => {
 
 app.get('/post/:post/media', async (req, res) => {
     let postId = req.params.post;
+    console.log(postId);
     const images = await client.query(
-        'SELECT name FROM images where posts_id = ' + postId
-    )
+        `SELECT posts_id, name FROM images where posts_id = ${postId}`
+    );
 
     res.json({
-        asd: images.rows
-    })
+        images: images.rows
+    });
 })
 
 
