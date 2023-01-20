@@ -103,3 +103,6 @@ export async function getUser(
         return
     }
 }
+//SOFT-DELETE USER
+//update email(+str) & update status
+//post handling: 

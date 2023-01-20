@@ -1,7 +1,7 @@
 
 create table users(
     id serial primary key,
-    nickname varchar(255) not null unique,
+    nickname varchar(255) not null,
     email varchar(255) not null unique,
     is_admin boolean default false not null,
     is_p boolean default true not null,
