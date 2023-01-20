@@ -1,22 +1,22 @@
 import express from 'express'
 import { logger } from '../util/logger'
 import { Reply } from '../model/model'
-import { isLoggedInAPI } from '../util/guard'
+import { isLoggedInAPI, isP, isAdmin, isYourReply  } from '../util/guard'
 import { client } from '../main'
 import { formParsePromise } from '../util/formidable'
 
 export const replyRoutes = express.Router()
 
 replyRoutes.get('/', getReplies)
-replyRoutes.post('/', createReplies)
-replyRoutes.put('/:id', isP, isYourReply, updateReplyById)
+replyRoutes.post('/', isLoggedInAPI, createReplies)
+replyRoutes.put('/:id', isLoggedInAPI, isP, isYourReply, updateReplyById)
 replyRoutes.put('/:id', isAdmin, hideReplyById)
 replyRoutes.put('/:id', isAdmin, showReplyById)
-replyRoutes.get('/like/user/:userId', getUserReplies)
+replyRoutes.get('/', getUserReplies)
 replyRoutes.get('/', getHotReplies)
-replyRoutes.put('/:id', isP, likeReplyById)
-replyRoutes.put('/:id', isP, dislikeReplyById)
-
+replyRoutes.put('/:id', isLoggedInAPI, isP, likeReplyById)
+replyRoutes.put('/:id', isLoggedInAPI, isP, dislikeReplyById)
+// likes/dislikes check repeat
 export async function getReplies(req: express.Request, res: express.Response) {
 	try {
         let postId = req.params.postId
@@ -281,7 +281,3 @@ export async function dislikeReplyById(
 		})
 	}
 }
-
-// in main.ts
-// import { replyRoutes } from '../typescript/reply'
-// app.use('/replies', replyRoutes)

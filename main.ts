@@ -6,6 +6,9 @@ import dotenv from "dotenv";
 import grant from "grant";
 import expressSession from "express-session";
 import { userRoutes } from './routes/userRoutes';
+import { postRoutes } from './routes/postRoutes'
+import { replyRoutes } from './routes/replyRoutes'
+
 
 let app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -65,6 +68,8 @@ const grantExpress = grant.express({
 
 
 app.use('/user', userRoutes)
+app.use('/posts', postRoutes)
+app.use('/replies', replyRoutes)
 app.use(express.static("public"));
 app.use(express.static("public/assets"));
 app.use(express.static("uploads")); //photos in folder can be found
