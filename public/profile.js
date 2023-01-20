@@ -1,8 +1,11 @@
-let changeProfileIcon = document.querySelector(".change-profile")
-
-changeProfileIcon.addEventListener('click', () => {
-    console.log('456');
+let changeProfile = document.querySelector(".change-profile")
+changeProfile.addEventListener('click', () => {
     window.location = "/changeProfile.html"
+})
+
+let home = document.querySelector(".home")
+home.addEventListener('click', () => {
+    window.location = "/home.html"
 })
 
 async function loadProfile() {
@@ -17,7 +20,7 @@ async function loadProfile() {
         profileElem.innerHTML = `
             <div class= "profile">
                 <div class="profile-nickname">${profile.nickname}</div>
-                <div class="profile-id">${profile.id}</div>
+                <div class="profile-id">#${profile.id}</div>
                 <div class="profile-email">${profile.email}</div>
                 <div class="profile-created-at">${profile.created_at}</div>
             </div>
