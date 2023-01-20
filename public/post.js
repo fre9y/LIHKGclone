@@ -12,6 +12,7 @@ newPostElm.addEventListener('submit', async (e) => {
 
 	if (res.ok) {
 		newPostElm.reset()
+        loadPosts()
 	} else {
 		console.log('post fail')
 	}
