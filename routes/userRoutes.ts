@@ -83,11 +83,8 @@ export async function getUser(
     ) {
     try {
         let user = req.session['user'];
-        // const users = (
-        //     await client.query(
-        //     `SELECT * FROM users WHERE users.id = $1`,
-        //     [user])).rows;
         console.log(user);
+        
         if (!user) {
              res.status(404).json({
                 message: '[USER NOT FOUND]'

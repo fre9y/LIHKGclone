@@ -6,6 +6,7 @@ create table users(
     is_admin boolean default false not null,
     is_p boolean default true not null,
     is_male boolean default true not null,
+    show Boolean not null default true,
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 

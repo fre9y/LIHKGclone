@@ -4,4 +4,4 @@
 # 4/ replies
 # 5/ images
 # 6/ favourite_posts
-# 7/ user_blacklist
+# 7/ user_blacklists
