@@ -5,7 +5,7 @@ export const isLoggedIn = (
 	res: express.Response,
 	next: express.NextFunction
 ) => {
-	if (req.session?.user) {
+	if (req.session?.['user']) {
 		next()
 	} else {
 		res.redirect('/?error=no access right')
@@ -17,7 +17,7 @@ export const isLoggedInAPI = (
 	res: express.Response,
 	next: express.NextFunction
 ) => {
-	if (req.session?.user) {
+	if (req.session?.['user']) {
 		next()
 	} else {
 		res.status(403).json({
@@ -31,7 +31,7 @@ export const isAdmin = (
 	res: express.Response,
 	next: express.NextFunction
 ) => {
-	if (req.session?.admin) {
+	if (req.session?.['admin']) {
 		next()
 	} else {
 		res.status(403).json({
@@ -45,7 +45,7 @@ export const isP = (
 	res: express.Response,
 	next: express.NextFunction
 ) => {
-	if (req.session?.P) {
+	if (req.session?.['p']) {
 		next()
 	} else {
 		res.status(403).json({
@@ -59,7 +59,7 @@ export const isYourPost = (
 	res: express.Response,
 	next: express.NextFunction
 ) => {
-	if (req.session?.userId) {
+	if (req.session?.['userId']) {
 		next()
 	} else {
 		res.status(403).json({
@@ -68,12 +68,14 @@ export const isYourPost = (
 	}
 }
 
+
+
 export const isYourReply = (
 	req: express.Request,
 	res: express.Response,
 	next: express.NextFunction
 ) => {
-	if (req.session?.userId) {
+	if (req.session?.['userId']) {
 		next()
 	} else {
 		res.status(403).json({
