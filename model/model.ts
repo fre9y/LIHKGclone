@@ -1,6 +1,11 @@
 export interface Post {
-	content: string
-	id: string
+	id: number
+	nickname: string
+	time: string
+	likes: number
+	title: string
+	numberOfReplies: number
+	station: string
 }
 
 export interface Reply {
