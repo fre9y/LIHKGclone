@@ -1,5 +1,16 @@
 let profileIcon = document.querySelector(".profile")
 
+async function checkSession() {
+    let res = await fetch('/user/profile', {
+        method: 'GET'
+    })
+    if (!res.ok) {
+        window.location = "/connect/google"
+    } else {
+        window.location = "/profile.html"
+    }
+}
+
 profileIcon.addEventListener('click', () => {
-    window.location = "/profile.html"
+    checkSession();
 })
