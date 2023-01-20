@@ -1,21 +1,17 @@
 import express from 'express'
 import { logger } from '../util/logger'
-import { Reply } from '../typescript/model'
-// import { isLoggedInAPI } from '../typescript/guard'
-import { client } from '../typescript/main'
-import { formParsePromise } from '../typescript/formidable'
+import { Reply } from '../model/model'
+import { isLoggedInAPI } from '../util/guard'
+import { client } from '../main'
+import { formParsePromise } from '../util/formidable'
 
 export const replyRoutes = express.Router()
 
 replyRoutes.get('/', getReplies)
 replyRoutes.post('/', createReplies)
-replyRoutes.put('/:id', isP, isYourReply, updateReplyById)
-replyRoutes.put('/:id', isAdmin, hideReplyById)
-replyRoutes.put('/:id', isAdmin, showReplyById)
+replyRoutes.put('/:id', isLoggedInAPI, updateReplyById)
+replyRoutes.delete('/:id', isLoggedInAPI, deleteReplyById)
 replyRoutes.get('/like/user/:userId', getUserReplies)
-replyRoutes.get('/', getHotReplies)
-replyRoutes.put('/:id', isP, likeReplyById)
-replyRoutes.put('/:id', isP, dislikeReplyById)
 
 export async function getReplies(req: express.Request, res: express.Response) {
 	try {
@@ -36,7 +32,6 @@ export async function getReplies(req: express.Request, res: express.Response) {
                 post_id
             from replies
             where post_id = $1
-			and show = true
             order by id ASC
             `,
             [Number(postId)]
@@ -102,7 +97,7 @@ export async function updateReplyById(
 	}
 }
 
-export async function hideReplyById(
+export async function deleteReplyById(
 	req: express.Request,
 	res: express.Response
 ) {
@@ -116,32 +111,7 @@ export async function hideReplyById(
 			return
 		}
 
-		await client.query(`update replies set show = false where id = $1`, [replyId])
-
-		res.json({ message: 'delete reply ok' })
-	} catch (error) {
-		logger.error(error)
-		res.status(500).json({
-			message: '[REP003] - Server error'
-		})
-	}
-}
-
-export async function showReplyById(
-	req: express.Request,
-	res: express.Response
-) {
-	try {
-		let replyId = req.params.id
-
-		if (!Number(replyId)) {
-			res.status(400).json({
-				message: 'Invalid reply id'
-			})
-			return
-		}
-
-		await client.query(`update replies set show = true where id = $1`, [replyId])
+		await client.query(`delete from replies where id = $1`, [replyId])
 
 		res.json({ message: 'delete reply ok' })
 	} catch (error) {
@@ -184,7 +154,6 @@ export async function getUserReplies(
                 from replies
                 where post_id = $1 
                 and user_id = $2
-				and show = true
                 order by id ASC
 				`,
 				[Number(postId), Number(userId)]
@@ -199,89 +168,3 @@ export async function getUserReplies(
 		})
 	}
 }
-
-export async function getHotReplies(req: express.Request, res: express.Response) {
-	try {
-        let postId = req.params.postId
-
-		let result = await client.query(
-			`
-			select (select nickname 
-				from users 
-				where users.id = replies.user_id) as nickname, 
-				updated_at, 
-				content, 
-				(select name 
-				from images
-				where images.id = replies.image_id) as image, 
-				likes, 
-				dislikes,
-				post_id
-			from replies
-			where post_id =$ 1
-			and show = true
-			order by likes DESC
-            `,
-            [Number(postId)]
-		)
-		let replies: Reply[] = result.rows
-
-		res.json({
-			data: replies,
-			message: 'Get replies success'
-		})
-	} catch (error) {
-		logger.error(error)
-		res.status(500).json({
-			message: '[REP001] - Server error'
-		})
-	}
-}
-
-export async function likeReplyById(
-	req: express.Request,
-	res: express.Response
-) {
-	try {
-		let replyId = req.params.id
-		let replyLike = req.body.like
-
-		await client.query(`update replies set likes = $2 + 1 where id = $1`, [
-			replyLike,
-			replyId
-		])
-
-		res.json({ message: 'ok' })
-	} catch (error) {
-		logger.error(error)
-		res.status(500).json({
-			message: '[REP002] - Server error'
-		})
-	}
-}
-
-export async function dislikeReplyById(
-	req: express.Request,
-	res: express.Response
-) {
-	try {
-		let replyId = req.params.id
-		let replyDislike = req.body.dislike
-
-		await client.query(`update replies set dislikes = $2 + 1 where id = $1`, [
-			replyDislike,
-			replyId
-		])
-
-		res.json({ message: 'ok' })
-	} catch (error) {
-		logger.error(error)
-		res.status(500).json({
-			message: '[REP002] - Server error'
-		})
-	}
-}
-
-// in main.ts
-// import { replyRoutes } from '../typescript/reply'
-// app.use('/replies', replyRoutes)

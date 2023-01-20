@@ -5,7 +5,7 @@ import { Client } from "pg";
 import dotenv from "dotenv";
 import grant from "grant";
 import expressSession from "express-session";
-import { userRoutes } from '../routes/userRoutes';
+import { userRoutes } from './routes/userRoutes';
 
 let app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -63,9 +63,10 @@ const grantExpress = grant.express({
 
 
 
-//user CRUD
+
 app.use('/user', userRoutes)
 app.use(express.static("public"));
+app.use(express.static("public/assets"));
 app.use(express.static("uploads")); //photos in folder can be found
 
 app.get("/", (req: Request, res: Response) => {
@@ -77,6 +78,7 @@ app.get("/", (req: Request, res: Response) => {
         return;
     } else {
         res.sendFile(homePages);
+
     }
 });
 
@@ -106,9 +108,9 @@ app.get("/", (req: Request, res: Response) => {
 
 
 
-app.use((req, res) => {
-    res.redirect("404.html");
-});
+// app.use((req, res) => {
+//     res.redirect("404.html");
+// });
 
 const port = 8080;
 app.listen(port, () => {
