@@ -1,7 +1,7 @@
 import express from 'express';
 import session from 'express-session';
 import path from 'path';
-import { client } from './main';
+import { client } from '../main';
 // import { QueryResult } from 'pg';
 
 

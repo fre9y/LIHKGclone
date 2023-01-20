@@ -1,9 +1,11 @@
 import express from 'express'
 import fetch from 'cross-fetch'
-import { client } from '../typescript/main'
+import { client } from '../main'
 export const userRoutes = express.Router();
 userRoutes.get('/login/google', loginGoogle);
+userRoutes.put('/profile', updateUser);
 
+//LOGIN + CREATE USER
 async function loginGoogle (req:express.Request, res:express.Response){
     console.log('123');
     try {
@@ -33,16 +35,61 @@ async function loginGoogle (req:express.Request, res:express.Response){
                     [googleUserProfile.email, emailPrefix])
                 ).rows[0]
         }
-        //await client.query(`UPDATE users (,nickname) 
-        //VALUES ($1) RETURNING *`,
-        //[filled variable])
+
         req.session['user'] = user 
-    
-        return res.redirect('/register.html')
+        console.log(req.session['user']);
+        return res.redirect('/changeProfile.html')
     } catch(error) {
-        console.log(error)
+        console.log("ERR0R: " + error)
 		res.status(500).json({
 			message: '[SERVER ERROR]'
 		})
     }
 }
+
+//UPDATE USER
+export async function updateUser(
+    req: express.Request, 
+    res: express.Response
+    ) {
+    try {
+        
+        console.log("c",req.body);
+        //console.log(res)
+        let user = req.session['user'];
+        console.log(user.id);
+        const updatedUser = await client.query(
+            `UPDATE users SET nickname = $1, is_male = $2 WHERE id = $3`,
+            [req.body.nickname,req.body.gender,user.id]
+        );
+        // res.status(200).json({
+        //     message: '[USER UPDATED]'
+        // })
+        console.log("d",req.body.nickname,req.body.gender,user.id);
+        res.json('[REDIRECTED TO HOME]')
+        
+    } catch (error) {
+        console.log("ERR0R",error);
+        res.status(500).json({
+            message: '[SERVER ERROR]'
+        })
+    }
+}
+
+
+//READ USER
+// export async function getUsers(
+//     req: express.Request, 
+//     res: express.Response
+//     ) {
+//     try {
+//         const users = await client.query(
+//             `SELECT * FROM users`
+//         );
+
+//     } catch (error) {
+//         res.status(500).json({
+//             message: '[SERVER ERROR]'
+//         })
+//     }
+// }

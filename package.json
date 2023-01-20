@@ -4,9 +4,9 @@
   "description": "��#\u0000 \u0000L\u0000I\u0000H\u0000K\u0000G\u0000c\u0000l\u0000o\u0000n\u0000e\u0000\r\u0000 \u0000",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node-dev typescript/main.ts",
-    "stations": "nodemon typescript/stations.ts",
-    "images": "nodemon typescript/images.ts",
+    "start": "ts-node-dev main.ts",
+    "stations": "nodemon stations.ts",
+    "images": "nodemon images.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
