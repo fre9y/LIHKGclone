@@ -68,7 +68,12 @@ FUNCTIONS:
 - 0th: GITHUB 
 - 1st: Database (sql) 
 - 2nd:HTML 
-- 3rd: Open server (ts) 
+- 3rd: Open server (ts)
+- 4th Database CRUD
 <br/><br/>
 - Last: CSS
 - Very Last: Multi Color Theme 
+
+# NOT YET DO 
+- REWIND
+- TRACE
