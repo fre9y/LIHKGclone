@@ -77,7 +77,7 @@ export async function updateUser(
 }
 
 
-//READ USERS
+//READ USER
 // export async function getUsers(
 //     req: express.Request, 
 //     res: express.Response
@@ -86,10 +86,7 @@ export async function updateUser(
 //         const users = await client.query(
 //             `SELECT * FROM users`
 //         );
-//         res.status(200).json({
-//             message: 'Users found',
-//             users: users.rows
-//         })
+
 //     } catch (error) {
 //         res.status(500).json({
 //             message: '[SERVER ERROR]'
