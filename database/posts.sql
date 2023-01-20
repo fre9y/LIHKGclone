@@ -22,3 +22,4 @@ values
 ('召喚痴線西 (216)', 10, 1);
 
 SELECT * FROM posts WHERE id = 1;
+SELECT * FROM posts;

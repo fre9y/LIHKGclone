@@ -1,4 +1,4 @@
-CREATE TABLE user_blacklist (
+CREATE TABLE user_blacklists (
     id SERIAL primary key,
     created_at timestamp not null default now(),
     updated_at timestamp not null default now(),
@@ -11,7 +11,8 @@ CREATE TABLE user_blacklist (
 
 
 
-insert into user_blacklist
+
+insert into user_blacklists
 (user_block_others, user_being_blocked)
 values
 (1,2),
