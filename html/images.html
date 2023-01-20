@@ -15,7 +15,33 @@
         <div> <img src="" width="50%" alt="preview" id="preview"></div>
     </form>
 
+    <button onclick="createImgEle()">create img</button>
+    <div class="img-container"></div>
+
     <script>
+        async function createImgEle() {
+            const res = await fetch("/post/1/media", {
+                method: "GET", // Specify your HTTP method
+            });
+            let resData = await res.json()
+            asd = resData.asd
+            console.log(asd)
+
+            for (let path of asd) {
+                let createImgEle = document.querySelector('.img-container');
+                const img = document.createElement("img");
+                img.src = `http://localhost:8100/${path.name}`;
+                createImgEle.appendChild(img);
+            }
+        }
+
+
+
+
+
+
+
+
         async function fileToDataURL(file) {
             const reader = new FileReader();
 

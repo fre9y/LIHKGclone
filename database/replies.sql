@@ -1,5 +1,6 @@
 -- Users -> stations -> images -> posts -> replies -> favourite
 
+SELECT * FROM replies;
 
 CREATE TABLE replies (
     id SERIAL primary key,
@@ -17,9 +18,9 @@ CREATE TABLE replies (
 );
 
 insert into replies
-(user_id, post_id, image_id, content, reference_id, likes, dislikes)
+(user_id, post_id, content, reference_id, likes, dislikes)
 values
-(1, 1, null, '韋禮安一個月都係100萬view
+(1, 1, '韋禮安一個月都係100萬view
 陳伯真係掂', null, 0, 1),
 (2, 1, null, '唱到咁樣同聿禮安比較，
 其實算獻醜定爭光#', null, 1, 3),

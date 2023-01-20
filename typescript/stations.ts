@@ -25,14 +25,16 @@ app.get("/stations/:stations", async (req, res) => {
         `SELECT * FROM stations WHERE id = ${stations}`
     );
 
-    // console.table(stationsID.rows[0].id);
-    if (!stations || !stationsID) {
+    console.table(stationsID.rows[0].id);
+    if (stations > stationsID.rows[0].id) {
         res.status(400).json({
             message: 'opps'
         });
-    } else {
-        res.sendFile(path.resolve(__dirname, '../public/stations.html'));
-    };
+        return;
+    } 
+    // else {
+    //     res.sendFile(path.resolve(__dirname, '../public/stations.html'));
+    // };
 })
 
 
