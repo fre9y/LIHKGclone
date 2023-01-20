@@ -1,17 +1,17 @@
 import express from 'express'
 import { logger } from '../util/logger'
 import { Post } from '../model/model'
-import { isLoggedInAPI } from '../util/guard'
+import { isLoggedInAPI, isP, isAdmin, isYourPost } from '../util/guard'
 import { client } from '../main'
 import { formParsePromise } from '../util/formidable'
 
 export const postRoutes = express.Router()
 
 postRoutes.get('/', getPosts)
-postRoutes.post('/', isP, createPosts)
-postRoutes.put('/:id', isP, isYourPost, updatePostById)
-postRoutes.put('/:id', isAdmin, hidePostById)
-postRoutes.put('/:id', isAdmin, showPostById)
+postRoutes.post('/', isLoggedInAPI, isP, createPosts)
+postRoutes.put('/:id', isLoggedInAPI, isP, isYourPost, updatePostById)
+postRoutes.put('/:id', isLoggedInAPI, isAdmin, hidePostById)
+postRoutes.put('/:id', isLoggedInAPI, isAdmin, showPostById)
 postRoutes.get('/like/user/:userId', getUserPosts)
 postRoutes.get('/', getHotPosts)
 
@@ -68,7 +68,7 @@ export async function createPosts(req: express.Request, res: express.Response) {
 			`insert into posts (post_title, station_id, user_id, created_at, updated_at) values ($1, $2, $3 now(), now())`,
 			[title, station, user]
 		)
-// how to insert replies.Post_id at the same time?
+// how to insert replies.Post_id at the same time?Largest post id +1?
 		res.json({
 			message: 'add post success'
 		})
@@ -243,7 +243,3 @@ export async function getHotPosts(req: express.Request, res: express.Response) {
 		})
 	}
 }
-
-// in main.ts
-// import { postRoutes } from '../typescript/post'
-// app.use('/posts', postRoutes)
