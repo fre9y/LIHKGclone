@@ -38,7 +38,7 @@ async function loginGoogle (req:express.Request, res:express.Response){
 
         req.session['user'] = user 
         console.log(req.session['user']);
-        return res.redirect('/changeprofile.html')
+        return res.redirect('/changeProfile.html')
     } catch(error) {
         console.log("ERR0R: " + error)
 		res.status(500).json({
