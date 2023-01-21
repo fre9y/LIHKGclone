@@ -1,6 +1,5 @@
 -- Users -> stations -> images -> posts -> replies -> favourite
 
-SELECT * FROM replies;
 
 CREATE TABLE replies (
     id SERIAL primary key,
@@ -75,4 +74,5 @@ Sean 話夠100k 有證據 （自拍相）爆
 (1, 5, 'lm', null, 5, 5),
 (3, 5, 'lm', null, 6, 1),
 (4, 5, '建議新嘅金剛棒update返欠債alex柒事', null, 3, 4);
+SELECT * FROM replies;
 

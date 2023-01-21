@@ -1,11 +1,12 @@
 
 create table users(
     id serial primary key,
-    nickname varchar(255) not null unique,
+    nickname varchar(255) not null,
     email varchar(255) not null unique,
     is_admin boolean default false not null,
     is_p boolean default true not null,
     is_male boolean default true not null,
+    show Boolean not null default true,
     created_at timestamp default now() not null,
     updated_at timestamp default now() not null
 
@@ -34,6 +35,7 @@ values
 ('3機械人三', 'bot3@botbot.com', false, true, true),
 ('漢語多功能字庫', 'bbb@cuhk.edu.hk', false, true, false),
 ('me', '0fr3ddy0@gmail.com', true, false, false);
+
 
 
 

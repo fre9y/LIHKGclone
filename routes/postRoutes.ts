@@ -20,7 +20,8 @@ export async function getPosts(req: express.Request, res: express.Response) {
 		let stationId = req.params.stationId
 		let result = await client.query(
 			`
-            select (select nickname 
+            select id,
+				(select nickname 
                 from users 
                 where users.id = posts.user_id) as nickname, 
                 (select max(updated_at)
