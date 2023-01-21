@@ -23,9 +23,8 @@
             let urlParams = new URLSearchParams(window.location.search);
             const postId = urlParams.get('postId');
 
-            const res = await fetch(`/post/${postId}/media`, {
-                method: "GET", 
-            });
+            const res = await fetch(`/post/${postId}/media`, 
+            {method: "GET"});
             let data = await res.json()
             images = data.images;
 

@@ -16,6 +16,10 @@ app.use(session({
 declare module "express-session" {
     interface SessionData {
         name?: string;
+        user:any;
+        admin:any;
+        P:any;
+        userId:any;
     }
 }
 
@@ -50,7 +54,6 @@ app.get('/getImages', (req, res) => {
 
 app.get('/post/:post/media', async (req, res) => {
     let postId = req.params.post;
-    console.log(postId);
     const images = await client.query(
         `SELECT posts_id, name FROM images where posts_id = ${postId}`
     );
@@ -64,5 +67,5 @@ app.get('/post/:post/media', async (req, res) => {
 
 const port = 8100;
 app.listen(port, () => {
-    console.log(`http://localhost:${port}/`)
+    console.log('images ',`http://localhost:${port}/`)
 });

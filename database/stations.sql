@@ -3,6 +3,9 @@ CREATE TABLE stations(
     name text NOT NULL UNIQUE
 );
 
+select * from stations;
+SELECT * FROM stations WHERE id = 3;
+
 insert into stations (name) values ('吹水台'), 
                                     ('創意台'), 
                                     ('講故台'),
@@ -43,6 +46,4 @@ insert into stations (name) values ('吹水台'),
                                     ('站務台'),
                                     ('黑洞');
 
-select * from stations;
-SELECT id FROM stations;
-SELECT id FROM stations WHERE id = 3;
+

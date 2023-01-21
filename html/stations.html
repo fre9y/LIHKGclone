@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        nav button {
+            background-color: rgb(60, 57, 57);
+            border: 1px solid white;
+            color: white;
+            padding: 10px;
+        }
+
+        .container div {
+            background-color: rgb(60, 57, 57);
+            border: 1px solid white;
+            color: white;
+            display: inline-block;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <!-- <button onclick="toStations()">1</button>
+        <button onclick="toStations()">2</button>
+        <button onclick="toStations()">3</button>
+        <button onclick="toStations()">4</button>
+        <button onclick="toStations()">5</button>
+        <button onclick="toStations()">6</button>
+        <button onclick="toStations()">7</button>
+        <button onclick="toStations()">8</button>
+        <button onclick="toStations()">9</button>
+        <button onclick="toStations()">10</button> -->
+        <div id="stationsBtn" class="stations 11">11</div>
+        <div id="stationsBtn" class="stations 12">12</div>
+        <div id="stationsBtn" class="stations 13">13</div>
+        <div id="stationsBtn" class="stations 14">14</div>
+        <div id="stationsBtn" class="stations 15">15</div>
+    </nav>
+    <div class="container">
+        <div>
+            <div>icon</div>
+            <div id="stationName"></div>
+            <div>icon</div>
+        </div>
+    </div>
+
+
+    <script>
+        const stationsBtnElem = document.querySelectorAll('.stations');
+
+        for (let i = 0; i < stationsBtnElem.length; i++) {
+            stationsBtnElem[i].addEventListener('click', (e) => {
+                let stationID = e.target.innerText
+                // window.location.href = `http://localhost:8100/stations?stationsID=${stationID}`
+                window.history.pushState({},'','stations?stationsID='+stationID)
+                toStations()
+            })
+        };
+
+        async function toStations() {
+            let urlParams = new URLSearchParams(window.location.search);
+            const stationsID = urlParams.get('stationsID');
+
+            const res = await fetch(`/stations/${stationsID}`,
+                { method: "GET" });
+            let data = await res.json();
+            for (let station of data.stations) {
+                document.querySelector('#stationName').innerText = station.name;
+            }
+        };
+        
+    </script>
+</body>
+
+</html>
