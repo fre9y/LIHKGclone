@@ -7,7 +7,8 @@ export const userRoutes = express.Router();
 userRoutes.get('/login/google', loginGoogle);
 userRoutes.put('/profile', updateUser);
 userRoutes.get('/profile', getUser);
-userRoutes.get('/admin',getAllUsers)
+userRoutes.get('/admin',getAllUsers);
+userRoutes.put('/admin',softDeleteUser);
 //LOGIN + CREATE USER
 async function loginGoogle (req:express.Request, res:express.Response){
     //console.log('123');
@@ -106,7 +107,10 @@ export async function getUser(
     }
 }
 
-async function getAllUsers(req:express.Request, res:express.Response){
+async function getAllUsers(
+    req:express.Request, 
+    res:express.Response
+    ){
     try {
         const users = await client.query(
             `SELECT * FROM users ORDER BY id ASC`
@@ -126,4 +130,32 @@ async function getAllUsers(req:express.Request, res:express.Response){
 
 //SOFT-DELETE USER
 //update email(+str) & update status
-//post handling: 
+
+async function softDeleteUser(
+    req:express.Request, 
+    res:express.Response
+    ){
+    try {
+        let user = req.session['user'];
+        console.log("U53R: ",user);
+        if (!user) {
+             res.status(404).json({
+                message: '[USER NOT FOUND]'
+            })
+            return
+        }
+        const updatedUser = await client.query(
+            `UPDATE users SET email = $1, show = $2 WHERE id = $3 RETURNING *`,
+            [user.email + "_DELETED",false,user.id]
+        );
+        console.log(updatedUser.rows[0]);
+        req.session['user'] = updatedUser.rows[0]
+        res.json('[REDIRECTED TO HOME]')
+        return
+    } catch (error) {
+        res.status(500).json({
+            message: '[SERVER ERROR]'
+        })
+        return
+    }
+}   

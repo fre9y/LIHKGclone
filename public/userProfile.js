@@ -38,7 +38,7 @@ async function loadProfile() {
         let data = await res.json()
         let profile = data
         //console.log(profile);
-        if (!profile.is_admin) {
+        if (!profile.is_admin && profile.show) {
             let profileElem = document.querySelector(".profile")
             profileElem.innerHTML = /*html */ `
                 <div class= "profile">
@@ -49,7 +49,7 @@ async function loadProfile() {
                 </div>
                 `
             }
-        else if (profile.is_admin) {
+        else if (profile.is_admin && profile.show) {
             loadProfileForAdmin();
         }
     } else {
@@ -71,24 +71,29 @@ async function loadProfileForAdmin() {
         for (let i = 0; i < profile.length; i++) {
             profileElem.innerHTML += /*html */ `
             <div class= "profile">
-                <div>
-                    ${profile[i].id}|
-                    ${profile[i].nickname}|
-                    ${profile[i].email}|
-                    ${profile[i].is_p}|
-                    ${profile[i].is_admin}|
-                    ${profile[i].is_male}|
-                    ${profile[i].show}|     
-                    ${profile[i].created_at}|
-                    ${profile[i].updated_at}
-
-                </div> 
+                ${profile[i].id}|
+                ${profile[i].nickname}|
+                ${profile[i].email}|
+                ${profile[i].is_p}|
+                ${profile[i].is_admin}|
+                ${profile[i].is_male}|
+                ${profile[i].show}|     
+                ${profile[i].created_at}|
+                ${profile[i].updated_at}
+                <button class = "profile-soft-delete">
+                    DELETE
+                </button>
             </div>
             `
         }
     } else {
         alert("[ERR0R: CANT FETCH]")
     }   
+}
+
+
+async function deleteUser() {
+    
 }
 
 // async function loadProfileForNormalUsers() {
