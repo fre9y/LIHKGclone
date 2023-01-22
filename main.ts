@@ -70,6 +70,7 @@ const grantExpress = grant.express({
 app.use('/user', userRoutes)
 app.use('/posts', postRoutes)
 app.use('/replies', replyRoutes)
+app.use(express.static("protected"));
 app.use(express.static("public"));
 app.use(express.static("public/assets"));
 app.use(express.static("uploads")); //photos in folder can be found

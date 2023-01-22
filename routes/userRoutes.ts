@@ -1,13 +1,16 @@
 import express from 'express'
 import fetch from 'cross-fetch'
 import { client } from '../main'
+
+import { User } from '../util/model'
 export const userRoutes = express.Router();
 userRoutes.get('/login/google', loginGoogle);
 userRoutes.put('/profile', updateUser);
 userRoutes.get('/profile', getUser);
+userRoutes.get('/admin',getAllUsers)
 //LOGIN + CREATE USER
 async function loginGoogle (req:express.Request, res:express.Response){
-    console.log('123');
+    //console.log('123');
     try {
         const accessToken = req.session?.['grant'].response.access_token;
         const fetchRes = await fetch(
@@ -84,7 +87,7 @@ export async function getUser(
     ) {
     try {
         let user = req.session['user'];
-        console.log(user);
+        console.log("U53R: ",user);
 
         if (!user) {
              res.status(404).json({
@@ -92,6 +95,7 @@ export async function getUser(
             })
             return
         }
+        
         res.json(user)
         return
     } catch (error) {
@@ -101,6 +105,25 @@ export async function getUser(
         return
     }
 }
+
+async function getAllUsers(req:express.Request, res:express.Response){
+    try {
+        const users = await client.query(
+            `SELECT * FROM users ORDER BY id ASC`
+        );
+
+        //console.log("U53RR0W5: ",users.rows);
+        res.json(users.rows)
+        return
+
+    } catch (error) {
+        res.status(500).json({
+            message: '[SERVER ERROR]'
+        })
+        return
+    }
+}
+
 //SOFT-DELETE USER
 //update email(+str) & update status
 //post handling: 
