@@ -21,5 +21,11 @@ values
 ('李家超冀今年內取消口罩令', 8, 3),
 ('召喚痴線西 (216)', 10, 1);
 
+insert into posts
+(post_title, station_id, user_id)
+values
+('只知道是時候拿著金莎 將心意預留在藍罐之下', 2, 3)
+
 SELECT * FROM posts WHERE id = 1;
-SELECT * FROM posts;
+SELECT * FROM posts WHERE station_id = 2;
+select * from posts;
