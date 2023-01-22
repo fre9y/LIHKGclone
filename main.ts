@@ -17,20 +17,20 @@ dotenv.config();
 
 //DATABASE
 export const client = new Client({
-    database: process.env.DB_NAME,
-    user: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-  });
+  database: process.env.DB_NAME,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+});
 
 async function connectDatabase() {
 
-    console.log({
-        database: process.env.DB_NAME,
-        user: process.env.DB_USERNAME,
-        password: process.env.DB_PASSWORD,
-      })
-    await client.connect();
-    console.log("db connected");
+  console.log({
+    database: process.env.DB_NAME,
+    user: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+  })
+  await client.connect();
+  console.log("db connected");
 
 }
 connectDatabase();
@@ -38,31 +38,31 @@ connectDatabase();
 
 //GOOGLE LOGIN
 const grantExpress = grant.express({
-    defaults: {
-      origin: "http://localhost:8080",
-      transport: "session",
-      state: true,
-    },
-    google: {
-      //key: process.env.GOOGLE_CLIENT_ID || "",
-      //secret: process.env.GOOGLE_CLIENT_SECRET || "",
-      key: "950274264593-9id1o9l7vcdo0fefqt2qpjupaoteem9c.apps.googleusercontent.com",
-      secret: "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",
-      scope: ["profile", "email"],
-      callback: "/user/login/google",
-    },
-  });
-  
-  app.use(
-      expressSession({
-          secret: "qwe",
-          resave: true,
-          saveUninitialized: true,
-      })
-  ); 
-  
-  app.use(grantExpress as express.RequestHandler);
-  //
+  defaults: {
+    origin: "http://localhost:8080",
+    transport: "session",
+    state: true,
+  },
+  google: {
+    //key: process.env.GOOGLE_CLIENT_ID || "",
+    //secret: process.env.GOOGLE_CLIENT_SECRET || "",
+    key: "950274264593-9id1o9l7vcdo0fefqt2qpjupaoteem9c.apps.googleusercontent.com",
+    secret: "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",
+    scope: ["profile", "email"],
+    callback: "/user/login/google",
+  },
+});
+
+app.use(
+  expressSession({
+    secret: "qwe",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+app.use(grantExpress as express.RequestHandler);
+//
 
 
 
@@ -76,17 +76,40 @@ app.use(express.static("public/assets"));
 app.use(express.static("uploads")); //photos in folder can be found
 
 app.get("/", (req: Request, res: Response) => {
-    const homePages = path.resolve(__dirname, 'public/home.html');
-    if (!homePages) {
-        res.status(404).json({
-            message: 'Not Found'
-        });
-        return;
-    } else {
-        res.sendFile(homePages);
-
-    }
+  const homePages = path.resolve(__dirname, 'public/home.html');
+  if (!homePages) {
+    res.status(404).json({
+      message: 'Not Found'
+    });
+    return;
+  } else {
+    res.sendFile(homePages);
+  }
 });
+
+//stations
+app.get("/stations/", async (req, res) => {
+  let stationsID = req.query.stationsID;
+  const stationsNUM = await client.query(
+    `SELECT * FROM stations WHERE id = ${stationsID}`
+  );
+  const postNUM = await client.query(
+    // (present stations have post: 32,2,13,8,10)
+    `SELECT * FROM posts WHERE station_id = ${stationsID}`
+  )
+  console.table(postNUM);
+  if (stationsID = stationsNUM.rows[0]) {
+    res.json({
+      stations: stationsNUM.rows,
+      posts: postNUM.rows
+    });
+  } else {
+    res.status(404).json({
+      message: "opps"
+    })
+    return;
+  }
+})
 
 
 
@@ -120,5 +143,5 @@ app.get("/", (req: Request, res: Response) => {
 
 const port = 8080;
 app.listen(port, () => {
-    console.log(`server listening on http://localhost:${port}`);
+  console.log(`server listening on http://localhost:${port}`);
 });

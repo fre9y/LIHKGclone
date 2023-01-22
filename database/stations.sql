@@ -3,6 +3,7 @@ CREATE TABLE stations(
     name text NOT NULL UNIQUE
 );
 
+
 select * from stations;
 SELECT * FROM stations WHERE id = 3;
 
@@ -37,14 +38,14 @@ insert into stations (name) values ('吹水台'),
                                     ('成人台'),
                                     ('感情台'),
                                     ('創意台'), 
-                                    ('黑洞');
+                                    ('黑洞'),
                                     ('政事台'),
                                     ('直播台'),
                                     ('電訊台'),
                                     ('健康台'),
                                     ('房屋台'),
                                     ('World'),
-                                    ('自選台'),
+                                    ('自選台');
 
 update stations set id = 999 where id = 39
 
