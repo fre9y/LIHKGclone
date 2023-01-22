@@ -38,7 +38,7 @@ async function loginGoogle (req:express.Request, res:express.Response){
 
         req.session['user'] = user 
         console.log(req.session['user']);
-        return res.redirect('/profile.html')
+        return res.redirect('/userProfile.html')
     } catch(error) {
         console.log("ERR0R: " + error)
 		res.status(500).json({
@@ -60,10 +60,11 @@ export async function updateUser(
         console.log("SESSION",user);
         //        console.log(user.id);
         const updatedUser = await client.query(
-            `UPDATE users SET nickname = $1, is_male = $2 WHERE id = $3`,
+            `UPDATE users SET nickname = $1, is_male = $2 WHERE id = $3 RETURNING *`,
             [req.body.nickname,req.body.gender,user.id]
         );
-        
+        console.log(updatedUser.rows[0]);
+        req.session['user'] = updatedUser.rows[0]
         console.log("d",req.body.nickname,req.body.gender,user.id);
         res.json('[REDIRECTED TO HOME]')
         
@@ -84,7 +85,7 @@ export async function getUser(
     try {
         let user = req.session['user'];
         console.log(user);
-        
+
         if (!user) {
              res.status(404).json({
                 message: '[USER NOT FOUND]'

@@ -7,7 +7,7 @@ async function checkSession() {
     if (!res.ok) {
         window.location = "/connect/google"
     } else {
-        window.location = "/profile.html"
+        window.location = "/userProfile.html"
     }
 }
 
