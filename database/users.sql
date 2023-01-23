@@ -42,5 +42,10 @@ values
 
 
 
+<<<<<<< HEAD
 select * from users;
 SELECT id, nickname, is_male FROM users WHERE id = 2;
+=======
+
+select * from users;
+>>>>>>> 9fb9a62c21d581a83a022732fe60907393273bab
