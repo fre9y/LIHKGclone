@@ -23,12 +23,12 @@
     border: 1px solid white;
 }
 
-.post-wrapper {
+/* .post-wrapper {
     display: flex;
     flex-wrap: wrap;
     padding: 3px 0px 3px 15px;
     border-bottom: 1px solid grey;
-}
+} */
 
 .post-wrapper div {
     margin: 0;

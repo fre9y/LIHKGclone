@@ -92,15 +92,15 @@ app.get("/stations/", async (req, res) => {
   const stationsNUM = await client.query(
     `SELECT * FROM stations WHERE id = ${stationsID}`
   );
-  const postNUM = await client.query(
+  const postDetail = await client.query(
     // (present stations have post: 32,2,13,8,10)
-    `SELECT * FROM posts WHERE station_id = ${stationsID}`
+    `SELECT * FROM posts JOIN users ON posts.user_id = users.id WHERE posts.station_id = ${stationsID}`
   )
-  console.table(postNUM);
+
   if (stationsID = stationsNUM.rows[0]) {
     res.json({
       stations: stationsNUM.rows,
-      posts: postNUM.rows
+      posts: postDetail.rows
     });
   } else {
     res.status(404).json({

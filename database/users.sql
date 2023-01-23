@@ -43,3 +43,4 @@ values
 
 
 select * from users;
+SELECT id, nickname, is_male FROM users WHERE id = 2;

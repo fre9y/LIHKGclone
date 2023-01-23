@@ -11,6 +11,8 @@
     <link rel="stylesheet" crossorigin="anonymous" referrerpolicy="no-referrer"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet" href="assets/main.css">
     <style>
         body {
@@ -34,302 +36,354 @@
         a {
             text-decoration: none !important;
         }
+
+        .color_white{
+            color: #ccc6c0;
+        }
+
+        .color_yellow {
+            color: #fac208;
+        }
     </style>
 </head>
 
 <body>
-    <div class="container-xxl">
-        <div class="col-12 d-flex justify-content-center">
-            <div class="left_side col-md-5 col-xl-4 d-none d-sm-none d-md-block">
-                <div class="first_row d-flex justify-content-between">
-                    <nav class="nav position-relative">
-                        <button class="navbar_btn" type="button" data-bs-toggle="offcanvas"
-                            data-bs-target="#offcanvasWithBothOptions"
-                            aria-controls="offcanvasWithBothOptions">nav_btn</button>
+    <div class="container-xxl g-0">
+        <div class="row g-0">
+            <div class="col-12">
+                <div class="row justify-content-center g-0">
+                    <div class="left_side col-md-5 col-xl-4 d-none d-sm-none d-md-block">
+                        <div class="first_row d-flex justify-content-between">
+                            <nav class="nav position-relative">
+                                <button class="navbar_btn" type="button" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasWithBothOptions"
+                                    aria-controls="offcanvasWithBothOptions">nav_btn</button>
 
-                        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1"
-                            id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-                            <div class="btn_bar col-3 d-flex flex-column justify-content-between">
-                                <div>
-                                    <button>icon-btn</button>
-                                    <button>btn</button>
-                                    <button class = "profile">profile</button>
-                                    <button>btn</button>
-                                    <button>btn</button>
+                                <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1"
+                                    id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+                                    <div class="btn_bar col-3 d-flex flex-column justify-content-between">
+                                        <div>
+                                            <button>icon-btn</button>
+                                            <button>btn</button>
+                                            <button class="profile">profile</button>
+                                            <button>btn</button>
+                                            <button>btn</button>
+                                        </div>
+                                        <div>
+                                            <button>btn</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="offcanvas-container col-9">
+                                        <div class="offcanvas-hd sticky-top">
+                                            <div>
+                                                <!-- <form class="search" role="search">
+                                                    <input class="" type="search" placeholder="Search" aria-label="Search">
+                                                </form> -->
+                                                <form>
+                                                    <input type="search position-relative" placeholder="      Search"
+                                                        size="31%">
+                                                    <button class="search_btn"><i
+                                                            class="fa-solid fa-magnifying-glass"></i></button>
+                                                </form>
+                                            </div>
+                                            <div>
+                                                <button>回帶</button>
+                                            </div>
+                                            <div>
+                                                <button>登入 / 註冊</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="offcanvas-bd">
+                                            <div class="container text-center">
+                                                <div class="row">
+                                                    <div class="stations col-6">
+                                                        <a href="#" class="link" data-link="1">吹水台</a>
+                                                    </div>
+
+                                                    <div class="stations col-6">
+                                                        <a href="#" class="link" data-link="31">創意台</a>
+                                                    </div>
+
+                                                    <div class="stations col-6">
+                                                        <a href="#" class="link" data-link="12">講故台</a>
+                                                    </div>
+
+                                                    <div class="stations col-6">
+                                                        <a href="#" class="link" data-link="18">學術台</a>
+                                                    </div>
+
+                                                    <div class="stations col-6">
+                                                        <a href="#" class="link" data-link="39">自選台</a>
+                                                    </div>
+
+                                                    <div class="stations col-6">
+                                                        <a href="#" class="link" data-link="2">熱門</a>
+                                                    </div>
+
+                                                    <div class="stations col-6">
+                                                        <a href="#" class="link" data-link="3">最新</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <p>新聞</p>
+                                                <div class="container text-center">
+                                                    <div class="row">
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="5">時事台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="33">政事台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="7">娛樂台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="38">World</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="15">財經台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="37">房屋台</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <p>科技</p>
+                                                <div class="container text-center">
+                                                    <div class="row">
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="4">手機台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="9">Apps台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="35">電訊台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="22">硬件台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="26">軟件台</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <p>生活</p>
+                                                <div class="container text-center">
+                                                    <div class="row">
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="31">創意台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="16">飲食台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="17">旅遊台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="27">活動台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="36">健康台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="30">感情台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="14">上班台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="19">校園台</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <p>興趣</p>
+                                                <div class="container text-center">
+                                                    <div class="row">
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="6">體育台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="12">講故台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="11">影視台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="23">攝影台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="20">汽車台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="13">潮流台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="34">直播台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="18">學術台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="10">遊戲台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="8">動漫台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="21">音樂台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="25">寵物台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="24">玩具台</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <p>其他</p>
+                                                <div class="container text-center">
+                                                    <div class="row">
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="28">站務台</a>
+                                                        </div>
+
+                                                        <div class="stations col-6">
+                                                            <a href="#" class="link" data-link="32">黑洞</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <button>btn</button>
-                                </div>
+                            </nav>
+                            <div class="station_name">吹水台</div>
+                            <div class="d-flex">
+                                <div class="refresh_btn"><i class="fa-solid fa-arrows-rotate"></i></div>
+                                <div class="create_post_btn"><i class="fa-solid fa-plus"></i></div>
+                            </div>
+                        </div>
+
+                        <div class="second_row">
+                            <div class="current_stations_btn d-flex justify-content-evenly">
+                                <button>最新</button>
+                                <button>熱門</button>
                             </div>
 
-                            <div class="offcanvas-container col-9">
-                                <div class="offcanvas-hd sticky-top">
-                                    <div>
-                                        <!-- <form class="search" role="search">
-                                            <input class="" type="search" placeholder="Search" aria-label="Search">
-                                        </form> -->
-                                        <form>
-                                            <input type="search position-relative" placeholder="      Search"
-                                                size="31%">
-                                            <button class="search_btn"><i
-                                                    class="fa-solid fa-magnifying-glass"></i></button>
-                                        </form>
+                            <div class="current_stations_posts">
+                                <div class="current_stations_posts_container">
+                                    <div class="post_template container g-0">
+                                        <a class="post d-none col-12 row g-0 d-flex justify-content-end" href="#">
+                                            <!--first-line-->
+                                            <span class="lightning_icon col-1 d-flex justify-content-end">
+                                                <i class="fa-solid fa-bolt pt-2 pe-2 color_yellow"></i>
+                                            </span></span>
+
+                                            <span class="col-6 d-flex justify-content-between">
+                                                <span class="post_host color_white">post_host_name</span>
+                                                <span class="post_created_time color_white">just</span>
+                                                <span class="like color_white">like 0</span>
+                                            </span>
+
+                                            <span class="col-3"></span>
+
+                                            <!-- <span class="select_cover col-2">0 頁</span> -->
+                                            <span class="col-2 d-flex justify-content-center">
+                                                <select>
+                                                    <option value="1"> 1 頁</option>
+                                                    <option value="2"> 2 頁</option>
+                                                    <option value="3"> 3 頁</option>
+                                                </select><!--opacity:0-->
+                                            </span>
+
+                                            <!--second-line-->
+                                            <span class="visited col-1 d-flex justify-content-center pt-2">
+                                                <i class="fa-solid fa-circle color_white"></i>
+                                            </span>
+
+                                            <span class="post_title col-9 color_white">只知道是時候拿著金莎 將心意預留在藍罐之下</span>
+
+                                            <span class="post_stations_btn col-2">
+                                                <span href="#" class="post_station d-flex justify-content-center">
+                                                    吹水台
+                                                </span>
+                                            </span>
+                                        </a>
                                     </div>
-                                    <div>
-                                        <button>回帶</button>
-                                    </div>
-                                    <div>
-                                        <button>登入 / 註冊</button>
-                                    </div>
-                                </div>
-
-                                <div class="offcanvas-bd">
-                                    <div class="container text-center">
-                                        <div class="row">                                            
-                                            <div class="stations col-6">
-                                                <a href="#" class="link" data-link="1">吹水台</a>
-                                            </div>
-
-                                            <div class="stations col-6">
-                                                <a href="#" class="link" data-link="31">創意台</a>
-                                            </div>
-
-                                            <div class="stations col-6">
-                                                <a href="#" class="link" data-link="12">講故台</a>
-                                            </div>
-
-                                            <div class="stations col-6">
-                                                <a href="#" class="link" data-link="18">學術台</a>
-                                            </div>
-
-                                            <div class="stations col-6">
-                                                <a href="#" class="link" data-link="39">自選台</a>
-                                            </div>
-
-                                            <div class="stations col-6">
-                                                <a href="#" class="link" data-link="2">熱門</a>
-                                            </div>
-
-                                            <div class="stations col-6">
-                                                <a href="#" class="link" data-link="3">最新</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <p>新聞</p>
-                                        <div class="container text-center">
-                                            <div class="row">
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="5">時事台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="33">政事台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="7">娛樂台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="38">World</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="15">財經台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="37">房屋台</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <p>科技</p>
-                                        <div class="container text-center">
-                                            <div class="row">
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="4">手機台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="9">Apps台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="35">電訊台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="22">硬件台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="26">軟件台</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <p>生活</p>
-                                        <div class="container text-center">
-                                            <div class="row">
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="31">創意台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="16">飲食台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="17">旅遊台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="27">活動台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="36">健康台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="30">感情台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="14">上班台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="19">校園台</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <p>興趣</p>
-                                        <div class="container text-center">
-                                            <div class="row">
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="6">體育台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="12">講故台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="11">影視台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="23">攝影台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="20">汽車台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="13">潮流台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="34">直播台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="18">學術台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="10">遊戲台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="8">動漫台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="21">音樂台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="25">寵物台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="24">玩具台</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <p>其他</p>
-                                        <div class="container text-center">
-                                            <div class="row">
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="28">站務台</a>
-                                                </div>
-
-                                                <div class="stations col-6">
-                                                    <a href="#" class="link" data-link="32">黑洞</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
-                    </nav>
-                    <div class="station_name">吹水台</div>
-                    <div class="d-flex">
-                        <div class="refresh_btn"><i class="fa-solid fa-arrows-rotate"></i></div>
-                        <div class="create_post_btn"><i class="fa-solid fa-plus"></i></div>
-                    </div>
-                </div>
-
-                <div class="second_row">
-                    <div class="current_stations_btn d-flex justify-content-evenly">
-                        <button>最新</button>
-                        <button>熱門</button>
                     </div>
 
-                    <div class="current_stations_posts">
-                        <div class="current_stations_posts_container"></div>
+                    <div class="post-container col-12 col-md-7 col-xl-8 d-flex flex-column">
+                        <div class="">
+                            <div>post-title</div>
+                            <div>post</div>
+                        </div>
+
+                        <div class="bt-nav-bar d-sm-block d-md-none">
+                            <button>btn</button>
+                            <button>btn</button>
+                            <button>btn</button>
+                            <button>btn</button>
+                            <button>btn</button>
+                            <button>btn</button>
+                        </div>
                     </div>
+
+                    <a href="/connect/google" hidden>
+                        <button type="button" class="login-with-google-btn">
+                            Sign in with Google
+                        </button>
+                    </a>
                 </div>
             </div>
-
-            <div class="post-container col-12 col-md-7 col-xl-8 d-flex flex-column">
-                <div class="">
-                    <div>post-title</div>
-                    <div>post</div>
-                </div>
-
-                <div class="bt-nav-bar d-sm-block d-md-none">
-                    <button>btn</button>
-                    <button>btn</button>
-                    <button>btn</button>
-                    <button>btn</button>
-                    <button>btn</button>
-                    <button>btn</button>
-                </div>
-            </div>
-            <a href="/connect/google">
-                <button type="button" class="login-with-google-btn">
-                    Sign in with Google
-                </button>
-            </a>
         </div>
     </div>
 
