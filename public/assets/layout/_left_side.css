@@ -1,0 +1,70 @@
+/* first_row ///////////////////////////////////////////////////////////////////////////////// */
+.first_row {
+    height: 7%;
+    overflow: hidden;
+}
+
+.navbar_btn {
+    border: none;
+    background-color: transparent;
+}
+
+.navbar_btn i {
+    margin-left: 6px;
+    color: white;
+}
+
+.navbar_btn img {
+    margin-left: 12px;
+}
+
+.station_name {
+    font-size: 18px;
+}
+
+.padding-top {
+    padding-top: 15%;
+}
+
+.fa-rotate {
+    color: white;
+    rotate: 30deg;
+    padding-top: 10%;
+}
+
+.create_post_btn {
+    color: white;
+}
+
+.navbar_btn:hover,
+.refresh_btn:hover,
+.create_post_btn:hover {
+    background-color: #3b3a39;
+}
+
+
+/* second_row /////////////////////////////////////////////////////////////////////////////////*/
+.second_row_btn {
+    height: 47px;
+    border-bottom: 1px solid #3b3a39;
+    text-align: center;
+}
+
+.newest_btn.active, .hit_btn.active {
+    color: #fac208;
+    border-bottom: 2px solid #fac208;
+}
+
+
+/* stations_post /////////////////////////////////////////////////////////////////////////////////*/
+.post:hover {
+    background-color: #272727;
+}
+
+.post {
+    border-bottom: 1px solid #3b3a39;
+}
+
+.post_title {
+    font-size: 18px;
+}

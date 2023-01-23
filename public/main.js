@@ -124,3 +124,15 @@ async function toStations() {
 };
 
 
+//second_row border bottom line
+const newestBtn = document.querySelector(".newest_btn");
+const hitBtn = document.querySelector(".hit_btn");
+newestBtn.addEventListener('click', () => {
+    newestBtn.classList.add('active');
+    hitBtn.classList.remove('active');
+})
+hitBtn.addEventListener('click', () => {
+    hitBtn.classList.add('active');
+    newestBtn.classList.remove('active');
+})
+

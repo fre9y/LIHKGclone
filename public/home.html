@@ -37,8 +37,12 @@
             text-decoration: none !important;
         }
 
-        .color_white{
+        .color_white {
             color: #ccc6c0;
+        }
+
+        .color_grey {
+            color: #3b3a39;
         }
 
         .color_yellow {
@@ -52,29 +56,57 @@
         <div class="row g-0">
             <div class="col-12">
                 <div class="row justify-content-center g-0">
-                    <div class="left_side col-md-5 col-xl-4 d-none d-sm-none d-md-block">
-                        <div class="first_row d-flex justify-content-between">
-                            <nav class="nav position-relative">
-                                <button class="navbar_btn" type="button" data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasWithBothOptions"
-                                    aria-controls="offcanvasWithBothOptions">nav_btn</button>
+                    <div class="left_side container g-0 col-md-4 col-xl-4 d-none d-sm-none d-md-block">
+                        <div class="first_row row g-0 d-flex justify-content-between">
+                            <nav class="nav col-2 position-relative">
+                                <button class="navbar_btn position-relative" type="button" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+                                    <i
+                                        class="fa-solid fa-bars position-absolute top-50 start-0 translate-middle color_white"></i>
+                                    <img src="lihkg_icon.svg" width="26px">
+                                </button>
 
                                 <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1"
                                     id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
-                                    <div class="btn_bar col-3 d-flex flex-column justify-content-between">
+                                    <div class="btn_bar col-2 d-flex flex-column justify-content-between">
                                         <div>
-                                            <button>icon-btn</button>
-                                            <button>btn</button>
-                                            <button class="profile">profile</button>
-                                            <button>btn</button>
-                                            <button>btn</button>
+                                            <div class="d-flex justify-content-center pt-3 pb-1">
+                                                <img src="lihkg_icon.svg" width="26px">
+                                            </div>
+
+                                            <div class="d-flex justify-content-center py-2">
+                                                <button>
+                                                    <i class="fa-solid fa-bell color_white"></i>
+                                                </button>
+                                            </div>
+                                            
+                                            <div class="d-flex justify-content-center py-2">
+                                                <button class="profile">
+                                                    <i class="fa-solid fa-circle-user color_white"></i>
+                                                </button>
+                                            </div>
+
+                                            <div class="d-flex justify-content-center py-2">
+                                                <button>
+                                                    <i class="fa-solid fa-gamepad color_white"></i>
+                                                </button>
+                                            </div>
+
+                                            <div class="d-flex justify-content-center py-2">
+                                                <button>
+                                                    <i class="fa-solid fa-moon color_white"></i>
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <button>btn</button>
+
+                                        <div class="d-flex justify-content-center py-2">
+                                            <button>
+                                                <i class="fa-solid fa-gear color_white"></i>
+                                            </button>
                                         </div>
                                     </div>
 
-                                    <div class="offcanvas-container col-9">
+                                    <div class="offcanvas-container col-10">
                                         <div class="offcanvas-hd sticky-top">
                                             <div>
                                                 <!-- <form class="search" role="search">
@@ -303,29 +335,38 @@
                                     </div>
                                 </div>
                             </nav>
-                            <div class="station_name">吹水台</div>
-                            <div class="d-flex">
-                                <div class="refresh_btn"><i class="fa-solid fa-arrows-rotate"></i></div>
-                                <div class="create_post_btn"><i class="fa-solid fa-plus"></i></div>
+
+                            <div
+                                class="station_name col-8 d-flex justify-content-center align-items-center color_yellow">
+                                吹水台</div>
+
+                            <div class="col-2 d-flex justify-content-end">
+                                <div class="refresh_btn px-3 padding-top"><i class="fa-solid fa-rotate"></i></div>
+                                <div class="create_post_btn px-3 padding-top"><i class="fa-solid fa-plus"></i></div>
                             </div>
                         </div>
 
                         <div class="second_row">
-                            <div class="current_stations_btn d-flex justify-content-evenly">
-                                <button>最新</button>
-                                <button>熱門</button>
+                            <div class="second_row_btn d-flex justify-content-evenly col-12">
+                                <span class="col-5 d-flex justify-content-center">
+                                    <a href="#" class="w-100 pt-2 newest_btn active color_white">最新</a>
+                                </span>
+
+                                <span class="col-5 d-flex justify-content-center">
+                                    <a href="#" class="w-100 pt-2 hit_btn color_white">熱門</a>
+                                </span>
                             </div>
 
                             <div class="current_stations_posts">
                                 <div class="current_stations_posts_container">
                                     <div class="post_template container g-0">
-                                        <a class="post d-none col-12 row g-0 d-flex justify-content-end" href="#">
+                                        <a class="post d-none1 col-12 row g-0 d-flex justify-content-end" href="#">
                                             <!--first-line-->
-                                            <span class="lightning_icon col-1 d-flex justify-content-end">
+                                            <span class="lightning_icon col-1 d-flex justify-content-end pt-2 pb-1">
                                                 <i class="fa-solid fa-bolt pt-2 pe-2 color_yellow"></i>
                                             </span></span>
 
-                                            <span class="col-6 d-flex justify-content-between">
+                                            <span class="col-6 d-flex justify-content-between pt-2 pb-1">
                                                 <span class="post_host color_white">post_host_name</span>
                                                 <span class="post_created_time color_white">just</span>
                                                 <span class="like color_white">like 0</span>
@@ -334,7 +375,7 @@
                                             <span class="col-3"></span>
 
                                             <!-- <span class="select_cover col-2">0 頁</span> -->
-                                            <span class="col-2 d-flex justify-content-center">
+                                            <span class="col-2 d-flex justify-content-center pt-2 pb-1">
                                                 <select>
                                                     <option value="1"> 1 頁</option>
                                                     <option value="2"> 2 頁</option>
@@ -343,11 +384,11 @@
                                             </span>
 
                                             <!--second-line-->
-                                            <span class="visited col-1 d-flex justify-content-center pt-2">
+                                            <span class="visited col-1 d-flex justify-content-center pt-1">
                                                 <i class="fa-solid fa-circle color_white"></i>
                                             </span>
 
-                                            <span class="post_title col-9 color_white">只知道是時候拿著金莎 將心意預留在藍罐之下</span>
+                                            <span class="post_title col-9 color_white pb-2">只知道是時候拿著金莎 將心意預留在藍罐之下</span>
 
                                             <span class="post_stations_btn col-2">
                                                 <span href="#" class="post_station d-flex justify-content-center">
@@ -361,7 +402,7 @@
                         </div>
                     </div>
 
-                    <div class="post-container col-12 col-md-7 col-xl-8 d-flex flex-column">
+                    <div class="post-container col-12 col-md-8 col-xl-8 d-flex flex-column">
                         <div class="">
                             <div>post-title</div>
                             <div>post</div>

@@ -1,13 +1,7 @@
-/* first_row */
-.first_row {
-    height: 6%;
-    border: 1px solid rgb(255, 255, 255);
-}
-
 
 
 .second_row {
-    height:94%;
+    height:93%;
     overflow-y: scroll;
 }
 

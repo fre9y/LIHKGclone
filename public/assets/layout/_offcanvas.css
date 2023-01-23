@@ -11,11 +11,13 @@
 }
 
 .nav .btn_bar button {
-    background-color: #151515;
+    background-color: transparent;
+    border: none;
+    font-size: 23px;
+}
+
+.nav .btn_bar button i:hover {
     color: white;
-    width: 100%;
-    padding: 10% 0;
-    /* border: 1px solid; */
 }
 
 .offcanvas-container {
