@@ -1,11 +1,11 @@
 /* border: 1px solid rgb(237, 17, 17); */
 
-.offcanvas {
-    display: flex;
-    flex-wrap: wrap;
+.offcanvas.offcanvas-start {
+    width: 230px;
 }
 
 .nav .btn_bar {
+    padding: 0 5px;
     height: 100vh;
     background-color: #151515;
 }
@@ -25,51 +25,79 @@
     background-color: #1e1e1e;
 }
 
-.offcanvas-hd{
-    height: 13%;
-    border: 1px solid white;
+.offcanvas-hd>div {
+    padding: 10px 0;
 }
 
-.offcanvas-hd div{
-    height: 33%;
-}
-
-.offcanvas-hd input{
+.search_div {
+    width: 87%;
+    padding: 4px 0;
     background-color: #151515;
-    border: 1px solid #151515;
-    border-radius: 05px;
-    margin: 2% 2% 1.5% 5%;
-    padding: 1%;
+    border: none;
+    border-radius: 3px;
+    color: white;
 }
 
-.search_btn {
+.search_div input {
+    font-size: 17px;
+    width: 80%;
+    background-color: #151515;
+    border: none;
+    border-radius: 3px;
+    color: white;
+}
+
+.search_div input:focus-visible {
+    outline: none !important;
+}
+
+.search_icon {
+    font-size: 17px;
+    border: none;
     position: absolute;
-    top: 7%;
-    left: 6%;
-    width: 5px !important;
-    height: 5px !important;
-    border: none !important;
+    top: 5px;
+    left: 5px;
+    width: 0;
+    color: white;
+    background-color: transparent;
 }
 
-.offcanvas-hd div button {
+.review_btn, .signUp_btn {
+    font-size: 17px;
     border: none;
     background-color: #1e1e1e;
-    color: white;
-    width: 100%;
-    height: 100%;
+    color: #ccc6c0;
+}
+
+.review_btn i, .signUp_btn i {
+    padding: 0 8% 0 10%;
+}
+
+.review_btn:hover i,.review_btn:hover a, .signUp_btn:hover i, .signUp_btn:hover a {
+    color: #fac208;
 }
 
 .offcanvas-bd {
-    height: 87%;
+    height: 80%;
     /* overflow: auto; */
     overflow-y: scroll;
 }
 
-.offcanvas-bd .row div {
-    border: 1px solid white;
-    padding: 2% 0;
+.offcanvas-bd p {
+    color: #666666;
+    font-size: 13px;
+    padding: 15px 0 0 30px;
+    margin-bottom: 5px;
 }
 
-.offcanvas-bd .row a {
-    padding: 4% 30%;
+.offcanvas-bd .stations {
+    padding: 3% 0;
+}
+
+.offcanvas-bd a {
+    padding: 5% 25%;
+}
+
+.offcanvas-bd a:hover {
+    color:#fac208;
 }

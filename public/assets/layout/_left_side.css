@@ -26,7 +26,7 @@
     padding-top: 15%;
 }
 
-.fa-rotate {
+.rotate {
     color: white;
     rotate: 30deg;
     padding-top: 10%;
@@ -44,6 +44,10 @@
 
 
 /* second_row /////////////////////////////////////////////////////////////////////////////////*/
+.second_row {
+    overflow-x:hidden;
+}
+
 .second_row_btn {
     height: 47px;
     border-bottom: 1px solid #3b3a39;

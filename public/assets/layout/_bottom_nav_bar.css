@@ -1,3 +1,9 @@
-.bt-nav-bar button{
-    display: inline-block;
+.bt_nav_bar button{
+    border: none;
+    background-color: #060606;
+    color: white;
+}
+
+.bt_nav_bar button:hover {
+    background-color: #1c1c1c;
 }
