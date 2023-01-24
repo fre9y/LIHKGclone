@@ -1,3 +1,15 @@
+//clone left_side for responsive
+(() => {
+    const cloneNode = document.querySelector(".left_side .second_row_div");
+
+    const leftSideClone = cloneNode.cloneNode(true);
+    document.querySelector(".mobile_vision").appendChild(leftSideClone);
+    console.log(cloneNode.childNodes);
+    const cloneNav = cloneNode.childNodes[1];
+    // console.log(cloneNav.childNodes)
+})();
+
+//profile
 let profileIcon = document.querySelector(".profile")
 
 async function checkSession() {
@@ -28,7 +40,7 @@ for (let i = 0; i < addAElem.length; i++) {
         toStations();
     })
 };
-
+//toStations && createPost
 async function toStations() {
     let urlParams = new URLSearchParams(window.location.search);
     const stationsID = urlParams.get('stationsID');
@@ -45,6 +57,7 @@ async function toStations() {
     for (let x = 0; x < data.posts.length; x++) {
         const template = document.querySelector(".post_template");
         const post = template.querySelector(".post");//.hidden
+        const mobileVision = document.querySelector(".mobile_vision");
 
         const postClone = post.cloneNode(true);
 
@@ -115,24 +128,47 @@ async function toStations() {
 
         //hidden post_template
         postClone.classList.remove("d-none");
-        //template + postClone
+        //template + postClone && clone one more for mobileVision
         template.appendChild(postClone);
+        const forMobileVision = postClone.cloneNode(true);
+        mobileVision.appendChild(forMobileVision);
     };
 
     //visited onclick function
     // let visited = postClone.querySelector('.visited')
 };
 
+//newest & hit switch
+const newestBtns = document.querySelectorAll(".newest_btn");
+const hitBtns = document.querySelectorAll(".hit_btn");
 
-//second_row border bottom line
-const newestBtn = document.querySelector(".newest_btn");
-const hitBtn = document.querySelector(".hit_btn");
-newestBtn.addEventListener('click', () => {
-    newestBtn.classList.add('active');
-    hitBtn.classList.remove('active');
-})
-hitBtn.addEventListener('click', () => {
-    hitBtn.classList.add('active');
-    newestBtn.classList.remove('active');
-})
+for (let newestBtn of newestBtns) {
+    newestBtn.addEventListener('click', () => {
+        for (let btn of newestBtns) {
+            btn.classList.add('active');
+        }
+        for (let hitBtn of hitBtns) {
+            hitBtn.classList.remove('active');
+        }
+    })
+}
+
+for (let hitBtn of hitBtns) {
+    hitBtn.addEventListener('click', () => {
+        for (let btn of hitBtns) {
+            btn.classList.add('active');
+        }
+        for (let newestBtn of newestBtns) {
+            newestBtn.classList.remove('active');
+        }
+    })
+}
+
+// refresh_btn
+const refreshBtns = document.querySelectorAll('.refresh_btn');
+for (let refreshBtn of refreshBtns) {
+    refreshBtn.addEventListener('click', () => {
+        location.reload();
+    })
+}
 

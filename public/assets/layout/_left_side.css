@@ -1,6 +1,6 @@
 /* first_row ///////////////////////////////////////////////////////////////////////////////// */
 .first_row {
-    height: 7%;
+    height: 50px;
     overflow: hidden;
 }
 
@@ -32,8 +32,10 @@
     padding-top: 10%;
 }
 
-.create_post_btn {
+.refresh_btn, .create_post_btn {
     color: white;
+    border: none;
+    background-color: transparent;
 }
 
 .navbar_btn:hover,
