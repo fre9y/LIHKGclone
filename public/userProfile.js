@@ -8,31 +8,10 @@ home.addEventListener('click', () => {
     window.location = "/home.html"
 })
 
-// async function checkAdmin() {
-//     let res = await fetch('/user/profile', {
-//         method: 'GET'
-//     })
-//     if (res.ok) {
-//         let data = await res.json()
-//         console.log(data);
-//         let profile = data
-//         if (!profile.is_admin) {
-//             let admin = document.querySelector(".admin")
-//             admin.style.display = "none"
-//         }0
-//     }
-// }
-
-
-
-// let admin = document.querySelector(".admin")
-// admin.addEventListener('click', () => {
-//     window.location = "../protected/admin.html"
-// })
 
 async function loadProfile() {
     let res = await fetch('/user/profile', {
-        method: 'GET' //get body 
+        method: 'GET' 
     })
     if (res.ok) {
         let data = await res.json()
@@ -69,32 +48,69 @@ async function loadProfileForAdmin() {
         let profileElem = document.querySelector(".profile")
         profileElem.innerHTML = ''
         for (let i = 0; i < profile.length; i++) {
+            //not working yet*
             profileElem.innerHTML += /*html */ `
-            <div class= "profile">
-                ${profile[i].id}|
+            <div class= "profile" id = "profile_${profile[i].id}">
+                <div name = id>${profile[i].id}|</div>
                 ${profile[i].nickname}|
-                ${profile[i].email}|
+                <div name = email>${profile[i].email}|</div>
                 ${profile[i].is_p}|
                 ${profile[i].is_admin}|
                 ${profile[i].is_male}|
                 ${profile[i].show}|     
                 ${profile[i].created_at}|
                 ${profile[i].updated_at}
-                <button class = "profile-soft-delete">
+
+                <button 
+                class = "soft-delete-profile"
+                onclick = 'deleteUser("${profile[i].id}","${profile[i].email}")'>
                     DELETE
-                </button>
+                </button> 
+
             </div>
             `
+            //pass ${profile[i].id and ${profile[i].email} userRoutes.ts
+            
         }
     } else {
         alert("[ERR0R: CANT FETCH]")
     }   
 }
 
+//not working yet*
+async function deleteUser(user_id,user_email) {
 
-async function deleteUser() {
+
+        let uploadData = {
+            id: user_id,
+            email: user_email
+        }
+        console.log(uploadData);
+        //send
+        let res = await fetch('/user/admin', { //problem
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(uploadData)
+        })
     
-}
+        // post handling
+        if (!res.ok) {
+            alert("[ERR0R: CANT FETCH]")
+            return
+        }
+
+    }
+
+
+//1 Click Button
+//2 according profile.id soft delete user
+
+
+
+
+
 
 // async function loadProfileForNormalUsers() {
 //     let profileElem = document.querySelector(".profile")

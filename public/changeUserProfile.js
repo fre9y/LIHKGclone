@@ -9,8 +9,7 @@ function genderToBoolean(gender) {
 let updateProfileElem = document.querySelector(".update-profile")
 console.log(updateProfileElem);
 
-updateProfileElem.addEventListener('submit', async (e) => {
-    console.log('123');
+updateProfileElem.addEventListener('submit', async (e) => { 
 	e.preventDefault()
     //prep
     let uploadData = {
