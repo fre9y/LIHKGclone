@@ -80,32 +80,26 @@ async function loadProfileForAdmin() {
 //not working yet*
 async function deleteUser(user_id,user_email) {
 
-
-        let uploadData = {
-            id: user_id,
-            email: user_email
-        }
-        console.log(uploadData);
-        //send
-        let res = await fetch('/user/admin', { //problem
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+    let uploadData = {
+        id: user_id,
+        email: user_email
+    }
+    console.log(uploadData);
+    let res = await fetch('/user/admin', { 
+         method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
             body: JSON.stringify(uploadData)
-        })
+    })
     
-        // post handling
-        if (!res.ok) {
-            alert("[ERR0R: CANT FETCH]")
-            return
-        }
 
+    if (!res.ok) {
+        alert("[ERR0R: CANT FETCH]")
+        return
     }
 
-
-//1 Click Button
-//2 according profile.id soft delete user
+}
 
 
 

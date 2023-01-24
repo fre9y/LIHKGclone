@@ -1,5 +1,7 @@
 import express from 'express'
 import fetch from 'cross-fetch'
+import crypto from 'crypto'
+
 import { client } from '../main'
 import { isLoggedInAPI  } from '../util/guard'
 //import { User } from '../util/model'
@@ -135,7 +137,6 @@ async function softDeleteUser(
     res:express.Response
     ){
     try {
-        console.log("123");
         console.log("BODY|",req.body);
 
         let user = req.session['user'];
@@ -148,9 +149,10 @@ async function softDeleteUser(
             })
             return
         }
+        const randomNum = crypto.getRandomValues(new Uint32Array(1))
         const deletedUser = await client.query(
             `UPDATE users SET email = $1, show = $2 WHERE id = $3 RETURNING *`,
-            [req.body.email + "_DELETED",false,req.body.id]
+            [req.body.email + "_DELETED_" + randomNum ,false,req.body.id]
         );
         console.log(deletedUser.rows[0]);
         //req.session['user'] = deletedUser.rows[0]
@@ -158,7 +160,7 @@ async function softDeleteUser(
         return
     } catch (error) {
         res.status(500).json({
-            message: '[SERVER ERROR]'
+            message: '[USER005 - SERVER ERROR]'
         })
         return
     }
