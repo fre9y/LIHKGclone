@@ -1,14 +1,15 @@
 import express from 'express'
 import fetch from 'cross-fetch'
 import { client } from '../main'
-
-import { User } from '../util/model'
+import { isLoggedInAPI  } from '../util/guard'
+//import { User } from '../util/model'
 export const userRoutes = express.Router();
 userRoutes.get('/login/google', loginGoogle);
 userRoutes.put('/profile', updateUser);
 userRoutes.get('/profile', getUser);
 userRoutes.get('/admin',getAllUsers);
 userRoutes.put('/admin',softDeleteUser);
+
 //LOGIN + CREATE USER
 async function loginGoogle (req:express.Request, res:express.Response){
     //console.log('123');
@@ -21,7 +22,6 @@ async function loginGoogle (req:express.Request, res:express.Response){
                 "Authorization":`Bearer ${accessToken}`
             }
         });
-        console.log('a');
         const googleUserProfile = await fetchRes.json();
         let users = (
             await client.query(
@@ -29,7 +29,7 @@ async function loginGoogle (req:express.Request, res:express.Response){
             [googleUserProfile.email])).rows;
 
         let user = users[0];
-        console.log("b",user);
+        console.log("GOGO|",user);
         if(!user){
             // Create the user when the user does not exist
             console.log("no user");
@@ -46,7 +46,7 @@ async function loginGoogle (req:express.Request, res:express.Response){
     } catch(error) {
         console.log("ERR0R: " + error)
 		res.status(500).json({
-			message: '[SERVER ERROR]'
+			message: '[USER001 - SERVER ERROR]'
 		})
     }
 }
@@ -58,10 +58,10 @@ export async function updateUser(
     ) {
     try {
         
-        console.log("c",req.body);
+        console.log("BODY|",req.body);
         //console.log(res)
         let user = req.session['user'];
-        console.log("SESSION",user);
+        console.log("SESSION|",user);
         //        console.log(user.id);
         const updatedUser = await client.query(
             `UPDATE users SET nickname = $1, is_male = $2 WHERE id = $3 RETURNING *`,
@@ -69,13 +69,13 @@ export async function updateUser(
         );
         console.log(updatedUser.rows[0]);
         req.session['user'] = updatedUser.rows[0]
-        console.log("d",req.body.nickname,req.body.gender,user.id);
+        console.log("NAME|MALE|ID",req.body.nickname,req.body.gender,user.id);
         res.json('[REDIRECTED TO HOME]')
         
     } catch (error) {
         console.log("ERR0R",error);
         res.status(500).json({
-            message: '[SERVER ERROR]'
+            message: '[USER002 - SERVER ERROR]'
         })
     }
 }
@@ -88,7 +88,7 @@ export async function getUser(
     ) {
     try {
         let user = req.session['user'];
-        console.log("U53R: ",user);
+        console.log("READ: ",user);
 
         if (!user) {
              res.status(404).json({
@@ -101,7 +101,7 @@ export async function getUser(
         return
     } catch (error) {
         res.status(500).json({
-            message: '[SERVER ERROR]'
+            message: '[USER003 - SERVER ERROR]'
         })
         return
     }
@@ -122,35 +122,39 @@ async function getAllUsers(
 
     } catch (error) {
         res.status(500).json({
-            message: '[SERVER ERROR]'
+            message: '[USER004 - SERVER ERROR]'
         })
         return
     }
 }
 
 //SOFT-DELETE USER
-//update email(+str) & update status
-
+//not working yet* 
 async function softDeleteUser(
     req:express.Request, 
     res:express.Response
     ){
     try {
+        console.log("123");
+        console.log("BODY|",req.body);
+
         let user = req.session['user'];
-        console.log("U53R: ",user);
+        //let user = req.body;
+        console.log("SOFTDEL| ",user); 
         if (!user) {
+
              res.status(404).json({
                 message: '[USER NOT FOUND]'
             })
             return
         }
-        const updatedUser = await client.query(
+        const deletedUser = await client.query(
             `UPDATE users SET email = $1, show = $2 WHERE id = $3 RETURNING *`,
-            [user.email + "_DELETED",false,user.id]
+            [req.body.email + "_DELETED",false,req.body.id]
         );
-        console.log(updatedUser.rows[0]);
-        req.session['user'] = updatedUser.rows[0]
-        res.json('[REDIRECTED TO HOME]')
+        console.log(deletedUser.rows[0]);
+        //req.session['user'] = deletedUser.rows[0]
+        res.json('[SOFT_DELETED]')
         return
     } catch (error) {
         res.status(500).json({
