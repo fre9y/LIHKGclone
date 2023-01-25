@@ -7,13 +7,14 @@ import { formParsePromise } from '../util/formidable'
 
 export const postRoutes = express.Router()
 
-postRoutes.get('/', getPosts)
+postRoutes.get('/:stationId', getPosts)
 postRoutes.post('/', isLoggedInAPI, isP, createPosts)
-postRoutes.put('/:id', isLoggedInAPI, isP, isYourPost, updatePostById)
-postRoutes.put('/:id', isLoggedInAPI, isAdmin, hidePostById)
-postRoutes.put('/:id', isLoggedInAPI, isAdmin, showPostById)
-postRoutes.get('/like/user/:userId', getUserPosts)
+postRoutes.put('/', isLoggedInAPI, isP, isYourPost, updatePostById)
+postRoutes.put('/', isLoggedInAPI, isAdmin, hidePostById)
+postRoutes.put('/', isLoggedInAPI, isAdmin, showPostById)
+postRoutes.get('/:userId', getUserPosts)
 postRoutes.get('/', getHotPosts)
+postRoutes.get('/', isLoggedInAPI, getMyPosts)
 
 export async function getPosts(req: express.Request, res: express.Response) {
 	try {
@@ -241,6 +242,56 @@ export async function getHotPosts(req: express.Request, res: express.Response) {
 		logger.error(error)
 		res.status(500).json({
 			message: '[POS001] - Server error'
+		})
+	}
+}
+
+export async function getMyPosts(
+	req: express.Request,
+	res: express.Response
+) {
+	try {
+		let userId = req.params.userId
+
+		if (!Number(userId)) {
+			res.status(400).json({
+				message: 'Invalid user id'
+			})
+			return
+		}
+
+		let userPosts = (
+			await client.query(
+				`
+				select (select nickname 
+                    from users 
+                    where users.id = posts.user_id) as nickname, 
+                    (select max(updated_at)
+                    from replies
+                    where posts.id = replies.post_id) as updated_at, 
+                    (select sum(likes - dislikes)
+                    from replies
+                    where posts.id = replies.post_id) as likes, 
+                    (select count(post_id) 
+                    from replies
+                    where posts.id = replies.post_id) as number_of_replies, 
+                    post_title, 
+                    (select name 
+                    from stations
+                    where posts.station_id = stations.id) as station_name
+				from posts
+				where user_id = $1
+				and show = true
+				`,
+				[Number(userId)]
+			)
+		).rows
+
+		res.json(userPosts)
+	} catch (error) {
+		logger.error(error)
+		res.status(500).json({
+			message: '[ POS006 ] Server ERROR'
 		})
 	}
 }

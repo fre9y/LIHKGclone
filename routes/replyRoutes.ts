@@ -9,13 +9,13 @@ export const replyRoutes = express.Router()
 
 replyRoutes.get('/', getReplies)
 replyRoutes.post('/', isLoggedInAPI, createReplies)
-replyRoutes.put('/:id', isLoggedInAPI, isP, isYourReply, updateReplyById)
-replyRoutes.put('/:id', isAdmin, hideReplyById)
-replyRoutes.put('/:id', isAdmin, showReplyById)
+replyRoutes.put('/', isLoggedInAPI, isP, isYourReply, updateReplyById)
+replyRoutes.put('/', isAdmin, hideReplyById)
+replyRoutes.put('/', isAdmin, showReplyById)
 replyRoutes.get('/', getUserReplies)
 replyRoutes.get('/', getHotReplies)
-replyRoutes.put('/:id', isLoggedInAPI, isP, likeReplyById)
-replyRoutes.put('/:id', isLoggedInAPI, isP, dislikeReplyById)
+replyRoutes.put('/', isLoggedInAPI, isP, likeReplyById)
+replyRoutes.put('/', isLoggedInAPI, isP, dislikeReplyById)
 // likes/dislikes check repeat
 export async function getReplies(req: express.Request, res: express.Response) {
 	try {
