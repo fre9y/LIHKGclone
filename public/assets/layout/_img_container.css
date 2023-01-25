@@ -1,0 +1,19 @@
+.img_wall {
+    background-color: black;
+}
+
+.img_wall_first_row {
+    color: white;
+}
+
+.leave_btn {
+    font-size: 40px;
+    color: white;
+    border: none;
+    background-color: transparent;
+}
+
+.grid-item {
+    width: 40%;
+    margin-bottom: 10px;
+}

@@ -1,9 +1,63 @@
 .post_first_row {
     height: 50px;
     background-color: #222222;
+    border-bottom: 1px solid #3b3a39;
 }
 
-.previous_page {
+.post_first_row button {
+    height: 50px;
+    width: 45px;
+    color: white;
     border: none;
+    background-color: transparent;
+}
+
+.post_first_row button:hover {
+    background-color: #454545;
+}
+
+.previous_page_btn {
+    border: none;
+    background-color: transparent;
+}
+
+/* post_replies */
+.post_page {
+    height: 70px;
+}
+
+.post_page button {
+    font-size: 17px;
+    border: none;
+    background-color: transparent;
+    color: #fac208;
+    z-index: 0;
+}
+
+.post_page select {
+    opacity: 0;
+    z-index: 1;
+}
+
+.current_page_btn select:hover {
+    cursor: pointer;
+}
+
+/* reply */
+.reply {
+    background-color: #222222;
+}
+
+.reply_like_section {
+    height: 30px;
+    width: 110px;
+    background-color: #333333;
+    border-radius: 3px;
+}
+
+.reply_like_section button {
+    font-size: 14px;
+    border: none;
+    color: #ccc6c0;
     background-color: transparent;
 }

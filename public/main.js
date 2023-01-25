@@ -4,9 +4,6 @@
 
     const leftSideClone = cloneNode.cloneNode(true);
     document.querySelector(".mobile_vision").appendChild(leftSideClone);
-    console.log(cloneNode.childNodes);
-    const cloneNav = cloneNode.childNodes[1];
-    // console.log(cloneNav.childNodes)
 })();
 
 //profile
@@ -47,7 +44,6 @@ async function toStations() {
 
     const res = await fetch(`/stations?stationsID=${stationsID}`);
     let data = await res.json();
-    console.log(data.posts);
 
     for await (let station of data.stations) {
         document.querySelector('.station_name').innerText = station.name;
@@ -171,4 +167,40 @@ for (let refreshBtn of refreshBtns) {
         location.reload();
     })
 }
+
+//image
+const image = document.querySelector('.imgBtn');
+const leaveImg = document.querySelector('.leave_btn');
+const imgWall = document.querySelector('.img_wall');
+
+image.addEventListener('click', async () => {
+    let urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('postId');
+
+    imgWall.classList.remove("d-none");
+
+    // const res = await fetch(`/post/${postId}/media`);
+    const res = await fetch(`/post/1/media`);
+    let data = await res.json()
+    images = data.images;
+
+    for (let path of images) {
+        let createImgEle = document.querySelector('.img_container');
+        const img = document.createElement("img");
+        img.setAttribute('class', 'grid-item img-fluid');
+        img.src = `http://localhost:8080/${path.name}`;
+        createImgEle.appendChild(img);
+    }
+
+    //img-wall library Masonry
+    var msnry = new Masonry('.img_container', {
+        gutter: 10,
+        itemSelector: '.grid-item'
+    });
+
+})
+
+leaveImg.addEventListener('click', () => {
+    imgWall.classList.add('d-none');
+})
 

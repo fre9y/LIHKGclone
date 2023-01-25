@@ -74,6 +74,7 @@ app.use(express.static("protected"));
 app.use(express.static("public"));
 app.use(express.static("public/assets"));
 app.use(express.static("uploads")); //photos in folder can be found
+app.use(express.static("uploads/image"));
 
 app.get("/", (req: Request, res: Response) => {
   const homePages = path.resolve(__dirname, 'public/home.html');
@@ -109,8 +110,26 @@ app.get("/stations/", async (req, res) => {
     })
     return;
   }
-})
+});
 
+// app.get('/post/:post/replies', async (req, res) => {
+//   let postID = req.query.postID;
+//   const postNUM = await client.query(
+//     ``
+//   )
+// })
+
+//image
+app.get('/post/:post/media', async (req, res) => {
+  let postId = req.params.post;
+  const images = await client.query(
+    `SELECT posts_id, name FROM images where posts_id = ${postId}`
+  );
+
+  res.json({
+    images: images.rows
+  });
+})
 
 
 

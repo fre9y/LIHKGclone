@@ -15,11 +15,11 @@
         <div> <img src="" width="50%" alt="preview" id="preview"></div>
     </form>
 
-    <button onclick="createImgEle()">create img</button>
+    <button onclick="showImage()">create img</button>
     <div class="img-container"></div>
 
     <script>
-        async function createImgEle() {
+        async function showImage() {
             let urlParams = new URLSearchParams(window.location.search);
             const postId = urlParams.get('postId');
 

@@ -32,7 +32,8 @@
     padding-top: 10%;
 }
 
-.refresh_btn, .create_post_btn {
+.refresh_btn,
+.create_post_btn {
     color: white;
     border: none;
     background-color: transparent;
@@ -47,7 +48,7 @@
 
 /* second_row /////////////////////////////////////////////////////////////////////////////////*/
 .second_row {
-    overflow-x:hidden;
+    overflow-x: hidden;
 }
 
 .second_row_btn {
@@ -56,19 +57,52 @@
     text-align: center;
 }
 
-.newest_btn.active, .hit_btn.active {
+.newest_btn.active,
+.hit_btn.active {
     color: #fac208;
     border-bottom: 2px solid #fac208;
 }
 
 
 /* stations_post /////////////////////////////////////////////////////////////////////////////////*/
+.post {
+    border-bottom: 1px solid #3b3a39;
+}
+
 .post:hover {
     background-color: #272727;
 }
 
-.post {
-    border-bottom: 1px solid #3b3a39;
+.isP i {
+    color:white;
+}
+
+.isP span {
+    left: 6px;
+    font-weight: bold;
+    color: red;
+}
+
+.post_pages_btn {
+    width: 60px;
+    border: none;
+    background-color: transparent;
+    color: #7c7c7a;
+}
+
+.select_cover {
+    z-index: 0;
+}
+
+.select:hover ~ .select_cover .post_pages_btn {
+    color: #ccc6c0;
+}
+
+.post select {
+    position: relative;
+    opacity: 0;
+    z-index: 1;
+    cursor: pointer;
 }
 
 .post_title {
