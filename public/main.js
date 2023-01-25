@@ -191,13 +191,6 @@ image.addEventListener('click', async () => {
         img.src = `http://localhost:8080/${path.name}`;
         createImgEle.appendChild(img);
     }
-
-    //img-wall library Masonry
-    var msnry = new Masonry('.img_container', {
-        gutter: 10,
-        itemSelector: '.grid-item'
-    });
-
 })
 
 leaveImg.addEventListener('click', () => {
