@@ -9,7 +9,7 @@ CREATE TABLE images (
     FOREIGN KEY (replies_id) REFERENCES replies(id)
 );
 
-SELECT * FROM images;
+SELECT * FROM images where posts_id = 5;
 SELECT posts_id, name FROM images where posts_id = 1;
 
 insert into images (name, created_at, updated_at, posts_id, replies_id) values ('2jNOiiJ.jpg', '2022-07-01 00:00:00', '2022-07-01 00:00:00',1,1),
