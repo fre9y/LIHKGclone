@@ -1,10 +1,6 @@
 //testing
-//let logout = document.querySelector('.logout');
-// let logout = document.querySelector('.create_post_btn');
-// logout.addEventListener('click', () => {
-//     logout();
-// })
 
+//LOGOUT
 export async function logout() {
     let res = await fetch('user/logout', {
         method: 'GET',
@@ -21,5 +17,17 @@ export async function logout() {
         return
     }
             
+}
+
+export async function getOthersByID() {
+    let res = await fetch('/user/profile/:id', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        //body: JSON.stringify
+    })
+    let others = await res.json()
+    return others
 }
 

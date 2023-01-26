@@ -76,28 +76,54 @@ app.use(express.static("public/assets"));
 app.use(express.static("uploads")); //photos in folder can be found
 app.use(express.static("uploads/image"));
 
-app.get("/", (req: Request, res: Response) => {
-  const homePages = path.resolve(__dirname, 'public/home.html');
-  if (!homePages) {
-    res.status(404).json({
-      message: 'Not Found'
-    });
-    return;
-  } else {
-    res.sendFile(homePages);
-  }
-});
 
 //stations
+app.get("/", (req: Request, res: Response) => {
+  res.redirect('/stations/1');
+});
+
+app.get('/stations/:id', async (req, res) => {
+  console.log("stations")
+  const homePages = path.resolve(__dirname, 'public/home.html');
+  res.sendFile(homePages);
+});
+
 app.get("/stations/", async (req, res) => {
   let stationsID = req.query.stationsID;
   const stationsNUM = await client.query(
     `SELECT * FROM stations WHERE id = ${stationsID}`
   );
+
   const postDetail = await client.query(
-    // (present stations have post: 32,2,13,8,10)
-    `SELECT * FROM posts JOIN users ON posts.user_id = users.id WHERE posts.station_id = ${stationsID}`
-  )
+    `select id,
+    (select nickname
+            from users 
+            where users.id = posts.user_id) as nickname, 
+            (select is_male
+            from users 
+            where users.id = posts.user_id) as is_male, 
+            (select max(updated_at)
+            from replies
+            where posts.id = replies.post_id) as updated_at, 
+            (select sum(likes - dislikes)
+            from replies
+            where posts.id = replies.post_id) as likes, 
+            (select count(post_id) 
+            from replies
+            where posts.id = replies.post_id) as number_of_replies, 
+            post_title, 
+            (select stations.id
+            from stations 
+            where posts.station_id = stations.id) as stations_id, 
+            (select name 
+            from stations
+            where posts.station_id = stations.id) as station_name
+        from posts
+  where station_id = ${stationsID}
+  and show = true
+        order by updated_at DESC;`
+  );
+  console.table(postDetail.rows[0]);
 
   if (stationsID = stationsNUM.rows[0]) {
     res.json({
