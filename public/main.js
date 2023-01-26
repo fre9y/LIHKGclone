@@ -103,6 +103,9 @@ async function toStations(stationID) {
         }
 
         //post-created-time
+        let now = Date.now();
+        let timePassed = now - data.posts[x].updated_at;
+        createTime.innerText = timePassed/(1000*60)
         // let createTime = postClone.querySelector('.post_created_time');
         // let createTimeText = data.posts[x].created_at;
         // createTime.innerText = createTimeText;
