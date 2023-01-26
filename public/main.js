@@ -1,18 +1,10 @@
 //test logout
-// import { logout } from './user.js';
-// let logoutButton = document.querySelector('.create_post_btn');
-// logoutButton.addEventListener('click', () => {
-//     console.log('click_logout');
-//     logout();
-// });
-
-// let getOthersButton = document.querySelector('.user_nickname');
-// getOthersButton.addEventListener('click', () => {  
-//     console.log('click_getOthers');
-//     getOthersByID();   
-// });
-
-
+import { logout } from './user.js';
+let logoutButton = document.querySelector('.create_post_btn');
+logoutButton.addEventListener('click', () => {
+    console.log('click_logout');
+    logout();
+});
 
 //clone left_side for responsive
 (() => {
@@ -147,13 +139,12 @@ async function toStations(stationID) {
         const postStationsBtn = postClone.querySelector('.post_station')
         postStationsBtn.innerText = data.stations[0].name;
         postStationsBtn.setAttribute("href", `/stations/${stationID}`);
-
-        let postStationsBtnLink = postClone.createElement("a");
+        let postStationsBtnLink = document.createElement("a");
         postStationsBtnLink.setAttribute("href", `/stations/${stationID}`);
         postStationsBtn.appendChild(postStationsBtnLink);
 
         // posts-stations Btn replace post-link
-        postClone.parentNode.replaceChild(postStationsBtnLink, postLinkNode);
+        // postClone.parentNode.replaceChild(postStationsBtnLink, postLinkNode);
 
 
         //hidden post_template

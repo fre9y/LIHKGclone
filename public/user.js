@@ -2,7 +2,7 @@
 
 //LOGOUT
 export async function logout() {
-    let res = await fetch('user/logout', {
+    let res = await fetch('/user/logout', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -13,7 +13,7 @@ export async function logout() {
         return
     } else {
         alert("LOGGED OUT")
-        window.location = "/home.html"
+        window.location = "/"
         return
     }
             
