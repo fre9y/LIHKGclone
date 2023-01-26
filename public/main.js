@@ -6,6 +6,14 @@
 //     logout();
 // });
 
+// let getOthersButton = document.querySelector('.user_nickname');
+// getOthersButton.addEventListener('click', () => {  
+//     console.log('click_getOthers');
+//     getOthersByID();   
+// });
+
+
+
 //clone left_side for responsive
 (() => {
     const cloneNode = document.querySelector(".left_side .second_row_div");

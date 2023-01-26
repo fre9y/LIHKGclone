@@ -35,20 +35,57 @@ function updateReplyContainer(replies) {
 	replyContainerElem.innerHTML = ''
 	for (let replyItem of replies) {
 		replyContainerElem.innerHTML += `
-        <div class="reply-wrapper" id="reply_${replyItem.id}">
-			<div class="row">
-				<span>${replyItem.nickname}</span>
-				<span>${replyItem.time}</span>
+		<div class="reply py-3 my-2"  id="reply_${replyItem.id}">
+			<div class="reply_first_row d-flex justify-content-between">
+				<span class="px-3">
+					<span class="px-1"># <span class="reply_num">1</span></span>
+
+					<span class="user_nickname px-1">${replyItem.nickname}</span>
+
+					<span class="reply_created_time px-1">${replyItem.updated_at}</span>
+
+					<span class="block_replies_btn px-1">
+						<i class="fa-solid fa-eye"></i>
+					</span>
+
+					<span class="reply_btn px-1">
+						<i class="fa-solid fa-reply"></i>
+					</span>
+				</span>
+
+				<span class="px-3">
+					<span class="share_btn px-2">
+						<i class="fa-solid fa-share-nodes"></i>
+					</span>
+
+					<span class="more_btn px-2">
+						<i class="fa-solid fa-ellipsis"></i>
+					</span>
+				</span>
 			</div>
-			<div class="row">
-				<span>${replyItem.Image}</span>
-				<span>${replyItem.content}</span>
+
+			<div class="reply_second_row px-4 py-3">
+				${replyItem.content}
 			</div>
-			<div class="row">
-				<span>${replyItem.likes}</span>
-				<span>${replyItem.dislikes}</span>
+
+			<div class="reply_third_row px-4">
+				<div class="reply_like_section d-flex justify-content-around align-items-center">
+					<span class="like_btn">
+						<button>
+							<i class="fa-solid fa-thumbs-up"></i>
+						</button>
+						<span class="reply_like">${replyItem.likes}</span>
+					</span>
+
+					<span class="dislike_btn pe-1">
+						<button>
+							<i class="fa-solid fa-thumbs-down"></i>
+						</button>
+						<span class="reply_dislike">${replyItem.dislikes}</span>
+					</span>
+				</div>
 			</div>
-        </div>
+		</div>
         `
 	}
 }
