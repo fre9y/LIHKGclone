@@ -1,10 +1,10 @@
 //test logout
-import { logout } from './user.js';
-let logoutButton = document.querySelector('.create_post_btn');
-logoutButton.addEventListener('click', () => {
-    console.log('click_logout');
-    logout();
-});
+// import { logout } from './user.js';
+// let logoutButton = document.querySelector('.create_post_btn');
+// logoutButton.addEventListener('click', () => {
+//     console.log('click_logout');
+//     logout();
+// });
 
 //clone left_side for responsive
 (() => {
@@ -15,10 +15,9 @@ logoutButton.addEventListener('click', () => {
 
     let pathname = window.location.pathname
     const words = pathname.split('/');
-
     if (words.length > 0) {
-        stationID = words[words.length - 1]
-        toStations(stationID)
+        const stationID = words[words.length - 1]
+        toStations(stationID);
     }
 })();
 
@@ -53,12 +52,14 @@ for (let i = 0; i < addAElem.length; i++) {
     })
 };
 //toStations && createPost
-async function toStations(stationsID) {
+async function toStations(stationID) {
     // let urlParams = new URLSearchParams(window.location.search);
-    // const stationsID = urlParams.get('stationsID');
+    // const stationID = urlParams.get('stationID');
 
-    const res = await fetch(`/stations?stationsID=${stationsID}`);
+    const res = await fetch(`/stations/${stationID}/posts`);
+
     let data = await res.json();
+    console.log(data);
 
     const template = document.querySelector(".post_template");
 
@@ -73,9 +74,7 @@ async function toStations(stationsID) {
     // getStationsPost
     for (let x = 0; x < data.posts.length; x++) {
         const postClone = post.cloneNode(true);
-
-        let postLinkNode = postClone.setAttribute("href", `/stations?stationsID=${stationsID}/page/1`);
-        postClone.querySelector('.post_station ').innerText = data.stations[0].name;
+        let postLinkNode = postClone.setAttribute("href", `/stations/${stationID}/page/1`);
 
         //post-link
 
@@ -128,7 +127,7 @@ async function toStations(stationsID) {
         // }
         // postSelect.value = ;
         // postSelect.addEventListener("change", () => {
-        //     document.location = `/stations?stationsID=${stationsID}/page/${}`
+        //     document.location = `/stations/${stationID}/page/${}`
         // })
 
         //posts-title
@@ -137,15 +136,16 @@ async function toStations(stationsID) {
         postTitle.innerText = postTitleText;
 
         //posts-stations Btn
-        // let postStationsBtn = postClone.querySelector('post_stations_btn');
-        // let postStationsBtnText = data.posts[x].;
-        // postStationsBtn.innerText = postStationsBtnText;
-        // postStationsBtn.setAttribute("href", `/stations?stationsID=${stationsID}`);
-        // let postStationsBtnLink = postStationsBtn.createElement("a");
-        // postStationsBtnLink.setAttribute("href", `/stations?stationsID=${stationsID}`);
+        const postStationsBtn = postClone.querySelector('.post_station')
+        postStationsBtn.innerText = data.stations[0].name;
+        postStationsBtn.setAttribute("href", `/stations/${stationID}`);
 
-        //posts-stations Btn replace post-link
-        // postClone.parentNode.replaceChild(postStationsBtnLink, postLinkNode);
+        let postStationsBtnLink = postClone.createElement("a");
+        postStationsBtnLink.setAttribute("href", `/stations/${stationID}`);
+        postStationsBtn.appendChild(postStationsBtnLink);
+
+        // posts-stations Btn replace post-link
+        postClone.parentNode.replaceChild(postStationsBtnLink, postLinkNode);
 
 
         //hidden post_template

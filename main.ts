@@ -83,13 +83,12 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.get('/stations/:id', async (req, res) => {
-  console.log("stations")
   const homePages = path.resolve(__dirname, 'public/home.html');
   res.sendFile(homePages);
 });
 
-app.get("/stations/", async (req, res) => {
-  let stationsID = req.query.stationsID;
+app.get("/stations/:id/posts", async (req, res) => {
+  let stationsID = req.params.id;
   const stationsNUM = await client.query(
     `SELECT * FROM stations WHERE id = ${stationsID}`
   );
@@ -123,7 +122,6 @@ app.get("/stations/", async (req, res) => {
   and show = true
         order by updated_at DESC;`
   );
-  console.table(postDetail.rows[0]);
 
   if (stationsID = stationsNUM.rows[0]) {
     res.json({
