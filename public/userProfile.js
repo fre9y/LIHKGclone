@@ -86,11 +86,11 @@ async function deleteUser(user_id,user_email) {
     }
     console.log(uploadData);
     let res = await fetch('/user/admin', { 
-         method: 'PUT',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
-            body: JSON.stringify(uploadData)
+        body: JSON.stringify(uploadData)
     })
     
 
