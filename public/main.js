@@ -71,7 +71,14 @@ async function toStations(stationID) {
     // getStationsPost
     for (let x = 0; x < data.posts.length; x++) {
         const postClone = post.cloneNode(true);
-        let postLinkNode = postClone.setAttribute("href", `/stations/${stationID}/page/1`);
+        postClone.addEventListener('click',async () => {
+            console.log(window.location)
+            window.location.search = `?postId=${data.posts[x].id}`
+            const res = await fetch(`/post/${data.posts[x].id}/replies`);
+            let repliesData = await res.json()
+            console.log("replies: ", repliesData)
+        })
+        // let postLinkNode = postClone.setAttribute("href", `/post/${data.posts[x].id}`);
 
         //post-link
 
