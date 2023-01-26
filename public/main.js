@@ -1,21 +1,9 @@
 //test logout
-import { logout, checkSession } from './user.js';
-
+import { logout } from './user.js';
 let logoutButton = document.querySelector('.create_post_btn');
 logoutButton.addEventListener('click', () => {
     console.log('click_logout');
     logout();
-});
-
-let profileIconButton = document.querySelector(".profile")
-profileIconButton.addEventListener('click', () => {
-    console.log('click_profile');
-    checkSession();
-});
-
-let nicknameButton = document.querySelector(".user_nickname")
-nicknameButton.addEventListener('click', () => {
-    console.log('click_nickname');
 });
 
 //clone left_side for responsive
@@ -33,7 +21,22 @@ nicknameButton.addEventListener('click', () => {
     }
 })();
 
+//profile
+async function checkSession() {
+    let res = await fetch('/user/profile', {
+        method: 'GET'
+    })
+    if (!res.ok) {
+        window.location = "/connect/google"
+    } else {
+        window.location = "/userProfile.html"
+    }
+}
 
+let profileIcon = document.querySelector(".profile")
+profileIcon.addEventListener('click', () => {
+    checkSession();
+})
 
 //stations
 //change stations name
@@ -228,3 +231,15 @@ leaveImg.addEventListener('click', () => {
     createImgEle.innerHTML = " ";
 })
 
+
+//replies
+const userDetail = document.querySelector('.user_nickname_btn');
+const userDetailContent = document.querySelector('.userDetail')
+userDetail.addEventListener('click', () => {
+    userDetailContent.classList.remove("d-none");
+})
+
+const leaveUserDetail = document.querySelector('.leave_userDetail_btn');
+leaveUserDetail.addEventListener('click', () => {
+    userDetailContent.classList.add("d-none");
+})

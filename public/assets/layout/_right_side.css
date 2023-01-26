@@ -60,4 +60,16 @@
     border: none;
     color: #ccc6c0;
     background-color: transparent;
+    background-color: rgb(38, 38, 38);
+}
+
+/* userDetail */
+.userDetail {
+    background-color: rgba(38, 38, 38, 0.3);
+}
+
+.userDetail_content {
+    width: 600px;
+    border-radius: 5px;
+    background-color: #454545;
 }
