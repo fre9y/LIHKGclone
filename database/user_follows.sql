@@ -22,4 +22,4 @@ values
 (11,5);
 
 
-sse
+select * from user_follows;

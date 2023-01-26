@@ -31,15 +31,5 @@ export async function checkSession() {
     }
 }
 
-export async function getOthersByID() {
-    let res = await fetch('/user/profile/:id', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-        //body: JSON.stringify
-    })
-    let others = await res.json()
-    return others
-}
+
 

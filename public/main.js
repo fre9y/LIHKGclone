@@ -243,3 +243,4 @@ const leaveUserDetail = document.querySelector('.leave_userDetail_btn');
 leaveUserDetail.addEventListener('click', () => {
     userDetailContent.classList.add("d-none");
 })
+
