@@ -1,5 +1,17 @@
 //testing
 
+//LOGIN
+export async function checkSession() {
+    let res = await fetch('/user/profile', {
+        method: 'GET'
+    })
+    if (!res.ok) {
+        window.location = "/connect/google"
+    } else {
+        window.location = "/userProfile.html"
+    }
+}
+
 //LOGOUT
 export async function logout() {
     let res = await fetch('/user/logout', {
@@ -19,16 +31,9 @@ export async function logout() {
             
 }
 
-//PROFILE
-export async function checkSession() {
-    let res = await fetch('/user/profile', {
-        method: 'GET'
-    })
-    if (!res.ok) {
-        window.location = "/connect/google"
-    } else {
-        window.location = "/userProfile.html"
-    }
+//DOXXING
+export async function doxx() {
+    
 }
 
 
