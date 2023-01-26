@@ -6,14 +6,6 @@ logoutButton.addEventListener('click', () => {
     logout();
 });
 
-// let getOthersButton = document.querySelector('.user_nickname');
-// getOthersButton.addEventListener('click', () => {  
-//     console.log('click_getOthers');
-//     getOthersByID();   
-// });
-
-
-
 //clone left_side for responsive
 (() => {
     const cloneNode = document.querySelector(".left_side .second_row_div");
@@ -147,13 +139,12 @@ async function toStations(stationID) {
         const postStationsBtn = postClone.querySelector('.post_station')
         postStationsBtn.innerText = data.stations[0].name;
         postStationsBtn.setAttribute("href", `/stations/${stationID}`);
-
-        let postStationsBtnLink = postClone.createElement("a");
+        let postStationsBtnLink = document.createElement("a");
         postStationsBtnLink.setAttribute("href", `/stations/${stationID}`);
         postStationsBtn.appendChild(postStationsBtnLink);
 
         // posts-stations Btn replace post-link
-        postClone.parentNode.replaceChild(postStationsBtnLink, postLinkNode);
+        // postClone.parentNode.replaceChild(postStationsBtnLink, postLinkNode);
 
 
         //hidden post_template
