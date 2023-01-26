@@ -85,6 +85,18 @@ values (3, 6, '做你親友或許 容易團聚下又再傾舊時
                             二伯聽說有喜 初一的餐宴
                             恭喜 我再賀你新年', null, 3, 4)
 
-SELECT * FROM replies;
+SELECT * FROM replies where post_id = 5;
 SELECT * FROM replies JOIN users ON replies.user_id = users.id JOIN posts ON replies.post_id = posts.id WHERE replies.post_id = 2;
 SELECT * FROM replies JOIN users ON replies.user_id = users.id JOIN posts ON replies.post_id = posts.id;
+
+
+
+
+select (
+    select  json_agg(name) as images_id  from images  where replies_id = replies.id
+),  users.nickname, replies.* from replies
+inner JOIN users on users.id = replies.user_id
+            where post_id = 5
+			and show = true
+            order by replies.id ASC;
+
