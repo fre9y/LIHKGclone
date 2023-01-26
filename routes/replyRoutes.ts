@@ -16,7 +16,7 @@ replyRoutes.get('/', getUserReplies)
 replyRoutes.get('/', getHotReplies)
 replyRoutes.put('/', isLoggedInAPI, isP, likeReplyById)
 replyRoutes.put('/', isLoggedInAPI, isP, dislikeReplyById)
-replyRoutes.get('/:userId', getUser)
+replyRoutes.get('/:userId', getOtherById)
 // likes/dislikes check repeat
 export async function getReplies(req: express.Request, res: express.Response) {
 	try {
@@ -283,7 +283,7 @@ export async function dislikeReplyById(
 	}
 }
 
-export async function getUser(req: express.Request, res: express.Response) {
+export async function getOtherById(req: express.Request, res: express.Response) {
 	try {
         let userId = req.params.userId
 		let result = await client.query(
