@@ -1,6 +1,6 @@
 import express from 'express'
 import { logger } from '../util/logger'
-import { Reply } from '../model/model'
+import { Reply, User } from '../model/model'
 import { isLoggedInAPI, isP, isAdmin, isYourReply  } from '../util/guard'
 import { client } from '../main'
 import { formParsePromise } from '../util/formidable'
@@ -16,6 +16,7 @@ replyRoutes.get('/', getUserReplies)
 replyRoutes.get('/', getHotReplies)
 replyRoutes.put('/', isLoggedInAPI, isP, likeReplyById)
 replyRoutes.put('/', isLoggedInAPI, isP, dislikeReplyById)
+replyRoutes.get('/:userId', getUser)
 // likes/dislikes check repeat
 export async function getReplies(req: express.Request, res: express.Response) {
 	try {
@@ -278,6 +279,29 @@ export async function dislikeReplyById(
 		logger.error(error)
 		res.status(500).json({
 			message: '[REP002] - Server error'
+		})
+	}
+}
+
+export async function getUser(req: express.Request, res: express.Response) {
+	try {
+        let userId = req.params.userId
+		let result = await client.query(
+			`
+			select * from users where id = $1
+            `,
+            [Number(userId)]
+		)
+		let user: User[] = result.rows
+
+		res.json({
+			data: user,
+			message: 'Get user success'
+		})
+	} catch (error) {
+		logger.error(error)
+		res.status(500).json({
+			message: '[REP001] - Server error'
 		})
 	}
 }
