@@ -5,3 +5,4 @@
 # 5/ images
 # 6/ favourite_posts
 # 7/ user_blacklists
+# 8/ user_follows
