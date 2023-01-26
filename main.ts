@@ -136,12 +136,18 @@ app.get("/stations/:id/posts", async (req, res) => {
   }
 });
 
-// app.get('/post/:post/replies', async (req, res) => {
-//   let postID = req.query.postID;
-//   const postNUM = await client.query(
-//     ``
-//   )
-// })
+app.get('/post/:id/replies', async (req, res) => {
+  let postID = req.params.id;
+  // const postNUM = await client.query(
+  //   ``
+  // )
+  res.json([{
+    name: "james",
+    postID
+  }
+  ])
+  return
+})
 
 //image
 app.get('/post/:post/media', async (req, res) => {
