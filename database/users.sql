@@ -45,6 +45,7 @@ values
 
 
 
+<<<<<<< HEAD
 select * from users;
 
 select id,
@@ -74,3 +75,7 @@ select id,
 			where station_id = 2
 			and show = true
             order by updated_at DESC;
+=======
+
+select * from users;
+>>>>>>> e6be2bf0e4712082f43619d0f41b41df93d3d4c9

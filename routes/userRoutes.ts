@@ -6,11 +6,16 @@ import { client } from '../main'
 import { isLoggedInAPI  } from '../util/guard'
 //import { User } from '../util/model'
 export const userRoutes = express.Router();
+//self (normal user level)
 userRoutes.get('/login/google', loginGoogle);
-userRoutes.put('/profile', updateUser);
-userRoutes.get('/profile', getUser);
-userRoutes.get('/admin',getAllUsers);
-userRoutes.put('/admin',softDeleteUser);
+userRoutes.get('/logout', logout);
+userRoutes.put('/profile', userUpdateSelf);
+userRoutes.get('/profile', userGetSelf);
+//others (normal user level)
+userRoutes.get('profile/:id',userGetOthers);
+//self (admin level) 
+userRoutes.get('/admin',getAllUsers); 
+userRoutes.put('/admin',softDeleteUsers);
 
 //LOGIN + CREATE USER
 async function loginGoogle (req:express.Request, res:express.Response){
@@ -54,7 +59,7 @@ async function loginGoogle (req:express.Request, res:express.Response){
 }
 
 //UPDATE USER
-export async function updateUser(
+export async function userUpdateSelf(
     req: express.Request, 
     res: express.Response
     ) {
@@ -71,7 +76,7 @@ export async function updateUser(
         );
         console.log(updatedUser.rows[0]);
         req.session['user'] = updatedUser.rows[0]
-        console.log("NAME|MALE|ID",req.body.nickname,req.body.gender,user.id);
+        console.log("NAME|isMALE|ID",req.body.nickname,req.body.gender,user.id);
         res.json('[REDIRECTED TO HOME]')
         
     } catch (error) {
@@ -82,9 +87,29 @@ export async function updateUser(
     }
 }
 
+//LOGOUT
+async function logout(
+    req:express.Request, 
+    res:express.Response
+    ){
+    try {
+        console.log(req.session['user']);
+        delete req.session['user'];
+        req.session.destroy(() => {
+            res.clearCookie('connect.sid');
+            res.redirect('/');
+        });
+    } catch (error) {
+        console.log("ERR0R",error);
+        res.status(500).json({
+            message: '[USER00? - SERVER ERROR]'
+        })
+    }
+}
+
 
 //READ USER
-export async function getUser(
+export async function userGetSelf(
     req: express.Request, 
     res: express.Response
     ) {
@@ -132,7 +157,7 @@ async function getAllUsers(
 
 //SOFT-DELETE USER
 //not working yet* 
-async function softDeleteUser(
+async function softDeleteUsers(
     req:express.Request, 
     res:express.Response
     ){
@@ -164,4 +189,27 @@ async function softDeleteUser(
         })
         return
     }
-}   
+} 
+
+//READ OTHER USERS
+async function userGetOthers(
+    req:express.Request, 
+    res:express.Response
+    ){
+    try {
+        const user = await client.query(
+            `SELECT * FROM users WHERE id = $1`,
+            [req.params.id]
+        );
+
+        console.log("OTHERUSER: ",user.rows);
+        res.json(user.rows)
+        return
+
+    } catch (error) {
+        res.status(500).json({
+            message: '[USER006 - SERVER ERROR]'
+        })
+        return
+    }
+}

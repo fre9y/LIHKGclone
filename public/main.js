@@ -1,3 +1,11 @@
+//test logout
+import { logout } from './user.js';
+let logoutButton = document.querySelector('.create_post_btn');
+logoutButton.addEventListener('click', () => {
+    console.log('click_logout');
+    logout();
+});
+
 //clone left_side for responsive
 (() => {
     const cloneNode = document.querySelector(".left_side .second_row_div");
@@ -15,8 +23,6 @@
 })();
 
 //profile
-let profileIcon = document.querySelector(".profile")
-
 async function checkSession() {
     let res = await fetch('/user/profile', {
         method: 'GET'
@@ -28,6 +34,7 @@ async function checkSession() {
     }
 }
 
+let profileIcon = document.querySelector(".profile")
 profileIcon.addEventListener('click', () => {
     checkSession();
 })
