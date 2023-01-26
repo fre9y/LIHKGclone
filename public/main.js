@@ -6,11 +6,11 @@ logoutButton.addEventListener('click', () => {
     logout();
 });
 
-let getOthersButton = document.querySelector('.user_nickname');
-getOthersButton.addEventListener('click', () => {  
-    console.log('click_getOthers');
-    getOthersByID();   
-});
+// let getOthersButton = document.querySelector('.user_nickname');
+// getOthersButton.addEventListener('click', () => {  
+//     console.log('click_getOthers');
+//     getOthersByID();   
+// });
 
 
 
