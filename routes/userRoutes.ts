@@ -11,7 +11,6 @@ userRoutes.get('/login/google', loginGoogle);
 userRoutes.get('/logout', logout);
 userRoutes.put('/profile', userUpdateSelf);
 userRoutes.get('/profile', userGetSelf);
-//others (normal user level)
 userRoutes.get('profile/:id',userGetOthers);
 //self (admin level) 
 userRoutes.get('/admin',getAllUsers); 
@@ -58,6 +57,26 @@ async function loginGoogle (req:express.Request, res:express.Response){
     }
 }
 
+//LOGOUT
+async function logout(
+    req:express.Request, 
+    res:express.Response
+    ){
+    try {
+        console.log("LOGOUT|",req.session['user']);
+        delete req.session['user'];
+        req.session.destroy(() => {
+            res.clearCookie('connect.sid');
+            res.redirect('/');
+        });
+    } catch (error) {
+        console.log("ERR0R",error);
+        res.status(500).json({
+            message: '[USER002 - SERVER ERROR]'
+        })
+    }
+}
+
 //UPDATE USER
 export async function userUpdateSelf(
     req: express.Request, 
@@ -82,40 +101,22 @@ export async function userUpdateSelf(
     } catch (error) {
         console.log("ERR0R",error);
         res.status(500).json({
-            message: '[USER002 - SERVER ERROR]'
-        })
-    }
-}
-
-//LOGOUT
-async function logout(
-    req:express.Request, 
-    res:express.Response
-    ){
-    try {
-        console.log(req.session['user']);
-        delete req.session['user'];
-        req.session.destroy(() => {
-            res.clearCookie('connect.sid');
-            res.redirect('/');
-        });
-    } catch (error) {
-        console.log("ERR0R",error);
-        res.status(500).json({
-            message: '[USER00? - SERVER ERROR]'
+            message: '[USER003 - SERVER ERROR]'
         })
     }
 }
 
 
-//READ USER
+
+
+//READ SELF USER
 export async function userGetSelf(
     req: express.Request, 
     res: express.Response
     ) {
     try {
         let user = req.session['user'];
-        console.log("READ: ",user);
+        console.log("READ_SELF| ",user);
 
         if (!user) {
              res.status(404).json({
@@ -128,11 +129,35 @@ export async function userGetSelf(
         return
     } catch (error) {
         res.status(500).json({
-            message: '[USER003 - SERVER ERROR]'
+            message: '[USER004 - SERVER ERROR]'
         })
         return
     }
 }
+
+//READ OTHER USERS
+
+async function userGetOthers(
+    req:express.Request, 
+    res:express.Response
+    ){
+    try {
+        const users = await client.query(
+            `SELECT * FROM users WHERE id = $1`,
+            [req.params.id]
+        );
+        console.log("READ_OTHERS| ",users.rows);
+        res.json(users.rows)
+        return
+
+    } catch (error) {
+        res.status(500).json({
+            message: '[USER005 - SERVER ERROR]'
+        })
+        return
+    }
+}
+
 
 async function getAllUsers(
     req:express.Request, 
@@ -149,7 +174,7 @@ async function getAllUsers(
 
     } catch (error) {
         res.status(500).json({
-            message: '[USER004 - SERVER ERROR]'
+            message: '[USER006 - SERVER ERROR]'
         })
         return
     }
@@ -185,31 +210,9 @@ async function softDeleteUsers(
         return
     } catch (error) {
         res.status(500).json({
-            message: '[USER005 - SERVER ERROR]'
+            message: '[USER007 - SERVER ERROR]'
         })
         return
     }
 } 
 
-//READ OTHER USERS
-async function userGetOthers(
-    req:express.Request, 
-    res:express.Response
-    ){
-    try {
-        const user = await client.query(
-            `SELECT * FROM users WHERE id = $1`,
-            [req.params.id]
-        );
-
-        console.log("OTHERUSER: ",user.rows);
-        res.json(user.rows)
-        return
-
-    } catch (error) {
-        res.status(500).json({
-            message: '[USER006 - SERVER ERROR]'
-        })
-        return
-    }
-}
