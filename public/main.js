@@ -1,9 +1,21 @@
 //test logout
-import { logout } from './user.js';
+import { logout, checkSession } from './user.js';
+
 let logoutButton = document.querySelector('.create_post_btn');
 logoutButton.addEventListener('click', () => {
     console.log('click_logout');
     logout();
+});
+
+let profileIconButton = document.querySelector(".profile")
+profileIconButton.addEventListener('click', () => {
+    console.log('click_profile');
+    checkSession();
+});
+
+let nicknameButton = document.querySelector(".user_nickname")
+nicknameButton.addEventListener('click', () => {
+    console.log('click_nickname');
 });
 
 //clone left_side for responsive
@@ -21,22 +33,7 @@ logoutButton.addEventListener('click', () => {
     }
 })();
 
-//profile
-async function checkSession() {
-    let res = await fetch('/user/profile', {
-        method: 'GET'
-    })
-    if (!res.ok) {
-        window.location = "/connect/google"
-    } else {
-        window.location = "/userProfile.html"
-    }
-}
 
-let profileIcon = document.querySelector(".profile")
-profileIcon.addEventListener('click', () => {
-    checkSession();
-})
 
 //stations
 //change stations name

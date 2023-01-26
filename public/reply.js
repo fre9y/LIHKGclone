@@ -1,4 +1,4 @@
-let newReplyElm = document.querySelector('.new-post-container')
+let newReplyElm = document.querySelector('.new-reply-container')
 
 newReplyElm.addEventListener('submit', async (e) => {
 	e.preventDefault()
@@ -18,7 +18,7 @@ newReplyElm.addEventListener('submit', async (e) => {
 })
 
 async function loadReplies() {
-	let res = await fetch('/Replies')
+	let res = await fetch('/replies')
 	if (res.ok) {
 		let data = await res.json()
 		let Replies = data.data
@@ -31,7 +31,7 @@ async function loadReplies() {
 }
 
 function updateReplyContainer(replies) {
-	let replyContainerElem = document.querySelector('.reply-container')
+	let replyContainerElem = document.querySelector('.replies-container')
 	replyContainerElem.innerHTML = ''
 	for (let replyItem of replies) {
 		replyContainerElem.innerHTML += `
