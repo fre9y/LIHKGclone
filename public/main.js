@@ -20,6 +20,14 @@ getOthersButton.addEventListener('click', () => {
 
     const leftSideClone = cloneNode.cloneNode(true);
     document.querySelector(".mobile_vision").appendChild(leftSideClone);
+
+    let pathname = window.location.pathname
+    const words = pathname.split('/');
+
+    if (words.length > 0) {
+        stationID = words[words.length - 1]
+        toStations(stationID)
+    }
 })();
 
 //profile
@@ -48,32 +56,36 @@ for (let i = 0; i < addAElem.length; i++) {
 
     addAElem[i].addEventListener('click', async (e) => {
         e.preventDefault();
-        window.history.pushState({}, '', 'stations?stationsID=' + stationID);
-        toStations();
+        window.history.pushState({}, '', '/stations/' + stationID);
+        toStations(stationID);
     })
 };
 //toStations && createPost
-async function toStations() {
-    let urlParams = new URLSearchParams(window.location.search);
-    const stationsID = urlParams.get('stationsID');
+async function toStations(stationsID) {
+    // let urlParams = new URLSearchParams(window.location.search);
+    // const stationsID = urlParams.get('stationsID');
 
     const res = await fetch(`/stations?stationsID=${stationsID}`);
     let data = await res.json();
 
-    for await (let station of data.stations) {
-        document.querySelector('.station_name').innerText = station.name;
+    const template = document.querySelector(".post_template");
+
+    const templateSample = document.querySelector(".post_template_sample");
+    const post = templateSample
+        .querySelector(".post");//.hidden
+    const mobileVision = document.querySelector(".mobile_vision");
+    if (res.ok) {
+        template.innerHTML = ""
     }
 
     // getStationsPost
     for (let x = 0; x < data.posts.length; x++) {
-        const template = document.querySelector(".post_template");
-        const post = template.querySelector(".post");//.hidden
-        const mobileVision = document.querySelector(".mobile_vision");
-
         const postClone = post.cloneNode(true);
 
-        //post-link
         let postLinkNode = postClone.setAttribute("href", `/stations?stationsID=${stationsID}/page/1`);
+        postClone.querySelector('.post_station ').innerText = data.stations[0].name;
+
+        //post-link
 
         // if (!post.isTrending) {
         //     postClone.querySelector(".lightning_icon i").style.display = "none";
@@ -98,9 +110,16 @@ async function toStations() {
         // createTime.innerText = createTimeText;
 
         //posts-like
-        // let postLike = postClone.querySelector(".like");
-        // let likeNUM = data.posts[x]. ;
-        // postLike.innerText = likeNUM
+        let postLike = postClone.querySelector(".like");
+        let likeNUM = data.posts[x].likes;
+        postLike.innerText = likeNUM;
+
+        const countOfLike = Number(likeNUM);
+        if (countOfLike > 0) {
+            postClone.querySelector('.post_like').classList.remove('d-none');
+        } else {
+            postClone.querySelector('.post_dislike').classList.remove('d-none');
+        }
 
         //post-pages
         // post database need count replies and pages
@@ -141,6 +160,7 @@ async function toStations() {
         postClone.classList.remove("d-none");
         //template + postClone && clone one more for mobileVision
         template.appendChild(postClone);
+
         const forMobileVision = postClone.cloneNode(true);
         mobileVision.appendChild(forMobileVision);
     };
@@ -187,6 +207,7 @@ for (let refreshBtn of refreshBtns) {
 const image = document.querySelector('.imgBtn');
 const leaveImg = document.querySelector('.leave_btn');
 const imgWall = document.querySelector('.img_wall');
+const createImgEle = document.querySelector('.img_container');
 
 image.addEventListener('click', async () => {
     let urlParams = new URLSearchParams(window.location.search);
@@ -194,13 +215,12 @@ image.addEventListener('click', async () => {
 
     imgWall.classList.remove("d-none");
 
-    // const res = await fetch(`/post/${postId}/media`);
-    const res = await fetch(`/post/1/media`);
+    const res = await fetch(`/post/${postId}/media`);
+    // const res = await fetch(`/post/1/media`);
     let data = await res.json()
     images = data.images;
 
     for (let path of images) {
-        let createImgEle = document.querySelector('.img_container');
         const img = document.createElement("img");
         img.setAttribute('class', 'grid-item img-fluid');
         img.src = `http://localhost:8080/${path.name}`;
@@ -210,5 +230,6 @@ image.addEventListener('click', async () => {
 
 leaveImg.addEventListener('click', () => {
     imgWall.classList.add('d-none');
+    createImgEle.innerHTML = " ";
 })
 
