@@ -119,7 +119,7 @@ export async function userGetSelf(
         console.log("READ_SELF| ",user);
 
         if (!user) {
-             res.status(404).json({
+             res.status(400).json({
                 message: '[USER NOT FOUND]'
             })
             return

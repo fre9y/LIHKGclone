@@ -283,12 +283,15 @@ export async function dislikeReplyById(
 	}
 }
 
-export async function getOtherById(req: express.Request, res: express.Response) {
+export async function getOtherById(
+	req: express.Request,
+	res: express.Response
+	) {
 	try {
         let userId = req.params.userId
 		let result = await client.query(
 			`
-			select * from users where id = $1
+		=	select * from users where id  $1
             `,
             [Number(userId)]
 		)
@@ -296,7 +299,7 @@ export async function getOtherById(req: express.Request, res: express.Response) 
 
 		res.json({
 			data: user,
-			message: 'Get user success'
+			message: 'Get User Success'
 		})
 	} catch (error) {
 		logger.error(error)

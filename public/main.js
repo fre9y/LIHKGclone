@@ -1,10 +1,10 @@
 //test logout
-// import { logout } from './user.js';
-// let logoutButton = document.querySelector('.create_post_btn');
-// logoutButton.addEventListener('click', () => {
-//     console.log('click_logout');
-//     logout();
-// });
+import { logout } from './user.js';
+let logoutButton = document.querySelector('.create_post_btn');
+logoutButton.addEventListener('click', () => {
+    console.log('click_logout');
+    logout();
+});
 
 // let getOthersButton = document.querySelector('.user_nickname');
 // getOthersButton.addEventListener('click', () => {  
