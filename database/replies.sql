@@ -74,5 +74,17 @@ Sean 話夠100k 有證據 （自拍相）爆
 (1, 5, 'lm', null, 5, 5),
 (3, 5, 'lm', null, 6, 1),
 (4, 5, '建議新嘅金剛棒update返欠債alex柒事', null, 3, 4);
-SELECT * FROM replies;
 
+insert into replies
+(user_id, post_id, content, reference_id, likes, dislikes)
+values (3, 6, '做你親友或許 容易團聚下又再傾舊時
+                            二伯聽說有喜 初一的餐宴
+                            恭喜 我再賀你新年
+                            做你親友或許 容易
+                            團聚下又再傾 舊時
+                            二伯聽說有喜 初一的餐宴
+                            恭喜 我再賀你新年', null, 3, 4)
+
+SELECT * FROM replies;
+SELECT * FROM replies JOIN users ON replies.user_id = users.id JOIN posts ON replies.post_id = posts.id WHERE replies.post_id = 2;
+SELECT * FROM replies JOIN users ON replies.user_id = users.id JOIN posts ON replies.post_id = posts.id;

@@ -13,7 +13,7 @@
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet" href="assets/main.css">
+    <link rel="stylesheet" href="/assets/main.css">
     <style>
         body {
             background-color: #000000;
@@ -329,13 +329,14 @@
             </div>
         </div>
 
+        <!-- slide menu -->
         <div class="left_side d-none d-sm-none d-md-block">
             <div class="first_row d-flex justify-content-between">
                 <nav class="nav col-2 position-relative">
                     <button class="navbar_btn position-relative" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
                         <i class="fa-solid fa-bars position-absolute top-50 start-0 translate-middle color_white"></i>
-                        <img src="lihkg_icon.svg" width="26px">
+                        <img src="/lihkg_icon.svg" width="26px">
                     </button>
                 </nav>
 
@@ -363,47 +364,6 @@
                     <div class="current_stations_posts">
                         <div class="current_stations_posts_container">
                             <div class="post_template container g-0">
-                                <a class="post d-none1 col-12 row g-0 d-flex justify-content-end" href="#">
-                                    <!--first-line-->
-                                    <span class="lightning_icon col-1 d-flex justify-content-center pt-2 pb-1 ps-2">
-                                        <i class="fa-solid fa-bolt pt-2 pe-2 color_yellow"></i>
-                                    </span></span>
-
-                                    <span class="col-9 d-flex justify-content-start pt-2 pb-1">
-                                        <span class="post_host color_white px-1">post_host_name</span>
-                                        <span class="isP px-1 position-relative"><i class="fa-solid fa-square"></i><span
-                                                class="position-absolute">P</span></span>
-                                        <span class="post_created_time color_white px-1">just</span>
-                                        <span class="like color_white px-1">like 0</span>
-                                    </span>
-
-                                    <span class="col-2 d-flex justify-content-center position-relative pt-2 pb-1">
-                                        <form class="select">
-                                            <select>
-                                                <option value="1"> 1 頁</option>
-                                                <option value="2"> 2 頁</option>
-                                                <option value="3"> 3 頁</option>
-                                            </select><!--opacity:0-->
-                                        </form>
-                                        <span class="select_cover col-2 position-absolute start-0">
-                                            <button class="post_pages_btn d-flex justify-content-evenly">
-                                                <span class="post_pages">1</span> 頁</button>
-                                        </span>
-                                    </span>
-
-                                    <!--second-line-->
-                                    <span class="visited col-1 d-flex justify-content-center pt-1">
-                                        <i class="fa-solid fa-circle color_white"></i>
-                                    </span>
-
-                                    <span class="post_title col-9 color_white pb-2">只知道是時候拿著金莎 將心意預留在藍罐之下</span>
-
-                                    <span class="post_stations_btn col-2">
-                                        <span href="#" class="post_station d-flex justify-content-center">
-                                            吹水台
-                                        </span>
-                                    </span>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -411,6 +371,7 @@
             </div>
         </div>
 
+        <!-- post_replies -->
         <div class="post-container d-none d-sm-none d-md-block col-12 col-md-7 col-xl-8 d-flex flex-column">
             <div class="">
                 <div class="post_first_row col-12 d-flex justify-content-between">
@@ -550,6 +511,7 @@
             </div>
         </div>
 
+        <!-- mobile_vision - station name-->
         <div class="mobile_vision position-fixed top-0 start-0 end-0 bottom-0 d-md-none">
             <div class="bt_nav_bar d-md-none w-100 d-flex justify-content-between position-fixed bottom-0">
                 <div class="w-100">
@@ -596,11 +558,63 @@
 
 
 
+    <div class="post_template_sample container g-0 d-none">
+        <a class="post d-none1 col-12 row g-0 d-flex justify-content-end" href="#">
+            <!--first-line-->
+            <span class="lightning_icon col-1 d-flex justify-content-center pt-2 pb-1 ps-2">
+                <i class="fa-solid fa-bolt pt-2 pe-2 color_yellow"></i>
+            </span></span>
+
+            <span class="col-9 d-flex justify-content-start pt-2 pb-1">
+                <span class="post_host color_white px-1">post_host_name</span>
+                <span class="isP px-1 position-relative"><i class="fa-solid fa-square"></i><span
+                        class="position-absolute">P</span></span>
+                <span class="post_created_time color_white px-1">just</span>
+                <span class="post_like d-none">
+                        <i class="fa-solid fa-thumbs-up"></i>
+                </span>
+
+                <span class="post_dislike d-none">
+                        <i class="fa-solid fa-thumbs-down"></i>
+                </span>
+
+                <span class="like color_white px-1">like 0</span>
+            </span>
+
+            <span class="col-2 d-flex justify-content-center position-relative pt-2 pb-1">
+                <form class="select">
+                    <select>
+                        <option value="1"> 1 頁</option>
+                        <option value="2"> 2 頁</option>
+                        <option value="3"> 3 頁</option>
+                    </select><!--opacity:0-->
+                </form>
+                <span class="select_cover col-2 position-absolute start-0">
+                    <button class="post_pages_btn d-flex justify-content-evenly">
+                        <span class="post_pages">1</span> 頁</button>
+                </span>
+            </span>
+
+            <!--second-line-->
+            <span class="visited col-1 d-flex justify-content-center pt-1">
+                <i class="fa-solid fa-circle color_white"></i>
+            </span>
+
+            <span class="post_title col-9 color_white pb-2">只知道是時候拿著金莎 將心意預留在藍罐之下</span>
+
+            <span class="post_stations_btn col-2">
+                <span href="#" class="post_station d-flex justify-content-center">
+                    吹水台
+                </span>
+            </span>
+        </a>
+    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
-    <script src="main.js"></script>
+    <script src="/main.js"></script>
 </body>
 
 </html>

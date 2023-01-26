@@ -46,3 +46,31 @@ values
 
 
 select * from users;
+
+select id,
+				(select nickname
+                from users 
+                where users.id = posts.user_id) as nickname, 
+                (select is_male
+                from users 
+                where users.id = posts.user_id) as is_male, 
+                (select max(updated_at)
+                from replies
+                where posts.id = replies.post_id) as updated_at, 
+                (select sum(likes - dislikes)
+                from replies
+                where posts.id = replies.post_id) as likes, 
+                (select count(post_id) 
+                from replies
+                where posts.id = replies.post_id) as number_of_replies, 
+                post_title, 
+                (select stations.id
+                from stations 
+                where posts.station_id = stations.id) as stations_id, 
+                (select name 
+                from stations
+                where posts.station_id = stations.id) as station_name
+            from posts
+			where station_id = 2
+			and show = true
+            order by updated_at DESC;
