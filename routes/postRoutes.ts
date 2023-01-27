@@ -9,12 +9,12 @@ export const postRoutes = express.Router()
 
 // postRoutes.get('/:stationId', getPosts)
 postRoutes.post('/', isLoggedInAPI, isP, createPosts)
-postRoutes.put('/', isLoggedInAPI, isP, isYourPost, updatePostById)
-postRoutes.put('/', isLoggedInAPI, isAdmin, hidePostById)
-postRoutes.put('/', isLoggedInAPI, isAdmin, showPostById)
+// postRoutes.put('/', isLoggedInAPI, isP, isYourPost, updatePostById)
+// postRoutes.put('/', isLoggedInAPI, isAdmin, hidePostById)
+// postRoutes.put('/', isLoggedInAPI, isAdmin, showPostById)
 postRoutes.get('/:userId', getUserPosts)
-postRoutes.get('/', getHotPosts)
-postRoutes.get('/', isLoggedInAPI, getMyPosts)
+// postRoutes.get('/', getHotPosts)
+// postRoutes.get('/', isLoggedInAPI, getMyPosts)
 
 export async function getPosts(req: express.Request, res: express.Response) {
 	try {
@@ -61,9 +61,9 @@ export async function getPosts(req: express.Request, res: express.Response) {
 
 export async function createPosts(req: express.Request, res: express.Response) {
 	try {
-		let { fields } = await formParsePromise(req)
-		let title = fields.title
-        let station = fields.station
+		let { fields, files } = await formParsePromise(req)
+		let title = fields.postTitle
+        let station = fields.stationId
         let user = fields.user
 
 		await client.query(

@@ -387,14 +387,13 @@ newPostFormElm.addEventListener('submit', async (e) => {
 
 	let formData = new FormData(newPostFormElm)
 
-    console.log(formData)
-
 	let res = await fetch('/posts', {
 		method: 'POST',
 		body: formData
 	})
 
 	if (res.ok) {
+        newPostFormElm.reset();
         toStations(selectStation.value);
 	} else {
 		console.log('post fail')
