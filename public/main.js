@@ -104,7 +104,6 @@ async function toStations(stationID) {
 
                 replyClone.querySelector('.reply_num').innerText = r + 1;
 
-                console.log(replies[0])
                 //user_nickname
                 nicknameElement.innerText = replies[r].nickname;
                 contentElement.innerHTML = replies[r].content;
@@ -113,16 +112,16 @@ async function toStations(stationID) {
                 postTitleForReply.innerText = postForReply[0].post_title;
 
                 //replies
-                // const userDetail = replyClone.querySelector('.user_nickname_btn');
-                // const userDetailContent = replyClone.querySelector('.userDetail')
-                // userDetail.addEventListener('click', () => {
-                //     userDetailContent.classList.remove("d-none");
-                // })
+                const userDetail = replyClone.querySelector('.user_nickname_btn');
+                const userDetailContent = replyClone.querySelector('.userDetail')
+                userDetail.addEventListener('click', () => {
+                    userDetailContent.classList.remove("d-none");
+                })
 
-                // const leaveUserDetail = replyClone.querySelector('.leave_userDetail_btn');
-                // leaveUserDetail.addEventListener('click', () => {
-                //     userDetailContent.classList.add("d-none");
-                // })
+                const leaveUserDetail = replyClone.querySelector('.leave_userDetail_btn');
+                leaveUserDetail.addEventListener('click', () => {
+                    userDetailContent.classList.add("d-none");
+                })
 
 
                 replyTemplate.appendChild(replyClone);
@@ -150,10 +149,14 @@ async function toStations(stationID) {
         }
 
         //post-created-time
+        // let createTime = postClone.querySelector('.post_created_time');
         // let now = Date.now();
         // let timePassed = now - data.posts[x].updated_at;
-        // createTime.innerText = timePassed/(1000*60)
-        // let createTime = postClone.querySelector('.post_created_time');
+        // createTime.innerText = timePassed/(1000*60);
+        // console.log(now);
+        // console.log(data.posts[0].updated_at);
+
+
         // let createTimeText = data.posts[x].created_at;
         // createTime.innerText = createTimeText;
 
