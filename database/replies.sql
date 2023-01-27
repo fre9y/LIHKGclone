@@ -139,3 +139,18 @@ inner JOIN users on users.id = replies.user_id
 			and show = true
             order by replies.id ASC
             LIMIT 25 OFFSET 25 * (2 -1);
+
+insert into replies
+(user_id, post_id, content, reference_id, likes, dislikes)
+values (7, 2, '胡蘿蔔素', null, 0, 3),
+        (8, 2, '女仔就當然要佢理性 同 精明 胡理精', null, 5, 11),
+        (9, 2, '胡咁圖or老母', null, 2, 0),
+        (10, 2, '胡呢單刀', null, 5, 43),
+        (11, 2, '定欣，實西口西面', null, 0, 0),
+        (9, 2, '胡理小姐', null, 4, 0),
+        (1, 2, '就出世先上黎問', null, 21, 11),
+        (2, 2, '舒寶', null, 0, 0),
+        (3, 2, '胡作非', null, 52, 11),
+        (4, 2, '胡狸先生幾多點', null, 2, 0),
+        (5, 2, '胡十三幺', null, 8, 19),
+        (6, 2, '胡妮晶', null, 20, 0)
