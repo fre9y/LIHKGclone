@@ -416,6 +416,26 @@ leaveCreatePost.addEventListener('click', () => {
     createPostContainer.classList.add("d-none");
 })
 
+let newPostFormElm = document.querySelector('.createPostForm')
+
+newPostFormElm.addEventListener('submit', async (e) => {
+	e.preventDefault()
+
+	let formData = new FormData(newPostFormElm)
+
+    console.log(formData)
+
+	let res = await fetch('/posts', {
+		method: 'POST',
+		body: formData
+	})
+
+	if (res.ok) {
+        toStations(selectStation.value);
+	} else {
+		console.log('post fail')
+	}
+})
 
 
 
