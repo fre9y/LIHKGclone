@@ -83,9 +83,44 @@ values (3, 6, '做你親友或許 容易團聚下又再傾舊時
                             做你親友或許 容易
                             團聚下又再傾 舊時
                             二伯聽說有喜 初一的餐宴
-                            恭喜 我再賀你新年', null, 3, 4)
+                            恭喜 我再賀你新年', null, 3, 4);
 
-SELECT * FROM replies where post_id = 5;
+insert into replies
+(user_id, post_id, content, reference_id, likes, dislikes)
+values (7, 2, '胡峯', null, 0, 3),
+        (8, 2, '胡香', null, 5, 11),
+        (9, 2, '胡說樓市', null, 2, 0),
+        (10, 2, '胡，單字一個「雪」，加埋就係「胡雪」', null, 5, 43),
+        (11, 2, '胡瑰麗', null, 0, 0),
+        (9, 2, '胡理小姐', null, 4, 0),
+        (1, 2, '胡朝豬吐', null, 21, 11),
+        (2, 2, '胡一刀', null, 0, 0),
+        (3, 2, '胡辣三小', null, 52, 11),
+        (4, 2, '胡桃', null, 2, 0),
+        (5, 2, '胡奕凡', null, 8, 19),
+        (6, 2, 'skr wu', null, 20, 0),
+        (7, 2, '胡杏兒', null, 2, 1),
+        (8, 2, '胡雪樹', null, 0, 0),
+        (9, 2, '胡鬧', null, 5, 9),
+        (10, 2, '胡囧囧', null, 2, 11)
+
+insert into replies
+(user_id, post_id, content, reference_id, likes, dislikes)
+values (7, 2, '胡蘿蔔素', null, 0, 3),
+        (8, 2, '女仔就當然要佢理性 同 精明 胡理精', null, 5, 11),
+        (9, 2, '胡咁圖or老母', null, 2, 0),
+        (10, 2, '胡呢單刀', null, 5, 43),
+        (11, 2, '定欣，實西口西面', null, 0, 0),
+        (9, 2, '胡理小姐', null, 4, 0),
+        (1, 2, '就出世先上黎問', null, 21, 11),
+        (2, 2, '舒寶', null, 0, 0),
+        (3, 2, '胡作非', null, 52, 11),
+        (4, 2, '胡狸先生幾多點', null, 2, 0),
+        (5, 2, '胡十三幺', null, 8, 19),
+        (6, 2, '胡妮晶', null, 20, 0)
+
+
+SELECT * FROM replies where post_id = 3;
 SELECT * FROM replies JOIN users ON replies.user_id = users.id JOIN posts ON replies.post_id = posts.id WHERE replies.post_id = 2;
 SELECT * FROM replies JOIN users ON replies.user_id = users.id JOIN posts ON replies.post_id = posts.id;
 
@@ -100,7 +135,8 @@ select (
     users.nickname,
     replies.* from replies
 inner JOIN users on users.id = replies.user_id
-            where post_id = 5
+            where post_id = 2
 			and show = true
-            order by replies.id ASC;
+            order by replies.id ASC
+            LIMIT 25 OFFSET 25 * (2 -1);
 

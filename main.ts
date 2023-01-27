@@ -136,8 +136,9 @@ app.get("/stations/:id/posts", async (req, res) => {
   }
 });
 
-app.get('/post/:id/replies', async (req, res) => {
+app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
   let postID = req.params.id;
+  let currentPage = req.params.currentPage;
   const repliesDetail = await client.query(
     `select (
       select  json_agg(name) as images_id  from images  where replies_id = replies.id),      
@@ -149,25 +150,50 @@ app.get('/post/:id/replies', async (req, res) => {
   inner JOIN users on users.id = replies.user_id
               where post_id = ${postID}
         and show = true
-              order by replies.id ASC;`
+              order by replies.id ASC
+              LIMIT 25 OFFSET 25 * (${currentPage} -1);`
+  );
+
+  const replyCount = await client.query(
+    `select count(id) as count from replies where post_id = ${postID}`
   );
 
   const postDetail = await client.query(
     `Select * From posts JOIN users ON posts.user_id = users.id WHERE posts.id = ${postID}`
   )
+  const page = Math.ceil( replyCount.rows[0].count / 25);
 
   res.json({
     replies: repliesDetail.rows,
-    posts: postDetail.rows
+    posts: postDetail.rows,
+    pages: page
   })
 
   // return
 })
-
-// app.get('/post/:id/replies/pages/:pages', async (req, res) => {
-//   let pages = req.params.pages;
-//   const homePages = path.resolve(__dirname, 'public/home.html');
-//   res.sendFile(homePages);
+// app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
+//   let postID = req.params.id;
+//   let currentPage = req.params.currentPage;
+//   const repliesPage = await client.query(
+//     `select (
+//       select  json_agg(name) as images_id  from images  where replies_id = replies.id),      
+//       (select is_male
+//        from users 
+//        where users.id = replies.user_id) as is_male,
+//       users.nickname,
+//       replies.* from replies
+//   inner JOIN users on users.id = replies.user_id
+//               where post_id = ${postID}
+//         and show = true
+//               order by replies.id ASC
+//               LIMIT 25 OFFSET 25 * (${currentPage} -1);`
+//   );
+  
+//   res.json({
+//     currentPage: repliesPage.rows
+//   })
+//   // const homePages = path.resolve(__dirname, 'public/home.html');
+//   // res.sendFile(homePages);
 
 //   // return
 // })
