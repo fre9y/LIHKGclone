@@ -78,3 +78,10 @@
     border-radius: 5px;
     background-color: #454545;
 }
+
+/* CreatePost */
+.createPostForm{
+    background-color: rgba(38, 38, 38, 0.3);
+    width: 500px;
+    height: 500px;
+}
