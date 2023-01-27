@@ -84,7 +84,7 @@ async function toStations(stationID) {
             let opEle = document.createElement('option');
             opEle.setAttribute('value', `${k}`);
             opEle.appendChild(opEleText);
-            if (k+1 == page) {
+            if (k + 1 == page) {
                 opEle.setAttribute('selected', "selected")
                 changePageLabel(page)
             }
@@ -98,37 +98,62 @@ async function toStations(stationID) {
             const likeElement = replyClone.querySelector(".reply_like");
             const dislikeElement = replyClone.querySelector(".reply_dislike");
             const postTitleForReply = document.querySelector('.post_first_row .post_title');
-    
+
             replyClone.querySelector('.reply_num').innerText = r + 1;
-    
+
             //user_nickname
             nicknameElement.innerText = replies[r].nickname;
             contentElement.innerHTML = replies[r].content;
             likeElement.innerText = replies[r].likes;
             dislikeElement.innerHTML = replies[r].dislikes;
             postTitleForReply.innerText = postForReply[0].post_title;
-    
+            console.log(replyClone)
             //replies
             const userDetail = replyClone.querySelector('.user_nickname_btn');
             const userDetailContent = replyClone.querySelector('.userDetail')
+            replyClone.querySelector(".userDetail_nickname").innerText = replies[r].nickname;
+            replyClone.querySelector(".userDetail_id").innerText = "#"+replies[r].id;
+
             userDetail.addEventListener('click', () => {
                 userDetailContent.classList.remove("d-none");
             })
-    
+
             const leaveUserDetail = replyClone.querySelector('.leave_userDetail_btn');
             leaveUserDetail.addEventListener('click', () => {
                 userDetailContent.classList.add("d-none");
             })
-    
-    
-            replyTemplate.appendChild(replyClone);            
+
+
+            // 
+           
+            replyTemplate.appendChild(replyClone);
+
+
+            let userID = (replyClone.getElementsByClassName('userDetail_id')[0].innerHTML).split('#')[1]
+            //doxx
+            let doxxButton = replyClone.querySelector('.doxx');
+
+            doxxButton.addEventListener('click', () => {
+                console.log('click_doxx');
+                window.location = `/user/profile/${userID}`;
+            });
+
+            //block
+            let blockButton = replyClone.querySelector('.block');
+            blockButton.addEventListener('click', () => {
+                console.log('click_block');
+
+            });
+
+            // 
+            replyTemplate.appendChild(replyClone);
         }
 
         repliesSelect.addEventListener('change', async (e) => {
             e.preventDefault();
             let urlParams = new URLSearchParams(window.location.search);
-            urlParams.set("postId",postId )
-            urlParams.set("page",Number(e.target.value)+1 )
+            urlParams.set("postId", postId)
+            urlParams.set("page", Number(e.target.value) + 1)
 
             window.location.search = urlParams.toString()
         })
@@ -151,7 +176,7 @@ async function toStations(stationID) {
 
     let urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
-    const page = urlParams.get('page');
+    const page = urlParams.get('page') || 1;
 
     const repliesRes = await fetch(`/post/${postId}/replies/pages/${page}`);
     const parsed = await repliesRes.json();
@@ -166,70 +191,9 @@ async function toStations(stationID) {
         postClone.addEventListener('click', async (e) => {
             e.preventDefault();
             let urlParams = new URLSearchParams();
-            urlParams.set("postId",data.posts[x].id )
+            urlParams.set("postId", data.posts[x].id)
             window.location.search = urlParams.toString()
 
-            const res = await fetch(`/post/${data.posts[x].id}/replies`);
-            const parsed = await res.json();
-            const replies = parsed.replies;
-            const postForReply = parsed.posts;
-            replyTemplate.innerHTML = "";
-
-            for (let r = 0; r < replies.length; r++) {
-
-                const replyClone = reply.cloneNode(true);
-                const userIdElement = replyClone.querySelector('.userDetail_id');
-                const nicknameElement = replyClone.querySelector('.user_nickname_btn');
-                const contentElement = replyClone.querySelector(".reply_second_row");
-                const likeElement = replyClone.querySelector(".reply_like");
-                const dislikeElement = replyClone.querySelector(".reply_dislike");
-                const postTitleForReply = document.querySelector('.post_first_row .post_title');
-
-                replyClone.querySelector('.reply_num').innerText = r + 1;
-
-                userIdElement.innerHTML = "#" + replies[r].user_id; //user_id
-                nicknameElement.innerText = replies[r].nickname;  //user_nickname
-                contentElement.innerHTML = replies[r].content;
-                likeElement.innerText = replies[r].likes;
-                dislikeElement.innerHTML = replies[r].dislikes;
-                postTitleForReply.innerText = postForReply[0].post_title;
-
-                //replies
-                const userDetail = replyClone.querySelector('.user_nickname_btn');
-                const userDetailContent = replyClone.querySelector('.userDetail')
-                userDetail.addEventListener('click', () => {
-                    console.log(userIdElement.innerText); //user_id
-                    console.log(nicknameElement.innerText); //user_nickname
-                    replyClone.querySelector('.userDetail_nickname').innerHTML = nicknameElement.innerText
-                    userDetailContent.classList.remove("d-none");
-                })
-
-                const leaveUserDetail = replyClone.querySelector('.leave_userDetail_btn');
-                leaveUserDetail.addEventListener('click', () => {
-                    userDetailContent.classList.add("d-none");
-                })
-
-
-                replyTemplate.appendChild(replyClone);
-
-
-                let userID = (replyClone.getElementsByClassName('userDetail_id')[0].innerHTML).split('#')[1]
-                //doxx
-                let doxxButton = replyClone.querySelector('.doxx');
-
-                doxxButton.addEventListener('click', () => {
-                    console.log('click_doxx');
-                    window.location = `/user/profile/${userID}`;
-                });
-                
-                //block
-                let blockButton = replyClone.querySelector('.block');
-                blockButton.addEventListener('click', () => {
-                    console.log('click_block');
-                    
-                });
-
-            }
         })
 
         //posts-host
@@ -249,20 +213,20 @@ async function toStations(stationID) {
         let createTime = postClone.querySelector('.post_created_time');
         let now = Date.now();
         let updatedTime = new Date(data.posts[x].updated_at).getTime()
-        let timePassed = (now - updatedTime)/1000;
+        let timePassed = (now - updatedTime) / 1000;
         let showTimePassed = '';
-        if(timePassed > 31104000){
-            showTimePassed = parseInt(timePassed/31104000)+'年前'
-        } else if(timePassed > 2592000){
-            showTimePassed = parseInt(timePassed/2592000)+'月前'
-        } else if(timePassed > 86400){
-            showTimePassed = parseInt(timePassed/86400)+'天前'
-        } else if (timePassed > 3600){
-            showTimePassed = parseInt(timePassed/3600)+'小時前'
-        } else if (timePassed > 60){
-            showTimePassed = parseInt(timePassed/60)+'分鐘前'
+        if (timePassed > 31104000) {
+            showTimePassed = parseInt(timePassed / 31104000) + '年前'
+        } else if (timePassed > 2592000) {
+            showTimePassed = parseInt(timePassed / 2592000) + '月前'
+        } else if (timePassed > 86400) {
+            showTimePassed = parseInt(timePassed / 86400) + '天前'
+        } else if (timePassed > 3600) {
+            showTimePassed = parseInt(timePassed / 3600) + '小時前'
+        } else if (timePassed > 60) {
+            showTimePassed = parseInt(timePassed / 60) + '分鐘前'
         } else {
-            showTimePassed = parseInt(timePassed)+'秒前'
+            showTimePassed = parseInt(timePassed) + '秒前'
         }
         createTime.innerText = showTimePassed;
 

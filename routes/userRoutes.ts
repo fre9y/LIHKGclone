@@ -169,7 +169,7 @@ async function userBlockOthers(
         let user = req.session['user'];
         console.log("SESSION|",user);
         const updatedUser = await client.query(
-            `INSERT INTO user_blacklists SET is_blocked = $1 WHERE id = $2 RETURNING *`,
+            `INSERT INTO user_blacklists (user_id_block_others, user_id_being_blocked) VALUES ($1,$2) WHERE id = $2 RETURNING *`,
             [req.body.is_blocked,req.body.id]
         );
         console.log(updatedUser.rows[0]);
