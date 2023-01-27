@@ -168,12 +168,12 @@ async function userBlockOthers(
         console.log("BODY|",req.body);
         let user = req.session['user'];
         console.log("SESSION|",user);
-        const updatedUser = await client.query(
-            `INSERT INTO user_blacklists (user_id_block_others, user_id_being_blocked) VALUES ($1,$2) WHERE id = $2 RETURNING *`,
-            [req.body.is_blocked,req.body.id]
+        const updatedBlockUsers = await client.query(
+            `INSERT INTO user_blacklists (user_id_block_others, user_id_being_blocked) VALUES ($1,$2) RETURNING *`,
+            [user.id,req.body.id]
         );
-        console.log(updatedUser.rows[0]);
-        req.session['user'] = updatedUser.rows[0]
+        console.log(updatedBlockUsers.rows[0]);
+
         } catch (error) {
             console.log("ERR0R",error);
             res.status(500).json({

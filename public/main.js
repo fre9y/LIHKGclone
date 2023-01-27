@@ -1,4 +1,4 @@
-import { logout, checkSession } from './user.js';
+import { logout, checkSession, block } from './user.js';
 
 //login
 let profileIcon = document.querySelector(".profile")
@@ -125,6 +125,8 @@ async function toStations(stationID) {
             let blockButton = replyClone.querySelector('.block');
             blockButton.addEventListener('click', () => {
                 console.log('click_block');
+                blockUser(userID);
+                alert("[USER BLOCKED]")
             });
             //follow
             let followButton = replyClone.querySelector('.follow');
@@ -134,6 +136,7 @@ async function toStations(stationID) {
 
             userDetail.addEventListener('click', () => {
                 userDetailContent.classList.remove("d-none");
+                console.log(userID);
             })
 
             const leaveUserDetail = replyClone.querySelector('.leave_userDetail_btn');
@@ -406,3 +409,21 @@ newPostFormElm.addEventListener('submit', async (e) => {
 
 
 
+async function blockUser(blocked_user_id){
+
+    let uploadData = {
+        id: blocked_user_id,
+    }
+
+    let res = await fetch('/user/block', { 
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(uploadData)
+    })
+
+    if (!res.ok) {
+        alert("[ERR0R: CANT FETCH]")
+    }   
+}
