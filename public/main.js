@@ -195,12 +195,7 @@ async function toStations(stationID) {
         } else {
             showTimePassed = parseInt(timePassed)+'秒前'
         }
-
-        console.log(showTimePassed);
         createTime.innerText = showTimePassed;
-        console.log(createTime.innerText);
-
-
 
         //posts-like
         let postLike = postClone.querySelector(".like");
