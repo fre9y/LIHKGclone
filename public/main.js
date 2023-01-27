@@ -136,16 +136,23 @@ async function toStations(stationID) {
 
                 replyTemplate.appendChild(replyClone);
 
+
+                let userID = (replyClone.getElementsByClassName('userDetail_id')[0].innerHTML).split('#')[1]
                 //doxx
                 let doxxButton = replyClone.querySelector('.doxx');
-                let userID = (replyClone.getElementsByClassName('userDetail_id')[0].innerHTML).split('#')[1]
-                console.log(replyClone.getElementsByClassName('userDetail_id'));
+
                 doxxButton.addEventListener('click', () => {
                     console.log('click_doxx');
-                    //console.log(userID);
                     window.location = `/user/profile/${userID}`;
                 });
                 
+                //block
+                let blockButton = replyClone.querySelector('.block');
+                blockButton.addEventListener('click', () => {
+                    console.log('click_block');
+                    
+                });
+
             }
         })
         let postLinkNode = postClone.setAttribute("href", `/post/${data.posts[x].id}/replies`);
