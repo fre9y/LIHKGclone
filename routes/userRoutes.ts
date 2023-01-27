@@ -168,16 +168,16 @@ async function userBlockOthers(
         console.log("BODY|",req.body);
         let user = req.session['user'];
         console.log("SESSION|",user);
-        // const updatedUser = await client.query(
-        //     `UPDATE users SET is_blocked = $1 WHERE id = $2 RETURNING *`,
-        //     [req.body.is_blocked,req.body.id]
-        // );
-        // console.log(updatedUser.rows[0]);
-        // req.session['user'] = updatedUser.rows[0]
+        const updatedUser = await client.query(
+            `INSERT INTO user_blacklists SET is_blocked = $1 WHERE id = $2 RETURNING *`,
+            [req.body.is_blocked,req.body.id]
+        );
+        console.log(updatedUser.rows[0]);
+        req.session['user'] = updatedUser.rows[0]
         } catch (error) {
             console.log("ERR0R",error);
             res.status(500).json({
-            message: '[USER003 - SERVER ERROR]'
+            message: '[USER00? - SERVER ERROR]'
         })
     }
 };
