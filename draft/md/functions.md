@@ -67,9 +67,9 @@ FUNCTIONS:
 # TASK ORDER
 - 0th: GITHUB 
 - 1st: Database (sql) 
-- 2nd:HTML 
+- 2nd: HTML 
 - 3rd: Open server (ts)
-- 4th Database CRUD
+- 4th: Database CRUD
 <br/><br/>
 - Last: CSS
 - Very Last: Multi Color Theme 

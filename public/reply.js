@@ -34,7 +34,7 @@ function updateReplyContainer(replies) {
 	let replyContainerElem = document.querySelector('.replies-container')
 	replyContainerElem.innerHTML = ''
 	for (let replyItem of replies) {
-		replyContainerElem.innerHTML += `
+		replyContainerElem.innerHTML += /*html */ `
 		<div class="reply py-3 my-2"  id="reply_${replyItem.id}">
 			<div class="reply_first_row d-flex justify-content-between">
 				<span class="px-3">
@@ -88,4 +88,16 @@ function updateReplyContainer(replies) {
 		</div>
         `
 	}
+}
+
+export async function getOthersByID() {
+    let res = await fetch('/user/profile/:id', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        //body: JSON.stringify
+    })
+    let others = await res.json()
+    return others
 }

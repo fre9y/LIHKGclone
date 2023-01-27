@@ -1,9 +1,26 @@
-//test logout
-import { logout } from './user.js';
+import { logout, checkSession } from './user.js';
+
+//login
+let profileIcon = document.querySelector(".profile")
+profileIcon.addEventListener('click', () => {
+    console.log('click_login');
+    checkSession();
+})
+
+//logout
 let logoutButton = document.querySelector('.create_post_btn');
 logoutButton.addEventListener('click', () => {
     console.log('click_logout');
     logout();
+});
+
+//doxx
+let doxxButton = document.querySelector('.doxx');
+let userID = (document.getElementsByClassName('userDetail_id')[0].innerHTML).split('#')[1]
+doxxButton.addEventListener('click', () => {
+    console.log(userID);
+    console.log('click_doxx');
+    window.location = `/user/profile/${userID}` ;
 });
 
 //clone left_side for responsive
@@ -21,22 +38,8 @@ logoutButton.addEventListener('click', () => {
     }
 })();
 
-//profile
-async function checkSession() {
-    let res = await fetch('/user/profile', {
-        method: 'GET'
-    })
-    if (!res.ok) {
-        window.location = "/connect/google"
-    } else {
-        window.location = "/userProfile.html"
-    }
-}
 
-let profileIcon = document.querySelector(".profile")
-profileIcon.addEventListener('click', () => {
-    checkSession();
-})
+
 
 //stations
 //change stations name
@@ -124,6 +127,9 @@ async function toStations(stationID) {
         }
 
         //post-created-time
+        let now = Date.now();
+        let timePassed = now - data.posts[x].updated_at;
+        createTime.innerText = timePassed/(1000*60)
         // let createTime = postClone.querySelector('.post_created_time');
         // let createTimeText = data.posts[x].created_at;
         // createTime.innerText = createTimeText;
@@ -263,3 +269,4 @@ const leaveUserDetail = document.querySelector('.leave_userDetail_btn');
 leaveUserDetail.addEventListener('click', () => {
     userDetailContent.classList.add("d-none");
 })
+

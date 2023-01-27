@@ -5,7 +5,7 @@ changeProfile.addEventListener('click', () => {
 
 let home = document.querySelector(".home")
 home.addEventListener('click', () => {
-    window.location = "/home.html"
+    window.location = "/"
 })
 
 
