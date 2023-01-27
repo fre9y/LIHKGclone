@@ -12,6 +12,7 @@ userRoutes.get('/logout', logout);
 userRoutes.put('/profile', userUpdateSelf);
 userRoutes.get('/profile', userGetSelf);
 userRoutes.get('/profile/:id',userGetOthers);
+userRoutes.put('/block', userBlockOthers);
 //self (admin level) 
 userRoutes.get('/admin',getAllUsers); 
 userRoutes.put('/admin',softDeleteUsers);
@@ -55,7 +56,7 @@ async function loginGoogle (req:express.Request, res:express.Response){
 			message: '[USER001 - SERVER ERROR]'
 		})
     }
-}
+};
 
 //LOGOUT
 async function logout(
@@ -75,7 +76,7 @@ async function logout(
             message: '[USER002 - SERVER ERROR]'
         })
     }
-}
+};
 
 //UPDATE USER
 export async function userUpdateSelf(
@@ -104,7 +105,7 @@ export async function userUpdateSelf(
             message: '[USER003 - SERVER ERROR]'
         })
     }
-}
+};
 
 
 
@@ -133,7 +134,7 @@ export async function userGetSelf(
         })
         return
     }
-}
+};
 
 //READ OTHER USERS
 
@@ -156,9 +157,38 @@ async function userGetOthers(
         })
         return
     }
-}
+};
+
+//BLOCK OTHER USERS
+async function userBlockOthers(
+    req:express.Request,
+    res:express.Response
+    ){
+    try {
+        console.log("BODY|",req.body);
+        let user = req.session['user'];
+        console.log("SESSION|",user);
+        // const updatedUser = await client.query(
+        //     `UPDATE users SET is_blocked = $1 WHERE id = $2 RETURNING *`,
+        //     [req.body.is_blocked,req.body.id]
+        // );
+        // console.log(updatedUser.rows[0]);
+        // req.session['user'] = updatedUser.rows[0]
+        } catch (error) {
+            console.log("ERR0R",error);
+            res.status(500).json({
+            message: '[USER003 - SERVER ERROR]'
+        })
+    }
+};
+
+            
+    
 
 
+//ADMIN LEVEL
+
+//READ ALL USERS
 async function getAllUsers(
     req:express.Request, 
     res:express.Response
@@ -178,7 +208,7 @@ async function getAllUsers(
         })
         return
     }
-}
+};
 
 //SOFT-DELETE USER
 //not working yet* 
@@ -214,5 +244,5 @@ async function softDeleteUsers(
         })
         return
     }
-} 
+} ;
 
