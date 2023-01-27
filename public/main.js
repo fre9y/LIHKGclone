@@ -18,10 +18,20 @@ logoutButton.addEventListener('click', () => {
 let doxxButton = document.querySelector('.doxx');
 let userID = (document.getElementsByClassName('userDetail_id')[0].innerHTML).split('#')[1]
 doxxButton.addEventListener('click', () => {
-    console.log(userID);
     console.log('click_doxx');
+    console.log(userID);
     window.location = `/user/profile/${userID}` ;
 });
+//block
+let blockButton = document.querySelector('.block');
+let userNickname = document.getElementsByClassName('userDetail_nickname')[0].innerHTML
+blockButton.addEventListener('click', () => {
+    console.log('click_block');
+    console.log(userNickname);
+    console.log(typeof userNickname);
+});
+
+
 
 //clone left_side for responsive
 (() => {

@@ -11,7 +11,7 @@ userRoutes.get('/login/google', loginGoogle);
 userRoutes.get('/logout', logout);
 userRoutes.put('/profile', userUpdateSelf);
 userRoutes.get('/profile', userGetSelf);
-userRoutes.get('profile/:id',userGetOthers);
+userRoutes.get('/profile/:id',userGetOthers);
 //self (admin level) 
 userRoutes.get('/admin',getAllUsers); 
 userRoutes.put('/admin',softDeleteUsers);
