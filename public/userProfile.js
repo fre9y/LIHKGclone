@@ -77,7 +77,7 @@ async function loadProfileForAdmin() {
     }   
 }
 
-//not working yet*
+
 async function deleteUser(user_id,user_email) {
 
     let uploadData = {
