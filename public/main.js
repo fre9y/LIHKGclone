@@ -151,14 +151,28 @@ async function toStations(stationID) {
         //post-created-time
         let createTime = postClone.querySelector('.post_created_time');
         let now = Date.now();
-        let timePassed = now - data.posts[x].updated_at;
-        createTime.innerText = Number(timePassed/(1000*60));
-        console.log(now);
-        console.log(data.posts[0].updated_at);
+        let updatedTime = new Date(data.posts[x].updated_at).getTime()
+        let timePassed = (now - updatedTime)/1000;
+        let showTimePassed = '';
+        if(timePassed > 31104000){
+            showTimePassed = parseInt(timePassed/31104000)+'年前'
+        } else if(timePassed > 2592000){
+            showTimePassed = parseInt(timePassed/2592000)+'月前'
+        } else if(timePassed > 86400){
+            showTimePassed = parseInt(timePassed/86400)+'天前'
+        } else if (timePassed > 3600){
+            showTimePassed = parseInt(timePassed/3600)+'小時前'
+        } else if (timePassed > 60){
+            showTimePassed = parseInt(timePassed/60)+'分鐘前'
+        } else {
+            showTimePassed = parseInt(timePassed)+'秒前'
+        }
+
+        console.log(showTimePassed);
+        createTime.innerText = showTimePassed;
+        console.log(createTime.innerText);
 
 
-        // let createTimeText = data.posts[x].created_at;
-        // createTime.innerText = createTimeText;
 
         //posts-like
         let postLike = postClone.querySelector(".like");
