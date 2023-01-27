@@ -72,6 +72,68 @@ for (let i = 0; i < addAElem.length; i++) {
 };
 //toStations && createPost
 async function toStations(stationID) {
+    function changePageLabel(number) {
+        document.querySelector(".post_pages").innerText = number
+    }
+    function repliesElement(replies, pageCount, page) {
+        const repliesSelect = document.querySelector('#replies_select');
+
+        replyTemplate.innerHTML = "";
+        for (let k = 0; k < pageCount; k++) {
+            const opEleText = document.createTextNode(`第${k + 1}頁`);
+            let opEle = document.createElement('option');
+            opEle.setAttribute('value', `${k}`);
+            opEle.appendChild(opEleText);
+            if (k+1 == page) {
+                opEle.setAttribute('selected', "selected")
+                changePageLabel(page)
+            }
+            repliesSelect.appendChild(opEle);
+        }
+
+        for (let r = 0; r < replies.length; r++) {
+            const replyClone = reply.cloneNode(true);
+            const nicknameElement = replyClone.querySelector('.user_nickname_btn');
+            const contentElement = replyClone.querySelector(".reply_second_row");
+            const likeElement = replyClone.querySelector(".reply_like");
+            const dislikeElement = replyClone.querySelector(".reply_dislike");
+            const postTitleForReply = document.querySelector('.post_first_row .post_title');
+    
+            replyClone.querySelector('.reply_num').innerText = r + 1;
+    
+            //user_nickname
+            nicknameElement.innerText = replies[r].nickname;
+            contentElement.innerHTML = replies[r].content;
+            likeElement.innerText = replies[r].likes;
+            dislikeElement.innerHTML = replies[r].dislikes;
+            postTitleForReply.innerText = postForReply[0].post_title;
+    
+            //replies
+            const userDetail = replyClone.querySelector('.user_nickname_btn');
+            const userDetailContent = replyClone.querySelector('.userDetail')
+            userDetail.addEventListener('click', () => {
+                userDetailContent.classList.remove("d-none");
+            })
+    
+            const leaveUserDetail = replyClone.querySelector('.leave_userDetail_btn');
+            leaveUserDetail.addEventListener('click', () => {
+                userDetailContent.classList.add("d-none");
+            })
+    
+    
+            replyTemplate.appendChild(replyClone);            
+        }
+
+        repliesSelect.addEventListener('change', async (e) => {
+            e.preventDefault();
+            let urlParams = new URLSearchParams(window.location.search);
+            urlParams.set("postId",postId )
+            urlParams.set("page",Number(e.target.value)+1 )
+
+            window.location.search = urlParams.toString()
+        })
+    }
+
     const res = await fetch(`/stations/${stationID}/posts`);
     let data = await res.json();
 
@@ -87,11 +149,25 @@ async function toStations(stationID) {
         template.innerHTML = ""
     }
 
+    let urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('postId');
+    const page = urlParams.get('page');
+
+    const repliesRes = await fetch(`/post/${postId}/replies/pages/${page}`);
+    const parsed = await repliesRes.json();
+    const replies = parsed.replies;
+    const postForReply = parsed.posts;
+    const pageCount = parsed.pages;
+    repliesElement(replies, pageCount, page)
+
     // getStationsPost
     for (let x = 0; x < data.posts.length; x++) {
         const postClone = post.cloneNode(true);
         postClone.addEventListener('click', async (e) => {
             e.preventDefault();
+            let urlParams = new URLSearchParams();
+            urlParams.set("postId",data.posts[x].id )
+            window.location.search = urlParams.toString()
 
             const res = await fetch(`/post/${data.posts[x].id}/replies`);
             const parsed = await res.json();
@@ -155,13 +231,6 @@ async function toStations(stationID) {
 
             }
         })
-        let postLinkNode = postClone.setAttribute("href", `/post/${data.posts[x].id}/replies`);
-
-        //post-link
-
-        // if (!post.isTrending) {
-        //     postClone.querySelector(".lightning_icon i").style.display = "none";
-        // }
 
         //posts-host
         let postHost = postClone.querySelector(".post_host")
@@ -209,12 +278,13 @@ async function toStations(stationID) {
             postClone.querySelector('.post_dislike').classList.remove('d-none');
         }
 
-        //post-pages
+        // post-pages
         // post database need count replies and pages
         // let postSelect = postClone.querySelector("select");
         // postSelect.addEventListener('click', (e) => {
         //     e.preventDefault();
         // })
+        // console.log(data.posts)
         // if (data.posts[x]. = 100) {
         //     const option = document.createElement("option");
         //     option.innerText = `${} 頁`;
@@ -256,6 +326,7 @@ async function toStations(stationID) {
     //visited onclick function
     // let visited = postClone.querySelector('.visited')
 };
+
 
 //newest & hit switch
 const newestBtns = document.querySelectorAll(".newest_btn");
