@@ -5,31 +5,37 @@ let profileIcon = document.querySelector(".profile")
 profileIcon.addEventListener('click', () => {
     console.log('click_login');
     checkSession();
-})
+});
 
 //logout
-// let logoutButton = document.querySelector('.logout_btn');
+
+// let logoutButton = document.querySelector('.create_post_btn');
 // logoutButton.addEventListener('click', () => {
 //     console.log('click_logout');
 //     logout();
 // });
 
-//doxx
-let doxxButton = document.querySelector('.doxx');
-let userID = (document.getElementsByClassName('userDetail_id')[0].innerHTML).split('#')[1]
-doxxButton.addEventListener('click', () => {
-    console.log('click_doxx');
-    console.log(userID);
-    window.location = `/user/profile/${userID}`;
-});
+
+//not working
+//userDetail_nickname: class
+//nicknameElement.innerText: string
+//userDetail_id
+
+//let userNickname = document.getElementsByClassName('user_nickname_btn')[0].innerHTML
+
+
+
+
+
+
 //block
-let blockButton = document.querySelector('.block');
-let userNickname = document.getElementsByClassName('userDetail_nickname')[0].innerHTML
-blockButton.addEventListener('click', () => {
-    console.log('click_block');
-    console.log(userNickname);
-    console.log(typeof userNickname);
-});
+// let blockButton = document.querySelector('.block');
+// let userNickname = document.getElementsByClassName('userDetail_nickname')[0].innerHTML
+// blockButton.addEventListener('click', () => {
+//     console.log('click_block');
+//     console.log(userNickname);
+//     console.log(typeof userNickname);
+// });
 
 
 
@@ -91,11 +97,12 @@ async function toStations(stationID) {
             const parsed = await res.json();
             const replies = parsed.replies;
             const postForReply = parsed.posts;
-
             replyTemplate.innerHTML = "";
 
             for (let r = 0; r < replies.length; r++) {
+
                 const replyClone = reply.cloneNode(true);
+                const userIdElement = replyClone.querySelector('.userDetail_id');
                 const nicknameElement = replyClone.querySelector('.user_nickname_btn');
                 const contentElement = replyClone.querySelector(".reply_second_row");
                 const likeElement = replyClone.querySelector(".reply_like");
@@ -104,8 +111,8 @@ async function toStations(stationID) {
 
                 replyClone.querySelector('.reply_num').innerText = r + 1;
 
-                //user_nickname
-                nicknameElement.innerText = replies[r].nickname;
+                userIdElement.innerHTML = "#" + replies[r].user_id; //user_id
+                nicknameElement.innerText = replies[r].nickname;  //user_nickname
                 contentElement.innerHTML = replies[r].content;
                 likeElement.innerText = replies[r].likes;
                 dislikeElement.innerHTML = replies[r].dislikes;
@@ -115,6 +122,9 @@ async function toStations(stationID) {
                 const userDetail = replyClone.querySelector('.user_nickname_btn');
                 const userDetailContent = replyClone.querySelector('.userDetail')
                 userDetail.addEventListener('click', () => {
+                    console.log(userIdElement.innerText); //user_id
+                    console.log(nicknameElement.innerText); //user_nickname
+                    replyClone.querySelector('.userDetail_nickname').innerHTML = nicknameElement.innerText
                     userDetailContent.classList.remove("d-none");
                 })
 
@@ -125,6 +135,17 @@ async function toStations(stationID) {
 
 
                 replyTemplate.appendChild(replyClone);
+
+                //doxx
+                let doxxButton = replyClone.querySelector('.doxx');
+                let userID = (replyClone.getElementsByClassName('userDetail_id')[0].innerHTML).split('#')[1]
+                console.log(replyClone.getElementsByClassName('userDetail_id'));
+                doxxButton.addEventListener('click', () => {
+                    console.log('click_doxx');
+                    //console.log(userID);
+                    window.location = `/user/profile/${userID}`;
+                });
+                
             }
         })
         let postLinkNode = postClone.setAttribute("href", `/post/${data.posts[x].id}/replies`);
@@ -316,4 +337,7 @@ const leaveCreatePost = document.querySelector('.leave_createPost_btn');
 leaveCreatePost.addEventListener('click', () => {
     createPostForm.classList.add("d-none");
 })
+
+
+
 
