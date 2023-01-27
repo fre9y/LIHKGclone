@@ -13,6 +13,7 @@ CREATE TABLE user_blacklists (
 
 
 
+
 insert into user_blacklists
 (user_id_block_others, user_id_being_blocked)
 values
@@ -23,4 +24,5 @@ values
 (4,10),
 (5,6);
 
+delete from user_blacklists where user_id_block_others = 12;
 select * from user_blacklists;

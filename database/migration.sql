@@ -334,7 +334,7 @@ CREATE TABLE user_blacklists (
     updated_at timestamp not null default now(),
     user_id_block_others INTEGER not null,
     FOREIGN KEY (user_id_block_others) REFERENCES users(id),
-    user_id_being_blocked INTEGER not null,
+    user_id_being_blocked INTEGER not NULL,
     FOREIGN KEY (user_id_being_blocked) REFERENCES users(id)
 );
 
