@@ -406,14 +406,14 @@ leaveUserDetail.addEventListener('click', () => {
 
 // Create Post
 const createPost = document.querySelector('.create_post_btn');
-const createPostForm = document.querySelector('.createPostForm')
+const createPostContainer = document.querySelector('.createPostContainer')
 createPost.addEventListener('click', () => {
-    createPostForm.classList.remove("d-none");
+    createPostContainer.classList.remove("d-none");
 })
 
 const leaveCreatePost = document.querySelector('.leave_createPost_btn');
 leaveCreatePost.addEventListener('click', () => {
-    createPostForm.classList.add("d-none");
+    createPostContainer.classList.add("d-none");
 })
 
 

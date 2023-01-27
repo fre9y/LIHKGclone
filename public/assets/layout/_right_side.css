@@ -121,3 +121,6 @@
     align-items: flex-end;
     text-align: end;
 }
+.createPostContainer {
+    background-color: rgba(38, 38, 38, 0.3);
+}
