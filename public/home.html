@@ -661,15 +661,16 @@
         </a>
     </div>
 
-    <form class="createPostForm d-none col-6">
+    <form class="createPostForm d-none">
         <div class="row">
-            發表主題
-            <span class="leave_createPost_btn">
-                <i class="fa-solid fa-xmark"></i>
-            </span>
+            <div class="postFormFirstRow">發表主題
+                <span class="leave_createPost_btn">
+                    <i class="fa-solid fa-xmark"></i>
+                </span>
+            </div>
         </div>
         <div class="row">
-            <select >
+            <select class="col" id="selectStation">
                 <option value="1">吹水台</option>
                 <option value="4">手機台</option>
                 <option value="5">時事台</option>
@@ -707,23 +708,25 @@
                 <option value="37">房屋台</option>
                 <option value="38">World</option>
             </select>
-            <textarea
+            <input
+            class="col"
             id="postTitle"
             name="content"
             placeholder="標題（揀啱分台可避免太快沉底）"
-          ></textarea>
+          >
         </div>
         <div class="row">
             <!-- button and function -->
         </div>
         <div class="row">
             <textarea
+            class="col"
             id="content"
             name="content"
           ></textarea>
         </div>
         <div class="row">
-            <div><input type="submit" value="發表" /></div>
+            <div class="createPostSubmit"><input type="submit" value="發表" /></div>
         </div>
     </form>
 

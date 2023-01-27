@@ -81,7 +81,43 @@
 
 /* CreatePost */
 .createPostForm{
-    background-color: rgba(38, 38, 38, 0.3);
-    width: 500px;
-    height: 500px;
+    background-color: #454545;
+    width: 50vw;
+    height: 80vh;
+    position: absolute;
+    left: 25%;
+    top: 100px;
+    padding: 15px;
+}
+
+.postFormFirstRow{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: white;
+}
+#selectStation{
+    background-color: #333333;
+    color: white;
+    border-radius: 5px;
+    margin: 5px;
+    max-width: 100px;
+}
+#postTitle{
+    background-color: #333333;
+    border-radius: 5px;
+    margin: 5px;
+    color: white;
+}
+#content{
+    background-color: #333333;
+    height: 65vh;
+    border-radius: 5px;
+    margin: 5px;
+    color: white;
+}
+.createPostSubmit{
+    justify-content: end;
+    align-items: flex-end;
+    text-align: end;
 }

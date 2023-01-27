@@ -72,7 +72,6 @@ app.use('/user', userRoutes)
 // app.use('/replies', replyRoutes)
 app.use(express.static("protected"));
 app.use(express.static("public"));
-app.use(express.static("node_modules"));
 app.use(express.static("public/assets"));
 app.use(express.static("uploads")); //photos in folder can be found
 app.use(express.static("uploads/image"));

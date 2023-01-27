@@ -8,11 +8,11 @@ profileIcon.addEventListener('click', () => {
 })
 
 //logout
-let logoutButton = document.querySelector('.logout_btn');
-logoutButton.addEventListener('click', () => {
-    console.log('click_logout');
-    logout();
-});
+// let logoutButton = document.querySelector('.logout_btn');
+// logoutButton.addEventListener('click', () => {
+//     console.log('click_logout');
+//     logout();
+// });
 
 //doxx
 let doxxButton = document.querySelector('.doxx');
@@ -167,12 +167,7 @@ async function toStations(stationID) {
         } else {
             showTimePassed = parseInt(timePassed)+'秒前'
         }
-
-        console.log(showTimePassed);
         createTime.innerText = showTimePassed;
-        console.log(createTime.innerText);
-
-
 
         //posts-like
         let postLike = postClone.querySelector(".like");
