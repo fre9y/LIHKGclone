@@ -20,7 +20,7 @@ let userID = (document.getElementsByClassName('userDetail_id')[0].innerHTML).spl
 doxxButton.addEventListener('click', () => {
     console.log('click_doxx');
     console.log(userID);
-    window.location = `/user/profile/${userID}` ;
+    window.location = `/user/profile/${userID}`;
 });
 //block
 let blockButton = document.querySelector('.block');
@@ -106,13 +106,24 @@ async function toStations(stationID) {
 
                 console.log(replies[0])
                 //user_nickname
-                nicknameElement.innerText =  replies[r].nickname;
+                nicknameElement.innerText = replies[r].nickname;
                 contentElement.innerHTML = replies[r].content;
                 likeElement.innerText = replies[r].likes;
                 dislikeElement.innerHTML = replies[r].dislikes;
                 postTitleForReply.innerText = postForReply[0].post_title;
 
-                
+                //replies
+                // const userDetail = replyClone.querySelector('.user_nickname_btn');
+                // const userDetailContent = replyClone.querySelector('.userDetail')
+                // userDetail.addEventListener('click', () => {
+                //     userDetailContent.classList.remove("d-none");
+                // })
+
+                // const leaveUserDetail = replyClone.querySelector('.leave_userDetail_btn');
+                // leaveUserDetail.addEventListener('click', () => {
+                //     userDetailContent.classList.add("d-none");
+                // })
+
 
                 replyTemplate.appendChild(replyClone);
             }
