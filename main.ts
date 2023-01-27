@@ -119,7 +119,7 @@ app.get("/stations/:id/posts", async (req, res) => {
             where posts.station_id = stations.id) as station_name
         from posts
   where station_id = ${stationsID}
-  and show = true
+  and posts.show = true
         order by updated_at DESC;`
   );
 
@@ -149,7 +149,7 @@ app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
       replies.* from replies
   inner JOIN users on users.id = replies.user_id
               where post_id = ${postID}
-        and show = true
+        and replies.show = true
               order by replies.id ASC
               LIMIT 25 OFFSET 25 * (${currentPage} -1);`
   );
