@@ -138,16 +138,40 @@ app.get("/stations/:id/posts", async (req, res) => {
 
 app.get('/post/:id/replies', async (req, res) => {
   let postID = req.params.id;
-  // const postNUM = await client.query(
-  //   ``
-  // )
-  res.json([{
-    name: "james",
-    postID
-  }
-  ])
-  return
+  const repliesDetail = await client.query(
+    `select (
+      select  json_agg(name) as images_id  from images  where replies_id = replies.id),      
+      (select is_male
+       from users 
+       where users.id = replies.user_id) as is_male,
+      users.nickname,
+      replies.* from replies
+  inner JOIN users on users.id = replies.user_id
+              where post_id = ${postID}
+        and show = true
+              order by replies.id ASC;`
+  );
+
+  const postDetail = await client.query(
+    `Select * From posts JOIN users ON posts.user_id = users.id WHERE posts.id = ${postID}`
+  )
+
+  res.json({
+    replies: repliesDetail.rows,
+    posts: postDetail.rows
+  })
+
+  // return
 })
+
+// app.get('/post/:id/replies/pages/:pages', async (req, res) => {
+//   let pages = req.params.pages;
+//   const homePages = path.resolve(__dirname, 'public/home.html');
+//   res.sendFile(homePages);
+
+//   // return
+// })
+
 
 //image
 app.get('/post/:post/media', async (req, res) => {
@@ -160,6 +184,8 @@ app.get('/post/:post/media', async (req, res) => {
     images: images.rows
   });
 })
+
+
 
 
 

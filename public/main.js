@@ -53,20 +53,17 @@ for (let i = 0; i < addAElem.length; i++) {
 };
 //toStations && createPost
 async function toStations(stationID) {
-    // let urlParams = new URLSearchParams(window.location.search);
-    // const stationID = urlParams.get('stationID');
-
     const res = await fetch(`/stations/${stationID}/posts`);
-
     let data = await res.json();
-    console.log(data);
 
     const template = document.querySelector(".post_template");
-
     const templateSample = document.querySelector(".post_template_sample");
-    const post = templateSample
-        .querySelector(".post");//.hidden
+    const post = templateSample.querySelector(".post");//.hidden
     const mobileVision = document.querySelector(".mobile_vision");
+    const replyTemplate = document.querySelector(".replies_container_template");
+    const replyTemplateSample = document.querySelector(".replies_container_template_sample");
+    const reply = replyTemplateSample.querySelector(".reply");
+
     if (res.ok) {
         template.innerHTML = ""
     }
@@ -74,14 +71,38 @@ async function toStations(stationID) {
     // getStationsPost
     for (let x = 0; x < data.posts.length; x++) {
         const postClone = post.cloneNode(true);
-        postClone.addEventListener('click',async () => {
-            console.log(window.location)
-            window.location.search = `?postId=${data.posts[x].id}`
+        postClone.addEventListener('click', async (e) => {
+            e.preventDefault();
+
             const res = await fetch(`/post/${data.posts[x].id}/replies`);
-            let repliesData = await res.json()
-            console.log("replies: ", repliesData)
+            const parsed = await res.json();
+            const replies = parsed.replies;
+            const postForReply = parsed.posts;
+
+            replyTemplate.innerHTML = "";
+
+            for (let r = 0; r < replies.length; r++) {
+                const replyClone = reply.cloneNode(true);
+                const nicknameElement = replyClone.querySelector('.user_nickname_btn');
+                const contentElement = replyClone.querySelector(".reply_second_row");
+                const likeElement = replyClone.querySelector(".reply_like");
+                const dislikeElement = replyClone.querySelector(".reply_dislike");
+                const postTitleForReply = document.querySelector('.post_first_row .post_title');
+
+                replyClone.querySelector('.reply_num').innerText = r + 1;
+
+                console.log(replies[0])
+                //user_nickname
+                nicknameElement.innerText =  replies[r].nickname;
+                contentElement.innerHTML = replies[r].content;
+                likeElement.innerText = replies[r].likes;
+                dislikeElement.innerHTML = replies[r].dislikes;
+                postTitleForReply.innerText = postForReply[0].post_title;
+
+                replyTemplate.appendChild(replyClone);
+            }
         })
-        // let postLinkNode = postClone.setAttribute("href", `/post/${data.posts[x].id}`);
+        let postLinkNode = postClone.setAttribute("href", `/post/${data.posts[x].id}/replies`);
 
         //post-link
 
@@ -125,7 +146,7 @@ async function toStations(stationID) {
         // postSelect.addEventListener('click', (e) => {
         //     e.preventDefault();
         // })
-        // if (data.post[x]. = 100) {
+        // if (data.posts[x]. = 100) {
         //     const option = document.createElement("option");
         //     option.innerText = `${} 頁`;
         //     option.value = ;
@@ -214,7 +235,6 @@ image.addEventListener('click', async () => {
     imgWall.classList.remove("d-none");
 
     const res = await fetch(`/post/${postId}/media`);
-    // const res = await fetch(`/post/1/media`);
     let data = await res.json()
     images = data.images;
 
