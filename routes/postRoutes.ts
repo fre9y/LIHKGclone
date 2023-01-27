@@ -7,7 +7,7 @@ import { formParsePromise } from '../util/formidable'
 
 export const postRoutes = express.Router()
 
-postRoutes.get('/:stationId', getPosts)
+// postRoutes.get('/:stationId', getPosts)
 postRoutes.post('/', isLoggedInAPI, isP, createPosts)
 postRoutes.put('/', isLoggedInAPI, isP, isYourPost, updatePostById)
 postRoutes.put('/', isLoggedInAPI, isAdmin, hidePostById)
