@@ -72,6 +72,7 @@ for (let i = 0; i < addAElem.length; i++) {
     addAElem[i].addEventListener('click', async (e) => {
         e.preventDefault();
         window.history.pushState({}, '', '/stations/' + stationID);
+
         toStations(stationID);
     })
 };
@@ -149,15 +150,6 @@ async function toStations(stationID) {
                 userDetailContent.classList.add("d-none");
             })
 
-
-            // 
-           
-            replyTemplate.appendChild(replyClone);
-
-
-
-
-            // 
             replyTemplate.appendChild(replyClone);
         }
 
@@ -173,6 +165,12 @@ async function toStations(stationID) {
 
     const res = await fetch(`/stations/${stationID}/posts`);
     let data = await res.json();
+
+    //change stationsName
+    for (let num of data.stations) {
+        document.querySelector('.station_name').innerText = num.name;
+    }
+
 
     const template = document.querySelector(".post_template");
     const templateSample = document.querySelector(".post_template_sample");
@@ -205,7 +203,6 @@ async function toStations(stationID) {
             let urlParams = new URLSearchParams();
             urlParams.set("postId", data.posts[x].id)
             window.location.search = urlParams.toString()
-
         })
 
         //posts-host

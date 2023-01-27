@@ -159,10 +159,11 @@ app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
   );
 
   const postDetail = await client.query(
-    `Select * From posts JOIN users ON posts.user_id = users.id WHERE posts.id = ${postID}`
+    `SELECT * FROM posts JOIN users ON posts.user_id = users.id JOIN stations ON posts.station_id = stations.id WHERE posts.id = ${postID};`
   )
   const page = Math.ceil( replyCount.rows[0].count / 25);
 
+  console.table(postDetail.rows)
   res.json({
     replies: repliesDetail.rows,
     posts: postDetail.rows,
