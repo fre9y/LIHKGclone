@@ -344,7 +344,7 @@ image.addEventListener('click', async () => {
 
     const res = await fetch(`/post/${postId}/media`);
     let data = await res.json()
-    images = data.images;
+    let images = data.images;
 
     for (let path of images) {
         const img = document.createElement("img");
