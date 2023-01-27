@@ -17,6 +17,11 @@ CREATE TABLE replies (
     show Boolean not null default true
 );
 
+
+
+
+
+
 insert into replies
 (user_id, post_id, content, reference_id, likes, dislikes)
 values
@@ -140,3 +145,4 @@ inner JOIN users on users.id = replies.user_id
             order by replies.id ASC
             LIMIT 25 OFFSET 25 * (2 -1);
 
+            order by replies.id ASC;

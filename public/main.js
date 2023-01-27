@@ -5,31 +5,37 @@ let profileIcon = document.querySelector(".profile")
 profileIcon.addEventListener('click', () => {
     console.log('click_login');
     checkSession();
-})
+});
 
 //logout
-let logoutButton = document.querySelector('.create_post_btn');
-logoutButton.addEventListener('click', () => {
-    console.log('click_logout');
-    logout();
-});
 
-//doxx
-let doxxButton = document.querySelector('.doxx');
-let userID = (document.getElementsByClassName('userDetail_id')[0].innerHTML).split('#')[1]
-doxxButton.addEventListener('click', () => {
-    console.log('click_doxx');
-    console.log(userID);
-    window.location = `/user/profile/${userID}`;
-});
+// let logoutButton = document.querySelector('.create_post_btn');
+// logoutButton.addEventListener('click', () => {
+//     console.log('click_logout');
+//     logout();
+// });
+
+
+//not working
+//userDetail_nickname: class
+//nicknameElement.innerText: string
+//userDetail_id
+
+//let userNickname = document.getElementsByClassName('user_nickname_btn')[0].innerHTML
+
+
+
+
+
+
 //block
-let blockButton = document.querySelector('.block');
-let userNickname = document.getElementsByClassName('userDetail_nickname')[0].innerHTML
-blockButton.addEventListener('click', () => {
-    console.log('click_block');
-    console.log(userNickname);
-    console.log(typeof userNickname);
-});
+// let blockButton = document.querySelector('.block');
+// let userNickname = document.getElementsByClassName('userDetail_nickname')[0].innerHTML
+// blockButton.addEventListener('click', () => {
+//     console.log('click_block');
+//     console.log(userNickname);
+//     console.log(typeof userNickname);
+// });
 
 
 
@@ -162,6 +168,68 @@ async function toStations(stationID) {
             let urlParams = new URLSearchParams();
             urlParams.set("postId",data.posts[x].id )
             window.location.search = urlParams.toString()
+
+            const res = await fetch(`/post/${data.posts[x].id}/replies`);
+            const parsed = await res.json();
+            const replies = parsed.replies;
+            const postForReply = parsed.posts;
+            replyTemplate.innerHTML = "";
+
+            for (let r = 0; r < replies.length; r++) {
+
+                const replyClone = reply.cloneNode(true);
+                const userIdElement = replyClone.querySelector('.userDetail_id');
+                const nicknameElement = replyClone.querySelector('.user_nickname_btn');
+                const contentElement = replyClone.querySelector(".reply_second_row");
+                const likeElement = replyClone.querySelector(".reply_like");
+                const dislikeElement = replyClone.querySelector(".reply_dislike");
+                const postTitleForReply = document.querySelector('.post_first_row .post_title');
+
+                replyClone.querySelector('.reply_num').innerText = r + 1;
+
+                userIdElement.innerHTML = "#" + replies[r].user_id; //user_id
+                nicknameElement.innerText = replies[r].nickname;  //user_nickname
+                contentElement.innerHTML = replies[r].content;
+                likeElement.innerText = replies[r].likes;
+                dislikeElement.innerHTML = replies[r].dislikes;
+                postTitleForReply.innerText = postForReply[0].post_title;
+
+                //replies
+                const userDetail = replyClone.querySelector('.user_nickname_btn');
+                const userDetailContent = replyClone.querySelector('.userDetail')
+                userDetail.addEventListener('click', () => {
+                    console.log(userIdElement.innerText); //user_id
+                    console.log(nicknameElement.innerText); //user_nickname
+                    replyClone.querySelector('.userDetail_nickname').innerHTML = nicknameElement.innerText
+                    userDetailContent.classList.remove("d-none");
+                })
+
+                const leaveUserDetail = replyClone.querySelector('.leave_userDetail_btn');
+                leaveUserDetail.addEventListener('click', () => {
+                    userDetailContent.classList.add("d-none");
+                })
+
+
+                replyTemplate.appendChild(replyClone);
+
+
+                let userID = (replyClone.getElementsByClassName('userDetail_id')[0].innerHTML).split('#')[1]
+                //doxx
+                let doxxButton = replyClone.querySelector('.doxx');
+
+                doxxButton.addEventListener('click', () => {
+                    console.log('click_doxx');
+                    window.location = `/user/profile/${userID}`;
+                });
+                
+                //block
+                let blockButton = replyClone.querySelector('.block');
+                blockButton.addEventListener('click', () => {
+                    console.log('click_block');
+                    
+                });
+
+            }
         })
 
         //posts-host
@@ -178,16 +246,25 @@ async function toStations(stationID) {
         }
 
         //post-created-time
-        // let createTime = postClone.querySelector('.post_created_time');
-        // let now = Date.now();
-        // let timePassed = now - data.posts[x].updated_at;
-        // createTime.innerText = timePassed/(1000*60);
-        // console.log(now);
-        // console.log(data.posts[0].updated_at);
-
-
-        // let createTimeText = data.posts[x].created_at;
-        // createTime.innerText = createTimeText;
+        let createTime = postClone.querySelector('.post_created_time');
+        let now = Date.now();
+        let updatedTime = new Date(data.posts[x].updated_at).getTime()
+        let timePassed = (now - updatedTime)/1000;
+        let showTimePassed = '';
+        if(timePassed > 31104000){
+            showTimePassed = parseInt(timePassed/31104000)+'年前'
+        } else if(timePassed > 2592000){
+            showTimePassed = parseInt(timePassed/2592000)+'月前'
+        } else if(timePassed > 86400){
+            showTimePassed = parseInt(timePassed/86400)+'天前'
+        } else if (timePassed > 3600){
+            showTimePassed = parseInt(timePassed/3600)+'小時前'
+        } else if (timePassed > 60){
+            showTimePassed = parseInt(timePassed/60)+'分鐘前'
+        } else {
+            showTimePassed = parseInt(timePassed)+'秒前'
+        }
+        createTime.innerText = showTimePassed;
 
         //posts-like
         let postLike = postClone.querySelector(".like");
@@ -326,4 +403,19 @@ const leaveUserDetail = document.querySelector('.leave_userDetail_btn');
 leaveUserDetail.addEventListener('click', () => {
     userDetailContent.classList.add("d-none");
 })
+
+// Create Post
+const createPost = document.querySelector('.create_post_btn');
+const createPostForm = document.querySelector('.createPostForm')
+createPost.addEventListener('click', () => {
+    createPostForm.classList.remove("d-none");
+})
+
+const leaveCreatePost = document.querySelector('.leave_createPost_btn');
+leaveCreatePost.addEventListener('click', () => {
+    createPostForm.classList.add("d-none");
+})
+
+
+
 

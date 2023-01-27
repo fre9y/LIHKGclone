@@ -12,7 +12,7 @@ userRoutes.get('/logout', logout);
 userRoutes.put('/profile', userUpdateSelf);
 userRoutes.get('/profile', userGetSelf);
 userRoutes.get('/profile/:id',userGetOthers);
-userRoutes.put('/block', userBlockOthers);
+userRoutes.put('/block', isLoggedInAPI, userBlockOthers);
 //self (admin level) 
 userRoutes.get('/admin',getAllUsers); 
 userRoutes.put('/admin',softDeleteUsers);

@@ -659,6 +659,74 @@
         </a>
     </div>
 
+    <form class="createPostForm d-none">
+        <div class="row">
+            <div class="postFormFirstRow">發表主題
+                <span class="leave_createPost_btn">
+                    <i class="fa-solid fa-xmark"></i>
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <select class="col" id="selectStation">
+                <option value="1">吹水台</option>
+                <option value="4">手機台</option>
+                <option value="5">時事台</option>
+                <option value="6">體育台</option>
+                <option value="7">娛樂台</option>
+                <option value="8">動漫台</option>
+                <option value="9">Apps台</option>
+                <option value="10">遊戲台</option>
+                <option value="11">影視台</option>
+                <option value="12">講故台</option>
+                <option value="13">潮流台</option>
+                <option value="14">上班台</option>
+                <option value="15">財經台</option>
+                <option value="16">飲食台</option>
+                <option value="17">旅遊台</option>
+                <option value="18">學術台</option>
+                <option value="19">校園台</option>
+                <option value="20">汽車台</option>
+                <option value="21">音樂台</option>
+                <option value="22">硬件台</option>
+                <option value="23">攝影台</option>
+                <option value="24">玩具台</option>
+                <option value="25">寵物台</option>
+                <option value="26">軟件台</option>
+                <option value="27">活動台</option>
+                <option value="28">站務台</option>
+                <option value="29">成人台</option>
+                <option value="30">感情台</option>
+                <option value="31">創意台</option>
+                <option value="32">黑洞</option>
+                <option value="33">政事台</option>
+                <option value="34">直播台</option>
+                <option value="35">電訊台</option>
+                <option value="36">健康台</option>
+                <option value="37">房屋台</option>
+                <option value="38">World</option>
+            </select>
+            <input
+            class="col"
+            id="postTitle"
+            name="content"
+            placeholder="標題（揀啱分台可避免太快沉底）"
+          >
+        </div>
+        <div class="row">
+            <!-- button and function -->
+        </div>
+        <div class="row">
+            <textarea
+            class="col"
+            id="content"
+            name="content"
+          ></textarea>
+        </div>
+        <div class="row">
+            <div class="createPostSubmit"><input type="submit" value="發表" /></div>
+        </div>
+    </form>
 
     <div class="replies_container_template_sample d-none">
         <div class="reply py-3 my-2">
@@ -725,6 +793,8 @@
                 </div>
             </div>
 
+
+
             <div
                 class="userDetail d-none position-absolute top-0 end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
                 <div class="userDetail_content">
@@ -744,7 +814,7 @@
                     </div>
 
                     <div class="d-flex align-items-center justify-content-between px-3 py-3">
-                        <div>
+                        <!-- <div>
                             <button>起底</button>
                         </div>
 
@@ -752,15 +822,15 @@
                             3機械人三
                         </div>
 
-                        <div class="userDetail_id d-flex align-items-center justify-content-center px-3 py-3">#9</div>
+                        <div class="userDetail_id d-flex align-items-center justify-content-center px-3 py-3">#9</div> -->
 
                         <div class="d-flex align-items-center justify-content-between px-3 py-3">
-                            <div>
-                                <button class="doxx">起底</button>
+                            <div class="doxx">
+                                <button >起底</button>
                             </div>
 
-                            <div>
-                                <button class="block">封鎖</button>
+                            <div class="block">
+                                <button >封鎖</button>
                             </div>
 
                             <div>
