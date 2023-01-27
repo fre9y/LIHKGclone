@@ -107,12 +107,30 @@ async function toStations(stationID) {
             likeElement.innerText = replies[r].likes;
             dislikeElement.innerHTML = replies[r].dislikes;
             postTitleForReply.innerText = postForReply[0].post_title;
-            console.log(replyClone)
+            //console.log(replyClone)
             //replies
             const userDetail = replyClone.querySelector('.user_nickname_btn');
             const userDetailContent = replyClone.querySelector('.userDetail')
             replyClone.querySelector(".userDetail_nickname").innerText = replies[r].nickname;
-            replyClone.querySelector(".userDetail_id").innerText = "#"+replies[r].id;
+            replyClone.querySelector(".userDetail_id").innerText = "#" + replies[r].user_id;
+
+            let userID = (replyClone.getElementsByClassName('userDetail_id')[0].innerHTML).split('#')[1]
+            //doxx
+            let doxxButton = replyClone.querySelector('.doxx');
+            doxxButton.addEventListener('click', () => {
+                console.log('click_doxx');
+                window.location = `/user/profile/${userID}`;
+            });
+            //block
+            let blockButton = replyClone.querySelector('.block');
+            blockButton.addEventListener('click', () => {
+                console.log('click_block');
+            });
+            //follow
+            let followButton = replyClone.querySelector('.follow');
+            followButton.addEventListener('click', () => {
+                console.log('click_follow');
+            });       
 
             userDetail.addEventListener('click', () => {
                 userDetailContent.classList.remove("d-none");
@@ -129,21 +147,7 @@ async function toStations(stationID) {
             replyTemplate.appendChild(replyClone);
 
 
-            let userID = (replyClone.getElementsByClassName('userDetail_id')[0].innerHTML).split('#')[1]
-            //doxx
-            let doxxButton = replyClone.querySelector('.doxx');
 
-            doxxButton.addEventListener('click', () => {
-                console.log('click_doxx');
-                window.location = `/user/profile/${userID}`;
-            });
-
-            //block
-            let blockButton = replyClone.querySelector('.block');
-            blockButton.addEventListener('click', () => {
-                console.log('click_block');
-
-            });
 
             // 
             replyTemplate.appendChild(replyClone);
