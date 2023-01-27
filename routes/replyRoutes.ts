@@ -37,7 +37,7 @@ export async function getReplies(req: express.Request, res: express.Response) {
                 post_id
             from replies
             where post_id = $1
-			and show = true
+			and replies.show = true
             order by id ASC
             `,
             [Number(postId)]
@@ -185,7 +185,7 @@ export async function getUserReplies(
                 from replies
                 where post_id = $1 
                 and user_id = $2
-				and show = true
+				and replies.show = true
                 order by id ASC
 				`,
 				[Number(postId), Number(userId)]
@@ -220,7 +220,7 @@ export async function getHotReplies(req: express.Request, res: express.Response)
 				post_id
 			from replies
 			where post_id =$ 1
-			and show = true
+			and replies.show = true
 			order by likes DESC
             `,
             [Number(postId)]
