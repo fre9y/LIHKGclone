@@ -8,11 +8,11 @@ profileIcon.addEventListener('click', () => {
 })
 
 //logout
-let logoutButton = document.querySelector('.create_post_btn');
-logoutButton.addEventListener('click', () => {
-    console.log('click_logout');
-    logout();
-});
+// let logoutButton = document.querySelector('.create_post_btn');
+// logoutButton.addEventListener('click', () => {
+//     console.log('click_logout');
+//     logout();
+// });
 
 //doxx
 let doxxButton = document.querySelector('.doxx');
@@ -149,12 +149,12 @@ async function toStations(stationID) {
         }
 
         //post-created-time
-        // let createTime = postClone.querySelector('.post_created_time');
-        // let now = Date.now();
-        // let timePassed = now - data.posts[x].updated_at;
-        // createTime.innerText = timePassed/(1000*60);
-        // console.log(now);
-        // console.log(data.posts[0].updated_at);
+        let createTime = postClone.querySelector('.post_created_time');
+        let now = Date.now();
+        let timePassed = now - data.posts[x].updated_at;
+        createTime.innerText = Number(timePassed/(1000*60));
+        console.log(now);
+        console.log(data.posts[0].updated_at);
 
 
         // let createTimeText = data.posts[x].created_at;
@@ -294,5 +294,17 @@ userDetail.addEventListener('click', () => {
 const leaveUserDetail = document.querySelector('.leave_userDetail_btn');
 leaveUserDetail.addEventListener('click', () => {
     userDetailContent.classList.add("d-none");
+})
+
+// Create Post
+const createPost = document.querySelector('.create_post_btn');
+const createPostForm = document.querySelector('.createPostForm')
+createPost.addEventListener('click', () => {
+    createPostForm.classList.remove("d-none");
+})
+
+const leaveCreatePost = document.querySelector('.leave_createPost_btn');
+leaveCreatePost.addEventListener('click', () => {
+    createPostForm.classList.add("d-none");
 })
 
