@@ -8,34 +8,39 @@ profileIcon.addEventListener('click', () => {
 });
 
 //logout
-
 // let logoutButton = document.querySelector('.create_post_btn');
 // logoutButton.addEventListener('click', () => {
 //     console.log('click_logout');
 //     logout();
 // });
 
+//favourite posts (star)
+//rgb(250,194,9)
+//FAC209
+let starButton = document.querySelector(".fa-star")
+let buttonToggle = true;
+starButton.addEventListener('click', () => {
+    console.log('click_star');  
 
-//not working
-//userDetail_nickname: class
-//nicknameElement.innerText: string
-//userDetail_id
+    starButton.style.color = "rgb(250,194,9)"
+    console.log(starButton.style.color);
+    if (buttonToggle) {
+        starButton.style.color = "rgb(255,255,255)"
+        buttonToggle = false;
+        console.log(buttonToggle);
+    } else {
+        starButton.style.color = "rgb(250,194,9)"
+        buttonToggle = true;
+        console.log(buttonToggle);
+    }
+});
 
-//let userNickname = document.getElementsByClassName('user_nickname_btn')[0].innerHTML
 
 
 
 
 
 
-//block
-// let blockButton = document.querySelector('.block');
-// let userNickname = document.getElementsByClassName('userDetail_nickname')[0].innerHTML
-// blockButton.addEventListener('click', () => {
-//     console.log('click_block');
-//     console.log(userNickname);
-//     console.log(typeof userNickname);
-// });
 
 
 
