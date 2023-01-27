@@ -31,3 +31,4 @@ SELECT * FROM posts WHERE station_id = 2;
 select * from posts;
 Select * From posts JOIN users ON posts.user_id = users.id;
 Select * From posts JOIN users ON posts.user_id = users.id WHERE posts.id = 2;
+SELECT * FROM posts JOIN users ON posts.user_id = users.id JOIN stations ON posts.station_id = stations.id WHERE posts.id = 2;
