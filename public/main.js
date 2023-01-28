@@ -58,7 +58,6 @@ profileIcon.addEventListener('click', () => {
 
 
 //stations
-//change stations name
 const addAElem = document.querySelectorAll('.stations .link');
 
 for (let i = 0; i < addAElem.length; i++) {
