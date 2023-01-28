@@ -15,6 +15,7 @@ userRoutes.get('/profile/:id',userGetOthers);
 userRoutes.put('/block', isLoggedInAPI, userBlockOthers);
 userRoutes.put('/bookmark', isLoggedInAPI, userBookmarkPosts)
 userRoutes.delete('/bookmark', isLoggedInAPI, userDeleteBookmarkPosts)
+userRoutes.get('/following', isLoggedInAPI, userAddFollowingUsers)
 //self (admin level) 
 userRoutes.get('/admin',getAllUsers); 
 userRoutes.put('/admin',softDeleteUsers);
@@ -221,6 +222,28 @@ async function userDeleteBookmarkPosts(
             [user.id,req.body.id]
         );
         console.log(updatedDeleteBookmarkPost.rows[0]);
+        } catch (error) {
+            console.log("ERR0R",error);
+            res.status(500).json({
+            message: '[USER00? - SERVER ERROR]'
+        })
+    }
+}
+
+//ADD FOLLOWING USERS
+async function userAddFollowingUsers(
+    req:express.Request,
+    res:express.Response
+    ){
+    try {
+        console.log("BODY|",req.body);
+        let user = req.session['user'];
+        console.log("SESSION|",user);
+        const updatedAddFollowingUsers = await client.query(
+            `INSERT INTO user_followings (user_id_following_others, user_id_being_followed) VALUES ($1,$2) RETURNING *`,
+            [user.id,req.body.id]
+        ); 
+        console.log(updatedAddFollowingUsers.rows[0]);
         } catch (error) {
             console.log("ERR0R",error);
             res.status(500).json({

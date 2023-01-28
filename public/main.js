@@ -209,7 +209,7 @@ async function toStations(stationID) {
 
             userDetail.addEventListener('click', () => {
                 userDetailContent.classList.remove("d-none");
-                console.log(userID);
+                console.log("replyID:",userID);
             })
 
             const leaveUserDetail = replyClone.querySelector('.leave_userDetail_btn');
