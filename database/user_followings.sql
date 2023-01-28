@@ -1,4 +1,4 @@
-CREATE TABLE user_follows (
+CREATE TABLE user_followings (
     id SERIAL primary key,
     created_at timestamp not null default now(),
     updated_at timestamp not null default now(),
@@ -8,7 +8,7 @@ CREATE TABLE user_follows (
     FOREIGN KEY (user_id_being_followed) REFERENCES users(id)
 );
 
-insert into user_follows
+insert into user_followings
 (user_id_follow_others, user_id_being_followed)
 values
 (1,3),
@@ -22,4 +22,6 @@ values
 (11,5);
 
 
-select * from user_follows;
+
+delete from user_followings where user_id_follow_others = 12;
+select * from user_followings;

@@ -8,34 +8,167 @@ profileIcon.addEventListener('click', () => {
 });
 
 //logout
-
 // let logoutButton = document.querySelector('.create_post_btn');
 // logoutButton.addEventListener('click', () => {
 //     console.log('click_logout');
 //     logout();
 // });
 
+//bookmark posts (star)
+async function addPostBookmark(post_id){
 
-//not working
-//userDetail_nickname: class
-//nicknameElement.innerText: string
-//userDetail_id
+    let uploadData = {
+        id: post_id,
+    }
 
-//let userNickname = document.getElementsByClassName('user_nickname_btn')[0].innerHTML
+    let res = await fetch('/user/bookmark', { 
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(uploadData)
+    })
+
+    if (!res.ok) {
+        alert("[ERR0R: CANT FETCH]")
+    } else {
+        alert("[POST BOOKMARKED]")
+    }   
+}
+
+async function deletePostBookmark(post_id){
+    let uploadData = {
+        id: post_id,
+    }
+
+    let res = await fetch('/user/bookmark', { 
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(uploadData)
+    })
+
+    if (!res.ok) {
+        alert("[ERR0R: CANT FETCH]")
+    } else {
+        alert("[BOOKMARKED POST DELETED]")
+    } 
+}
+
+function starClick(postId){
+    let starButton = document.querySelector(".fa-star")
+    let buttonToggle = false;
+    starButton.style.color = "rgb(255,255,255)" 
+
+    starButton.addEventListener('click', () => {
+        console.log('click_star');  
+        console.log(starButton.style.color);
+        if (buttonToggle) { //yellow to white
+            starButton.style.color = "rgb(255,255,255)"
+            buttonToggle = false;
+            console.log(buttonToggle);
+            deletePostBookmark(postId)
+        } else { //white to yellow
+            starButton.style.color = "rgb(250,194,9)"
+            buttonToggle = true;
+            console.log(buttonToggle);
+            addPostBookmark(postId)
+        }
+    });
+}
+
+
+//block user
+async function blockUser(blocked_user_id){
+
+    let uploadData = {
+        id: blocked_user_id,
+    }
+
+    let res = await fetch('/user/block', { 
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(uploadData)
+    })
+
+    if (!res.ok) {
+        alert("[ERR0R: CANT FETCH]")
+    } else {
+        alert("[USER BLOCKED]")
+    }   
+}
+//not yet tested no entry button
+async function unblockUser(blocked_user_id){
+    let uploadData = {
+        id: blocked_user_id,
+    }
+
+    let res = await fetch('/user/block', { 
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(uploadData)
+    })
+
+    if (!res.ok) {
+        alert("[ERR0R: CANT FETCH]")
+    } else {
+        alert("[BLOCKED USER UNBLOCKED]")
+    } 
+};
+
+
+//add following users
+async function addFollowingUser(follow_user_id){
+    let uploadData = {
+        id: follow_user_id,
+    }
+
+    let res = await fetch('/user/following', { 
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(uploadData)
+    })
+
+    if (!res.ok) {
+        alert("[ERR0R: CANT FETCH]")
+    } else {
+        alert("[USER FOLLOWED]")
+    }   
+}
+
+//delete following users
+async function deleteFollowingUser(follow_user_id){
+    let uploadData = {
+        id: follow_user_id,
+    }
+
+    let res = await fetch('/user/following', { 
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(uploadData)
+    })
+
+    if (!res.ok) {
+        alert("[ERR0R: CANT FETCH]")
+    } else {
+        alert("[USER UNFOLLOWED]")
+    }   
+}
 
 
 
 
 
 
-//block
-// let blockButton = document.querySelector('.block');
-// let userNickname = document.getElementsByClassName('userDetail_nickname')[0].innerHTML
-// blockButton.addEventListener('click', () => {
-//     console.log('click_block');
-//     console.log(userNickname);
-//     console.log(typeof userNickname);
-// });
 
 
 
@@ -77,7 +210,6 @@ async function toStations(stationID) {
     }
     function repliesElement(replies, pageCount, page) {
         const repliesSelect = document.querySelector('#replies_select');
-
         replyTemplate.innerHTML = "";
         for (let k = 0; k < pageCount; k++) {
             const opEleText = document.createTextNode(`第${k + 1}頁`);
@@ -100,14 +232,14 @@ async function toStations(stationID) {
             const postTitleForReply = document.querySelector('.post_first_row .post_title');
 
             replyClone.querySelector('.reply_num').innerText = r + 1;
-
-            //user_nickname
+            //console.log(replies[r]);
+            //console.log(replyClone);
             nicknameElement.innerText = replies[r].nickname;
             contentElement.innerHTML = replies[r].content;
             likeElement.innerText = replies[r].likes;
             dislikeElement.innerHTML = replies[r].dislikes;
             postTitleForReply.innerText = postForReply[0].post_title;
-            //console.log(replyClone)
+            
             //replies
             const userDetail = replyClone.querySelector('.user_nickname_btn');
             const userDetailContent = replyClone.querySelector('.userDetail')
@@ -126,17 +258,19 @@ async function toStations(stationID) {
             blockButton.addEventListener('click', () => {
                 console.log('click_block');
                 blockUser(userID);
-                alert("[USER BLOCKED]")
+
             });
             //follow
             let followButton = replyClone.querySelector('.follow');
             followButton.addEventListener('click', () => {
                 console.log('click_follow');
+                addFollowingUser(userID);
+                //deleteFollowingUser(userID);
             });       
 
             userDetail.addEventListener('click', () => {
                 userDetailContent.classList.remove("d-none");
-                console.log(userID);
+                console.log("replyID:",userID);
             })
 
             const leaveUserDetail = replyClone.querySelector('.leave_userDetail_btn');
@@ -156,6 +290,7 @@ async function toStations(stationID) {
             window.location.search = urlParams.toString()
         })
     }
+
 
     const res = await fetch(`/stations/${stationID}/posts`);
     let data = await res.json();
@@ -188,6 +323,8 @@ async function toStations(stationID) {
     const postForReply = parsed.posts;
     const pageCount = parsed.pages;
     repliesElement(replies, pageCount, page)
+
+    starClick(postId); //favourite post (C+D)
 
     // getStationsPost
     for (let x = 0; x < data.posts.length; x++) {
@@ -338,7 +475,6 @@ const createImgEle = document.querySelector('.img_container');
 image.addEventListener('click', async () => {
     let urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
-
     imgWall.classList.remove("d-none");
 
     const res = await fetch(`/post/${postId}/media`);
@@ -405,21 +541,3 @@ newPostFormElm.addEventListener('submit', async (e) => {
 
 
 
-async function blockUser(blocked_user_id){
-
-    let uploadData = {
-        id: blocked_user_id,
-    }
-
-    let res = await fetch('/user/block', { 
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(uploadData)
-    })
-
-    if (!res.ok) {
-        alert("[ERR0R: CANT FETCH]")
-    }   
-}

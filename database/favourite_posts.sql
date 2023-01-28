@@ -27,3 +27,8 @@ values
 (8,1),
 (8,4),
 (10,1);
+
+
+
+delete from favourite_posts where user_id = 12 ; 
+select * from favourite_posts;
