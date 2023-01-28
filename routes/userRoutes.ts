@@ -14,13 +14,16 @@ userRoutes.get('/profile', userGetSelf);
 userRoutes.get('/profile/:id',userGetOthers);
 userRoutes.put('/block', isLoggedInAPI, userBlockOthers);
 userRoutes.put('/bookmark', isLoggedInAPI, userBookmarkPosts)
+userRoutes.delete('/bookmark', isLoggedInAPI, userDeleteBookmarkPosts)
 //self (admin level) 
 userRoutes.get('/admin',getAllUsers); 
 userRoutes.put('/admin',softDeleteUsers);
 
 //LOGIN + CREATE USER
-async function loginGoogle (req:express.Request, res:express.Response){
-    //console.log('123');
+async function loginGoogle (
+    req:express.Request,
+    res:express.Response
+    ){
     try {
         const accessToken = req.session?.['grant'].response.access_token;
         const fetchRes = await fetch(
@@ -107,8 +110,6 @@ export async function userUpdateSelf(
         })
     }
 };
-
-
 
 
 //READ SELF USER
@@ -206,6 +207,27 @@ async function userBookmarkPosts(
     }
 }
     
+//DELETE BOOKMARK POSTS
+async function userDeleteBookmarkPosts(
+    req:express.Request,
+    res:express.Response    
+    ){
+    try {
+        console.log("BODY|",req.body);
+        let user = req.session['user'];
+        console.log("SESSION|",user);
+        const updatedDeleteBookmarkPost = await client.query(
+            `DELETE FROM favourite_posts WHERE user_id = $1 AND post_id = $2 RETURNING *`,
+            [user.id,req.body.id]
+        );
+        console.log(updatedDeleteBookmarkPost.rows[0]);
+        } catch (error) {
+            console.log("ERR0R",error);
+            res.status(500).json({
+            message: '[USER00? - SERVER ERROR]'
+        })
+    }
+}
 
 
 //ADMIN LEVEL

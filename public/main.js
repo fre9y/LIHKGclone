@@ -36,18 +36,39 @@ async function addPostBookmark(post_id){
     }   
 }
 
+async function deletePostBookmark(post_id){
+    let uploadData = {
+        id: post_id,
+    }
+
+    let res = await fetch('/user/bookmark', { 
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(uploadData)
+    })
+
+    if (!res.ok) {
+        alert("[ERR0R: CANT FETCH]")
+    } else {
+        alert("[BOOKMARKED POST DELETED]")
+    } 
+}
+
 function starClick(postId){
     let starButton = document.querySelector(".fa-star")
-    let buttonToggle = true;
+    let buttonToggle = false;
+    starButton.style.color = "rgb(255,255,255)" 
+
     starButton.addEventListener('click', () => {
         console.log('click_star');  
-    
-        starButton.style.color = "rgb(250,194,9)" //yellow
         console.log(starButton.style.color);
         if (buttonToggle) { //yellow to white
             starButton.style.color = "rgb(255,255,255)"
             buttonToggle = false;
             console.log(buttonToggle);
+            deletePostBookmark(postId)
         } else { //white to yellow
             starButton.style.color = "rgb(250,194,9)"
             buttonToggle = true;
@@ -58,6 +79,27 @@ function starClick(postId){
 }
 
 
+//block user
+async function blockUser(blocked_user_id){
+
+    let uploadData = {
+        id: blocked_user_id,
+    }
+
+    let res = await fetch('/user/block', { 
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(uploadData)
+    })
+
+    if (!res.ok) {
+        alert("[ERR0R: CANT FETCH]")
+    } else {
+        alert("[USER BLOCKED]")
+    }   
+}
 
 
 
@@ -438,23 +480,3 @@ newPostFormElm.addEventListener('submit', async (e) => {
 
 
 
-async function blockUser(blocked_user_id){
-
-    let uploadData = {
-        id: blocked_user_id,
-    }
-
-    let res = await fetch('/user/block', { 
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(uploadData)
-    })
-
-    if (!res.ok) {
-        alert("[ERR0R: CANT FETCH]")
-    } else {
-        alert("[USER BLOCKED]")
-    }   
-}
