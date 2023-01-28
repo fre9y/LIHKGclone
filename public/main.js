@@ -14,26 +14,52 @@ profileIcon.addEventListener('click', () => {
 //     logout();
 // });
 
-//favourite posts (star)
-//rgb(250,194,9)
-//FAC209
-let starButton = document.querySelector(".fa-star")
-let buttonToggle = true;
-starButton.addEventListener('click', () => {
-    console.log('click_star');  
+//bookmark posts (star)
+async function addPostBookmark(post_id){
 
-    starButton.style.color = "rgb(250,194,9)"
-    console.log(starButton.style.color);
-    if (buttonToggle) {
-        starButton.style.color = "rgb(255,255,255)"
-        buttonToggle = false;
-        console.log(buttonToggle);
-    } else {
-        starButton.style.color = "rgb(250,194,9)"
-        buttonToggle = true;
-        console.log(buttonToggle);
+    let uploadData = {
+        id: post_id,
     }
-});
+
+    let res = await fetch('/user/bookmark', { 
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(uploadData)
+    })
+
+    if (!res.ok) {
+        alert("[ERR0R: CANT FETCH]")
+    } else {
+        alert("[POST BOOKMARKED]")
+    }   
+}
+
+function starClick(postId){
+    let starButton = document.querySelector(".fa-star")
+    let buttonToggle = true;
+    starButton.addEventListener('click', () => {
+        console.log('click_star');  
+    
+        starButton.style.color = "rgb(250,194,9)" //yellow
+        console.log(starButton.style.color);
+        if (buttonToggle) { //yellow to white
+            starButton.style.color = "rgb(255,255,255)"
+            buttonToggle = false;
+            console.log(buttonToggle);
+        } else { //white to yellow
+            starButton.style.color = "rgb(250,194,9)"
+            buttonToggle = true;
+            console.log(buttonToggle);
+            addPostBookmark(postId)
+        }
+    });
+}
+
+
+
+
 
 
 
@@ -83,7 +109,6 @@ async function toStations(stationID) {
     }
     function repliesElement(replies, pageCount, page) {
         const repliesSelect = document.querySelector('#replies_select');
-
         replyTemplate.innerHTML = "";
         for (let k = 0; k < pageCount; k++) {
             const opEleText = document.createTextNode(`第${k + 1}頁`);
@@ -106,14 +131,14 @@ async function toStations(stationID) {
             const postTitleForReply = document.querySelector('.post_first_row .post_title');
 
             replyClone.querySelector('.reply_num').innerText = r + 1;
-
-            //user_nickname
+            //console.log(replies[r]);
+            //console.log(replyClone);
             nicknameElement.innerText = replies[r].nickname;
             contentElement.innerHTML = replies[r].content;
             likeElement.innerText = replies[r].likes;
             dislikeElement.innerHTML = replies[r].dislikes;
             postTitleForReply.innerText = postForReply[0].post_title;
-            //console.log(replyClone)
+            
             //replies
             const userDetail = replyClone.querySelector('.user_nickname_btn');
             const userDetailContent = replyClone.querySelector('.userDetail')
@@ -132,7 +157,7 @@ async function toStations(stationID) {
             blockButton.addEventListener('click', () => {
                 console.log('click_block');
                 blockUser(userID);
-                alert("[USER BLOCKED]")
+
             });
             //follow
             let followButton = replyClone.querySelector('.follow');
@@ -162,6 +187,7 @@ async function toStations(stationID) {
             window.location.search = urlParams.toString()
         })
     }
+
 
     const res = await fetch(`/stations/${stationID}/posts`);
     let data = await res.json();
@@ -194,6 +220,8 @@ async function toStations(stationID) {
     const postForReply = parsed.posts;
     const pageCount = parsed.pages;
     repliesElement(replies, pageCount, page)
+
+    starClick(postId); //favourite post (C+D)
 
     // getStationsPost
     for (let x = 0; x < data.posts.length; x++) {
@@ -344,7 +372,6 @@ const createImgEle = document.querySelector('.img_container');
 image.addEventListener('click', async () => {
     let urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
-
     imgWall.classList.remove("d-none");
 
     const res = await fetch(`/post/${postId}/media`);
@@ -427,5 +454,7 @@ async function blockUser(blocked_user_id){
 
     if (!res.ok) {
         alert("[ERR0R: CANT FETCH]")
+    } else {
+        alert("[USER BLOCKED]")
     }   
 }

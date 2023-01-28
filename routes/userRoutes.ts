@@ -13,6 +13,7 @@ userRoutes.put('/profile', userUpdateSelf);
 userRoutes.get('/profile', userGetSelf);
 userRoutes.get('/profile/:id',userGetOthers);
 userRoutes.put('/block', isLoggedInAPI, userBlockOthers);
+userRoutes.put('/bookmark', isLoggedInAPI, userBookmarkPosts)
 //self (admin level) 
 userRoutes.get('/admin',getAllUsers); 
 userRoutes.put('/admin',softDeleteUsers);
@@ -182,7 +183,28 @@ async function userBlockOthers(
     }
 };
 
-            
+//BOOKMARK POSTS
+async function userBookmarkPosts(
+    req:express.Request,
+    res:express.Response
+    ){
+    try {
+        console.log("BODY|",req.body);
+        let user = req.session['user'];
+        console.log("SESSION|",user);
+        const updatedBookmarkPost = await client.query(
+            `INSERT INTO favourite_posts (user_id, post_id) VALUES ($1,$2) RETURNING *`,
+            [user.id,req.body.id]
+        );
+        console.log(updatedBookmarkPost.rows[0]);
+
+        } catch (error) {
+            console.log("ERR0R",error);
+            res.status(500).json({
+            message: '[USER00? - SERVER ERROR]'
+        })
+    }
+}
     
 
 
