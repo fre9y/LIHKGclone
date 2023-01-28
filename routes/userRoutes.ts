@@ -13,9 +13,11 @@ userRoutes.put('/profile', userUpdateSelf);
 userRoutes.get('/profile', userGetSelf);
 userRoutes.get('/profile/:id',userGetOthers);
 userRoutes.put('/block', isLoggedInAPI, userBlockOthers);
+userRoutes.delete('/block', isLoggedInAPI, userUnblockOthers);
 userRoutes.put('/bookmark', isLoggedInAPI, userBookmarkPosts)
 userRoutes.delete('/bookmark', isLoggedInAPI, userDeleteBookmarkPosts)
-userRoutes.get('/following', isLoggedInAPI, userAddFollowingUsers)
+userRoutes.put('/following', isLoggedInAPI, userAddFollowingUsers)
+userRoutes.delete('/following', isLoggedInAPI, userDeleteFollowingUsers)
 //self (admin level) 
 userRoutes.get('/admin',getAllUsers); 
 userRoutes.put('/admin',softDeleteUsers);
@@ -185,6 +187,31 @@ async function userBlockOthers(
     }
 };
 
+//UNBLOCK OTHER USERS
+//not yet tested
+async function userUnblockOthers(
+    req:express.Request,
+    res:express.Response
+    ){
+    try {
+        console.log("BODY|",req.body);
+        let user = req.session['user'];
+        console.log("SESSION|",user);
+        const updatedUnblockUsers = await client.query(
+            `DELETE FROM user_blacklists WHERE user_id_block_others = $1 AND user_id_being_blocked = $2 RETURNING *`,
+            [user.id,req.body.id]
+        );
+        console.log(updatedUnblockUsers.rows[0]);
+    } catch (error) {
+        console.log("ERR0R",error);
+        res.status(500).json({
+        message: '[USER00? - SERVER ERROR]'
+    })
+    }
+};
+
+
+
 //BOOKMARK POSTS
 async function userBookmarkPosts(
     req:express.Request,
@@ -240,7 +267,7 @@ async function userAddFollowingUsers(
         let user = req.session['user'];
         console.log("SESSION|",user);
         const updatedAddFollowingUsers = await client.query(
-            `INSERT INTO user_followings (user_id_following_others, user_id_being_followed) VALUES ($1,$2) RETURNING *`,
+            `INSERT INTO user_followings (user_id_follow_others, user_id_being_followed) VALUES ($1,$2) RETURNING *`,
             [user.id,req.body.id]
         ); 
         console.log(updatedAddFollowingUsers.rows[0]);
@@ -251,6 +278,28 @@ async function userAddFollowingUsers(
         })
     }
 }
+
+async function userDeleteFollowingUsers(
+    req:express.Request,
+    res:express.Response
+    ){
+    try {
+        console.log("BODY|",req.body);
+        let user = req.session['user'];
+        console.log("SESSION|",user);
+        const updatedDeleteFollowingUsers = await client.query(
+            `DELETE FROM user_followings WHERE user_id_follow_others = $1 AND user_id_being_followed = $2 RETURNING *`,
+            [user.id,req.body.id]
+        );
+        console.log(updatedDeleteFollowingUsers.rows[0]);
+        } catch (error) {
+            console.log("ERR0R",error);
+            res.status(500).json({
+            message: '[USER00? - SERVER ERROR]'
+        })
+    }
+}
+
 
 
 //ADMIN LEVEL

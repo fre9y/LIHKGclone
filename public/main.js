@@ -100,9 +100,69 @@ async function blockUser(blocked_user_id){
         alert("[USER BLOCKED]")
     }   
 }
+//not yet tested no entry button
+async function unblockUser(blocked_user_id){
+    let uploadData = {
+        id: blocked_user_id,
+    }
+
+    let res = await fetch('/user/block', { 
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(uploadData)
+    })
+
+    if (!res.ok) {
+        alert("[ERR0R: CANT FETCH]")
+    } else {
+        alert("[BLOCKED USER UNBLOCKED]")
+    } 
+};
 
 
+//add following users
+async function addFollowingUser(follow_user_id){
+    let uploadData = {
+        id: follow_user_id,
+    }
 
+    let res = await fetch('/user/following', { 
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(uploadData)
+    })
+
+    if (!res.ok) {
+        alert("[ERR0R: CANT FETCH]")
+    } else {
+        alert("[USER FOLLOWED]")
+    }   
+}
+
+//delete following users
+async function deleteFollowingUser(follow_user_id){
+    let uploadData = {
+        id: follow_user_id,
+    }
+
+    let res = await fetch('/user/following', { 
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(uploadData)
+    })
+
+    if (!res.ok) {
+        alert("[ERR0R: CANT FETCH]")
+    } else {
+        alert("[USER UNFOLLOWED]")
+    }   
+}
 
 
 
@@ -205,6 +265,8 @@ async function toStations(stationID) {
             let followButton = replyClone.querySelector('.follow');
             followButton.addEventListener('click', () => {
                 console.log('click_follow');
+                addFollowingUser(userID);
+                //deleteFollowingUser(userID);
             });       
 
             userDetail.addEventListener('click', () => {
