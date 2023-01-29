@@ -8,7 +8,7 @@ import { formParsePromise } from '../util/formidable'
 export const postRoutes = express.Router()
 
 // postRoutes.get('/:stationId', getPosts)
-postRoutes.post('/', isLoggedInAPI, isP, createPosts)
+postRoutes.post('/', isLoggedInAPI, createPosts)
 // postRoutes.put('/', isLoggedInAPI, isP, isYourPost, updatePostById)
 // postRoutes.put('/', isLoggedInAPI, isAdmin, hidePostById)
 // postRoutes.put('/', isLoggedInAPI, isAdmin, showPostById)
@@ -64,13 +64,30 @@ export async function createPosts(req: express.Request, res: express.Response) {
 		let { fields, files } = await formParsePromise(req)
 		let title = fields.postTitle
         let station = fields.stationId
-        let user = fields.user
+		let content = fields.content
+        let user = req.session['user'];
 
-		await client.query(
-			`insert into posts (post_title, station_id, user_id, created_at, updated_at) values ($1, $2, $3 now(), now())`,
-			[title, station, user]
+		let postResult = await client.query(
+			`insert into posts (post_title, station_id, user_id, created_at, updated_at) values ($1, $2, $3, now(), now()) returning id`,
+			[title, station, user.id]
 		)
-// how to insert replies.Post_id at the same time?Largest post id +1?
+		let postId = postResult.rows[0].id
+
+		let replyResult = await client.query(
+			`insert into replies (user_id, post_id, content, created_at, updated_at) values ($1, $2, $3, now(), now()) returning id`,
+			[user.id, Number(postId), content]
+		)
+
+		let replyId = replyResult.rows[0].id
+
+		if (files.image){
+			let fileName = files.image['newFilename']
+			await client.query(
+				`insert into images (name, post_id, replies_id, created_at, updated_at) values ($1, $2, $3, now(), now())`,
+				[fileName, Number(postId), Number(replyId)]
+			)
+		}
+
 		res.json({
 			message: 'add post success'
 		})

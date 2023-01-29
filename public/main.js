@@ -58,22 +58,24 @@ async function deletePostBookmark(post_id) {
 
 function starClick(postId) {
     let starButton = document.querySelector(".fa-star")
-    let buttonToggle = false;
+    let starToggle = false;
     starButton.style.color = "rgb(255,255,255)"
 
     starButton.addEventListener('click', () => {
         console.log('click_star');
         console.log(starButton.style.color);
-        if (buttonToggle) { //yellow to white
-            starButton.style.color = "rgb(255,255,255)"
-            buttonToggle = false;
-            console.log(buttonToggle);
+        if (starToggle) { //yellow to white
             deletePostBookmark(postId)
+            starButton.style.color = "rgb(255,255,255)"
+            starToggle = false;
+            console.log(starToggle);
+
         } else { //white to yellow
-            starButton.style.color = "rgb(250,194,9)"
-            buttonToggle = true;
-            console.log(buttonToggle);
             addPostBookmark(postId)
+            starButton.style.color = "rgb(250,194,9)"
+            starToggle = true;
+            console.log(starToggle);
+
         }
     });
 }
@@ -385,7 +387,7 @@ function setPageDropdown(postId, pageCount, currentPage) {
         goToPost(postId, targetPage);
         showPostContainer();
     }
-    
+
     document.querySelector(".post_replies .post_pages").innerText = currentPage;
     repliesSelectClone.addEventListener('change', (e) => {
         e.preventDefault();
@@ -486,10 +488,22 @@ function setRepliesOfPage(title, replies, pageSize, currentPage) {
         });
         //follow
         let followButton = replyClone.querySelector('.follow');
+        let followToggle = false
+        let followText = replyClone.querySelector('.follow').innerText
         followButton.addEventListener('click', () => {
             console.log('click_follow');
-            addFollowingUser(userID);
+            //css broken
+            //addFollowingUser(userID);
             //deleteFollowingUser(userID);
+            if (replyClone.querySelector('.follow').innerText === '追蹤') {
+                replyClone.querySelector('.follow').innerText = '取消追蹤'
+                console.log(replyClone.querySelector('.follow').innerText);
+                addFollowingUser(userID);
+            } else {
+                replyClone.querySelector('.follow').innerText = '追蹤'
+                console.log(replyClone.querySelector('.follow').innerText);
+                deleteFollowingUser(userID);
+            }
         });
 
         userDetail.addEventListener('click', () => {
@@ -605,12 +619,8 @@ newPostFormElm.addEventListener('submit', async (e) => {
         body: formData
     })
 
-    if (res.ok) {
-        newPostFormElm.reset();
-        goToStation(selectStation.value);
-    } else {
-        console.log('post fail')
-    }
+    let result = await res.json()
+    console.log(result.message)
 })
 
 
