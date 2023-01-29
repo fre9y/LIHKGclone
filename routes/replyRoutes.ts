@@ -7,16 +7,16 @@ import { formParsePromise } from '../util/formidable'
 
 export const replyRoutes = express.Router()
 
-replyRoutes.get('/postId', getReplies)
-replyRoutes.post('/', isLoggedInAPI, createReplies)
-replyRoutes.put('/', isLoggedInAPI, isP, isYourReply, updateReplyById)
-replyRoutes.put('/', isAdmin, hideReplyById)
-replyRoutes.put('/', isAdmin, showReplyById)
-replyRoutes.get('/', getUserReplies)
-replyRoutes.get('/', getHotReplies)
-replyRoutes.put('/', isLoggedInAPI, isP, likeReplyById)
-replyRoutes.put('/', isLoggedInAPI, isP, dislikeReplyById)
-replyRoutes.get('/:userId', getOthersById)
+// replyRoutes.get('/postId', getReplies)
+replyRoutes.post('/', isLoggedInAPI, isP, createReplies)
+// replyRoutes.put('/', isLoggedInAPI, isP, isYourReply, updateReplyById)
+// replyRoutes.put('/', isAdmin, hideReplyById)
+// replyRoutes.put('/', isAdmin, showReplyById)
+// replyRoutes.get('/', getUserReplies)
+// replyRoutes.get('/', getHotReplies)
+// replyRoutes.put('/', isLoggedInAPI, isP, likeReplyById)
+// replyRoutes.put('/', isLoggedInAPI, isP, dislikeReplyById)
+// replyRoutes.get('/:userId', getOthersById)
 // likes/dislikes check repeat
 export async function getReplies(req: express.Request, res: express.Response) {
 	try {
@@ -59,16 +59,24 @@ export async function getReplies(req: express.Request, res: express.Response) {
 export async function createReplies(req: express.Request, res: express.Response) {
 	try {
 		let { fields, files } = await formParsePromise(req)
-        let user = fields.user
-        let post = fields.post
-        let fileName = files.image ? files.image['newFilename'] : ''
-        let content = fields.content
-        let reference = fields.reference
+		let content = fields.replyContent
+        let user = req.session['user'];
+		let post = fields.postId
 
-		await client.query(
-			`insert into replies (user_id, post_id, image_id, content, reference_id, created_at, updated_at) values ($1, $2, $3, $4, $5, now(), now())`,
-			[user, post, fileName, content, reference]
+		let replyResult = await client.query(
+			`insert into replies (user_id, post_id, content, created_at, updated_at) values ($1, $2, $3, now(), now()) returning id`,
+			[user.id, Number(post), content]
 		)
+
+		let replyId = replyResult.rows[0].id
+
+		if (files.image){
+			let fileName = files.image['newFilename']
+			await client.query(
+				`insert into images (name, posts_id, replies_id, created_at, updated_at) values ($1, $2, $3, now(), now())`,
+				[fileName, Number(post), Number(replyId)]
+			)
+		}
 
 		res.json({
 			message: 'add reply success'

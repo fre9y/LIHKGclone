@@ -629,7 +629,47 @@ newPostFormElm.addEventListener('submit', async (e) => {
 
     let result = await res.json()
     console.log(result.message)
+
+    createPostContainer.classList.add("d-none");
+
+    let selectStationId = document.getElementById("selectStation").value
+    goToStation(Number(selectStationId))
+
+    document.querySelector('.createPostForm').reset()
 })
 
+// Create Reply
+const createReply = document.querySelector('.reply_btn');
+const createReplyContainer = document.querySelector('.createReplyContainer')
+createReply.addEventListener('click', () => {
+    createReplyContainer.classList.remove("d-none");
+})
 
+const leaveCreateReply = document.querySelector('.leave_createReply_btn');
+leaveCreateReply.addEventListener('click', () => {
+    createReplyContainer.classList.add("d-none");
+})
 
+let newReplyFormElm = document.querySelector('.createReplyForm')
+
+newReplyFormElm.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    let formData = new FormData(newPostFormElm)
+    const postId = urlParams.get('postId');
+    formData.append('postId', postId)
+
+    let res = await fetch('/replies', {
+        method: 'POST',
+        body: formData
+    })
+
+    let result = await res.json()
+    console.log(result.message)
+
+    createReplyContainer.classList.add("d-none");
+
+    goToPost(postId, 1)
+
+    document.querySelector('.createReplyForm').reset()
+})

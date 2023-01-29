@@ -69,7 +69,7 @@ app.use(grantExpress as express.RequestHandler);
 
 app.use('/user', userRoutes)
 app.use('/posts', postRoutes)
-// app.use('/replies', replyRoutes)
+app.use('/replies', replyRoutes)
 app.use(express.static("protected"));
 app.use(express.static("public"));
 app.use(express.static("public/assets"));

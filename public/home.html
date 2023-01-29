@@ -708,13 +708,35 @@
                 <input class="col" id="postTitle" name="postTitle" placeholder="標題（揀啱分台可避免太快沉底）">
             </div>
             <div class="row">
-                <!-- button and function -->
+                <input type="file" name="image" multiple="multiple" accept="image/jpeg, image/png, image/jpg" id="image">
             </div>
             <div class="row">
                 <textarea class="col" id="content" name="content"></textarea>
             </div>
             <div class="row">
                 <div class="createPostSubmit"><input type="submit" value="發表" /></div>
+            </div>
+        </form>
+    </div>
+
+    <div
+    class="createReplyContainer d-none position-absolute top-0 end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
+        <form class="createReplyForm">
+            <div class="row">
+                <div class="replyFormFirstRow">回覆：
+                    <span class="leave_createReply_btn">
+                        <i class="fa-solid fa-xmark"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <input type="file" name="image" multiple="multiple" accept="image/jpeg, image/png, image/jpg" id="replyImage">
+            </div>
+            <div class="row">
+                <textarea class="col" id="replyContent" name="replyContent"></textarea>
+            </div>
+            <div class="row">
+                <div class="createReplySubmit"><input type="submit" value="回覆" /></div>
             </div>
         </form>
     </div>
