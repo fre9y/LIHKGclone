@@ -372,7 +372,7 @@
         </div>
 
         <!-- post_replies -->
-        <div class="post-container_template d-none d-sm-none d-md-block col-12 col-md-7 col-xl-8 d-flex flex-column">
+        <div class="post-container_template bg-black d-sm-none d-md-block col-12 col-md-7 col-xl-8 d-flex flex-column">
             <div class="post_first_row col-12 d-flex justify-content-between">
                 <div class="d-flex flex-nowrap">
                     <button class="previous_page_btn">
@@ -383,7 +383,7 @@
 
                 <div class="d-flex flex-nowrap col-3 d-flex justify-content-end">
                     <div class="fav_btn">
-                        <button class = "star">
+                        <button class="star">
                             <i class="fa-solid fa-star"></i>
                         </button>
                     </div>
@@ -426,12 +426,13 @@
                         <button>上一頁</button>
                     </div>
 
-                    <div class="current_page_btn">
+                    <div class="current_page_btn sticky-top">
                         <button class="position-absolute">
-                            <span>第<span class="post_pages">1</span>頁 <i class="fa-solid fa-angle-down"></i></span>
+                            <span style="letter-spacing: 5px;">第<span class="post_pages d-inline">1</span>頁 <i
+                                    class="fa-solid fa-angle-down d-inline"></i></span>
                         </button>
 
-                        <div class="position-relative">
+                        <div class="position-relative ps-2">
                             <select id="replies_select">
                             </select>
                         </div>
@@ -560,26 +561,27 @@
         </div>
 
         <!-- mobile_vision - station name-->
-        <div class="mobile_vision position-fixed top-0 start-0 end-0 bottom-0 d-md-none">
-            <div class="bt_nav_bar d-md-none w-100 d-flex justify-content-between position-fixed bottom-0">
-                <div class="w-100">
-                    <button class="w-100 py-3" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"><i
-                            class="fa-solid fa-bars color_white"></i></button>
-                </div>
-
-                <div class="w-100">
-                    <button class="refresh_btn w-100 py-3"><i class="fa-solid fa-rotate color_white"></i></button>
-                </div>
-
-                <div class="w-100">
-                    <button class="w-100 py-3"><i class="fa-solid fa-plus color_white"></i></button>
-                </div>
-
-                <div class="w-100">
-                    <button class="w-100 py-3"><i class="fa-solid fa-gear color_white" title="設定"></i></button>
-                </div>
+        <div class="bt_nav_bar d-md-none w-100 d-flex justify-content-between position-fixed bottom-0">
+            <div class="w-100">
+                <button class="w-100 py-3" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"><i
+                        class="fa-solid fa-bars color_white"></i></button>
             </div>
+
+            <div class="w-100">
+                <button class="refresh_btn w-100 py-3"><i class="fa-solid fa-rotate color_white"></i></button>
+            </div>
+
+            <div class="w-100">
+                <button class="w-100 py-3"><i class="fa-solid fa-plus color_white"></i></button>
+            </div>
+
+            <div class="w-100">
+                <button class="w-100 py-3"><i class="fa-solid fa-gear color_white" title="設定"></i></button>
+            </div>
+        </div>
+        <div class="mobile_vision position-fixed top-0 start-0 end-0 bottom-0 d-md-none">
+            <div class="mobile_post_container"></div>
         </div>
     </div>
 
@@ -603,7 +605,6 @@
         <div class="img_container d-flex flex-wrap justify-content-center">
         </div>
     </div>
-
 
     <div class="post_template_sample container g-0 d-none">
         <a class="post d-none1 col-12 row g-0 d-flex justify-content-end" href="#">
@@ -630,11 +631,7 @@
 
             <span class="col-2 d-flex justify-content-center position-relative pt-2 pb-1">
                 <form class="select">
-                    <select>
-                        <option value="1"> 1 頁</option>
-                        <option value="2"> 2 頁</option>
-                        <option value="3"> 3 頁</option>
-                    </select><!--opacity:0-->
+                    <select></select><!--opacity:0-->
                 </form>
                 <span class="select_cover col-2 position-absolute start-0">
                     <button class="post_pages_btn d-flex justify-content-evenly">
@@ -658,7 +655,9 @@
             </span>
         </a>
     </div>
-    <div class="createPostContainer d-none position-absolute top-0 end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
+
+    <div
+        class="createPostContainer d-none position-absolute top-0 end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
         <form class="createPostForm">
             <div class="row">
                 <div class="postFormFirstRow">發表主題
@@ -706,28 +705,20 @@
                     <option value="37">房屋台</option>
                     <option value="38">World</option>
                 </select>
-                <input
-                class="col"
-                id="postTitle"
-                name="postTitle"
-                placeholder="標題（揀啱分台可避免太快沉底）"
-            >
+                <input class="col" id="postTitle" name="postTitle" placeholder="標題（揀啱分台可避免太快沉底）">
             </div>
             <div class="row">
                 <!-- button and function -->
             </div>
             <div class="row">
-                <textarea
-                class="col"
-                id="content"
-                name="content"
-            ></textarea>
+                <textarea class="col" id="content" name="content"></textarea>
             </div>
             <div class="row">
                 <div class="createPostSubmit"><input type="submit" value="發表" /></div>
             </div>
         </form>
     </div>
+
     <div class="replies_container_template_sample d-none">
         <div class="reply py-3 my-2">
             <div class="reply_first_row d-flex justify-content-between">
@@ -826,15 +817,15 @@
 
                         <div class="d-flex align-items-center justify-content-between px-3 py-3">
                             <div class="doxx">
-                                <button >起底</button>
+                                <button>起底</button>
                             </div>
 
                             <div class="block">
-                                <button >封鎖</button>
+                                <button>封鎖</button>
                             </div>
 
                             <div class="follow">
-                                <button >追蹤</button>
+                                <button>追蹤</button>
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,5 @@
 .offcanvas.offcanvas-start {
+    z-index: 10088;
     width: 230px;
 }
 
