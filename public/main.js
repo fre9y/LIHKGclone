@@ -483,7 +483,15 @@ function setRepliesOfPage(title, replies, pageSize, currentPage) {
         let blockButton = replyClone.querySelector('.block');
         blockButton.addEventListener('click', () => {
             console.log('click_block');
-            blockUser(userID);
+            if (replyClone.querySelector('.block').innerText === '封鎖') {
+                replyClone.querySelector('.block').innerText = '解除封鎖'
+                console.log(replyClone.querySelector('.block').innerText);
+                blockUser(userID);
+            } else {
+                replyClone.querySelector('.block').innerText = '封鎖'
+                console.log(replyClone.querySelector('.block').innerText);
+                unblockUser(userID);
+            }
 
         });
         //follow
