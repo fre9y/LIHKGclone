@@ -31,10 +31,3 @@ export async function logout() {
             
 }
 
-//DOXXING
-export async function doxx() {}
-
-//BLOCKING
-export async function block() {
-    
-}

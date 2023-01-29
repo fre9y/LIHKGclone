@@ -12,6 +12,7 @@ userRoutes.get('/logout', logout);
 userRoutes.put('/profile', userUpdateSelf);
 userRoutes.get('/profile', userGetSelf);
 userRoutes.get('/profile/:id',userGetOthers);
+userRoutes.get('/block', isLoggedInAPI, userGetBlockedUsers);
 userRoutes.put('/block', isLoggedInAPI, userBlockOthers);
 userRoutes.delete('/block', isLoggedInAPI, userUnblockOthers);
 userRoutes.put('/bookmark', isLoggedInAPI, userBookmarkPosts)
@@ -164,6 +165,29 @@ async function userGetOthers(
     }
 };
 
+//GET BLOCKED USERS
+async function userGetBlockedUsers(
+    req:express.Request,
+    res:express.Response
+    ){
+    try {
+        let user = req.session['user'];
+        console.log("SESSION|",user);
+        const blockedUsers = await client.query(
+            `SELECT * FROM user_blacklists WHERE user_id_block_others = $1`,
+            [user.id]
+        );
+        console.log("BLOCKED_USERS| ",blockedUsers.rows);
+        res.json(blockedUsers.rows)
+        return
+        } catch (error) {
+            console.log("ERR0R",error);
+            res.status(500).json({
+            message: '[USER00? - SERVER ERROR]'
+        })
+    }
+};
+
 //BLOCK OTHER USERS
 async function userBlockOthers(
     req:express.Request,
@@ -188,7 +212,6 @@ async function userBlockOthers(
 };
 
 //UNBLOCK OTHER USERS
-//not yet tested
 async function userUnblockOthers(
     req:express.Request,
     res:express.Response
