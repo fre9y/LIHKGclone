@@ -138,7 +138,11 @@ app.get("/stations/:id/posts", async (req, res) => {
 
 app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
   let postID = req.params.id;
-  let currentPage = req.params.currentPage;
+  let currentPage = +req.params.currentPage;
+  if (!Number.isFinite(currentPage) || currentPage <= 0) {
+    return res.status(400).end();
+  }
+
   const repliesDetail = await client.query(
     `select (
       select  json_agg(name) as images_id  from images  where replies_id = replies.id),      
@@ -165,7 +169,7 @@ app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
   const repliesTotal =  replyCount.rows[0].count;
 
   console.table(postDetail.rows)
-  res.json({
+  return res.json({
     replies: repliesDetail.rows,
     posts: postDetail.rows,
     pages: page,
