@@ -162,12 +162,14 @@ app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
     `SELECT * FROM posts JOIN users ON posts.user_id = users.id JOIN stations ON posts.station_id = stations.id WHERE posts.id = ${postID};`
   )
   const page = Math.ceil( replyCount.rows[0].count / 25);
+  const repliesTotal =  replyCount.rows[0].count;
 
   console.table(postDetail.rows)
   res.json({
     replies: repliesDetail.rows,
     posts: postDetail.rows,
-    pages: page
+    pages: page,
+    repliesTotal: repliesTotal
   })
 
   // return
@@ -212,7 +214,12 @@ app.get('/post/:post/media', async (req, res) => {
   });
 })
 
-
+app.patch('/post/:post/like', () => {
+  // -- post's like + 1
+});
+app.patch('/post/:post/dislike', () => {
+  // -- post's dislike + 1
+});
 
 
 

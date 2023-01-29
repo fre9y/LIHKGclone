@@ -15,13 +15,13 @@ profileIcon.addEventListener('click', () => {
 // });
 
 //bookmark posts (star)
-async function addPostBookmark(post_id){
+async function addPostBookmark(post_id) {
 
     let uploadData = {
         id: post_id,
     }
 
-    let res = await fetch('/user/bookmark', { 
+    let res = await fetch('/user/bookmark', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -33,15 +33,15 @@ async function addPostBookmark(post_id){
         alert("[ERR0R: CANT FETCH]")
     } else {
         alert("[POST BOOKMARKED]")
-    }   
+    }
 }
 
-async function deletePostBookmark(post_id){
+async function deletePostBookmark(post_id) {
     let uploadData = {
         id: post_id,
     }
 
-    let res = await fetch('/user/bookmark', { 
+    let res = await fetch('/user/bookmark', {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -53,16 +53,16 @@ async function deletePostBookmark(post_id){
         alert("[ERR0R: CANT FETCH]")
     } else {
         alert("[BOOKMARKED POST DELETED]")
-    } 
+    }
 }
 
-function starClick(postId){
+function starClick(postId) {
     let starButton = document.querySelector(".fa-star")
     let buttonToggle = false;
-    starButton.style.color = "rgb(255,255,255)" 
+    starButton.style.color = "rgb(255,255,255)"
 
     starButton.addEventListener('click', () => {
-        console.log('click_star');  
+        console.log('click_star');
         console.log(starButton.style.color);
         if (buttonToggle) { //yellow to white
             starButton.style.color = "rgb(255,255,255)"
@@ -80,13 +80,13 @@ function starClick(postId){
 
 
 //block user
-async function blockUser(blocked_user_id){
+async function blockUser(blocked_user_id) {
 
     let uploadData = {
         id: blocked_user_id,
     }
 
-    let res = await fetch('/user/block', { 
+    let res = await fetch('/user/block', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -98,15 +98,15 @@ async function blockUser(blocked_user_id){
         alert("[ERR0R: CANT FETCH]")
     } else {
         alert("[USER BLOCKED]")
-    }   
+    }
 }
 //not yet tested no entry button
-async function unblockUser(blocked_user_id){
+async function unblockUser(blocked_user_id) {
     let uploadData = {
         id: blocked_user_id,
     }
 
-    let res = await fetch('/user/block', { 
+    let res = await fetch('/user/block', {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -118,17 +118,17 @@ async function unblockUser(blocked_user_id){
         alert("[ERR0R: CANT FETCH]")
     } else {
         alert("[BLOCKED USER UNBLOCKED]")
-    } 
+    }
 };
 
 
 //add following users
-async function addFollowingUser(follow_user_id){
+async function addFollowingUser(follow_user_id) {
     let uploadData = {
         id: follow_user_id,
     }
 
-    let res = await fetch('/user/following', { 
+    let res = await fetch('/user/following', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -140,16 +140,16 @@ async function addFollowingUser(follow_user_id){
         alert("[ERR0R: CANT FETCH]")
     } else {
         alert("[USER FOLLOWED]")
-    }   
+    }
 }
 
 //delete following users
-async function deleteFollowingUser(follow_user_id){
+async function deleteFollowingUser(follow_user_id) {
     let uploadData = {
         id: follow_user_id,
     }
 
-    let res = await fetch('/user/following', { 
+    let res = await fetch('/user/following', {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -161,7 +161,7 @@ async function deleteFollowingUser(follow_user_id){
         alert("[ERR0R: CANT FETCH]")
     } else {
         alert("[USER UNFOLLOWED]")
-    }   
+    }
 }
 
 
@@ -173,6 +173,14 @@ async function deleteFollowingUser(follow_user_id){
 
 
 //clone left_side for responsive
+const postContainer = document.querySelector(".post-container_template");
+function showPostContainer() {
+    postContainer.style.zIndex = 10087;
+}
+function hidePostContainer() {
+    postContainer.style.zIndex = 0;
+}
+
 (() => {
     const cloneNode = document.querySelector(".left_side .second_row_div");
 
@@ -193,6 +201,7 @@ async function deleteFollowingUser(follow_user_id){
 //stations
 const addAElem = document.querySelectorAll('.stations .link');
 
+
 for (let i = 0; i < addAElem.length; i++) {
     const stationID = addAElem[i].getAttribute("data-link");
 
@@ -205,11 +214,15 @@ for (let i = 0; i < addAElem.length; i++) {
 };
 //toStations && createPost
 async function toStations(stationID) {
+    const pageSize = 25;
+
     function changePageLabel(number) {
         document.querySelector(".post_pages").innerText = number
     }
-    function repliesElement(replies, pageCount, page) {
+    function repliesElement(replies, pageCount, page, postId) {
         const repliesSelect = document.querySelector('#replies_select');
+        const previousBtn = document.querySelector('.previous_page_btn button');
+        const nextBtn = document.querySelector('.next_page_btn');
         replyTemplate.innerHTML = "";
         for (let k = 0; k < pageCount; k++) {
             const opEleText = document.createTextNode(`第${k + 1}頁`);
@@ -217,12 +230,32 @@ async function toStations(stationID) {
             opEle.setAttribute('value', `${k}`);
             opEle.appendChild(opEleText);
             if (k + 1 == page) {
-                opEle.setAttribute('selected', "selected")
+                opEle.setAttribute('selected', "selected");
+                previousBtn.addEventListener('click', () => {
+                    const urlParams = new URLSearchParams();
+                    urlParams.set("postId", postId);
+                    urlParams.set("page", k);
+                    history.pushState({}, '', '?' + urlParams.toString());
+                    toStations(stationID);
+                    //location.replace(`http://localhost:8080/stations/${postId}?postId=${postId}&page=${k}`)
+                    showPostContainer();
+                });
+                nextBtn.addEventListener('click', () => {
+                    const urlParams = new URLSearchParams();
+                    urlParams.set("postId", postId);
+                    urlParams.set("page", k + 2);
+                    history.pushState({}, '', '?' + urlParams.toString());
+                    toStations(stationID);
+                    showPostContainer();
+                    //location.replace(`http://localhost:8080/stations/${postId}?postId=${postId}&page=${k + 2}`)
+                });
                 changePageLabel(page)
             }
             repliesSelect.appendChild(opEle);
         }
 
+        const replyNumOffset = (page - 1) * pageSize;
+        console.log({ replies, page, replyNumOffset })
         for (let r = 0; r < replies.length; r++) {
             const replyClone = reply.cloneNode(true);
             const nicknameElement = replyClone.querySelector('.user_nickname_btn');
@@ -231,7 +264,8 @@ async function toStations(stationID) {
             const dislikeElement = replyClone.querySelector(".reply_dislike");
             const postTitleForReply = document.querySelector('.post_first_row .post_title');
 
-            replyClone.querySelector('.reply_num').innerText = r + 1;
+            replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
+
             //console.log(replies[r]);
             //console.log(replyClone);
             nicknameElement.innerText = replies[r].nickname;
@@ -239,7 +273,7 @@ async function toStations(stationID) {
             likeElement.innerText = replies[r].likes;
             dislikeElement.innerHTML = replies[r].dislikes;
             postTitleForReply.innerText = postForReply[0].post_title;
-            
+
             //replies
             const userDetail = replyClone.querySelector('.user_nickname_btn');
             const userDetailContent = replyClone.querySelector('.userDetail')
@@ -266,11 +300,11 @@ async function toStations(stationID) {
                 console.log('click_follow');
                 addFollowingUser(userID);
                 //deleteFollowingUser(userID);
-            });       
+            });
 
             userDetail.addEventListener('click', () => {
                 userDetailContent.classList.remove("d-none");
-                console.log("replyID:",userID);
+                console.log("replyID:", userID);
             })
 
             const leaveUserDetail = replyClone.querySelector('.leave_userDetail_btn');
@@ -290,7 +324,7 @@ async function toStations(stationID) {
             window.location.search = urlParams.toString()
         })
     }
-
+    hidePostContainer();
 
     const res = await fetch(`/stations/${stationID}/posts`);
     let data = await res.json();
@@ -310,7 +344,8 @@ async function toStations(stationID) {
     const reply = replyTemplateSample.querySelector(".reply");
 
     if (res.ok) {
-        template.innerHTML = ""
+        template.innerHTML = "";
+
     }
 
     let urlParams = new URLSearchParams(window.location.search);
@@ -322,19 +357,30 @@ async function toStations(stationID) {
     const replies = parsed.replies;
     const postForReply = parsed.posts;
     const pageCount = parsed.pages;
-    repliesElement(replies, pageCount, page)
+
+    repliesElement(replies, pageCount, page, postId)
 
     starClick(postId); //favourite post (C+D)
 
+    for (let child of mobileVision.querySelectorAll(".post")) {
+        mobileVision.removeChild(child);
+    }
+
     // getStationsPost
     for (let x = 0; x < data.posts.length; x++) {
+        const postClick = post => {
+            post.addEventListener('click', async (e) => {
+                e.preventDefault();
+                let urlParams = new URLSearchParams();
+                urlParams.set("postId", data.posts[x].id)
+                //window.location.search = urlParams.toString();
+                history.pushState({}, '', '?' + urlParams.toString());
+                // toStations(stationID);
+                showPostContainer();
+            });
+        };
         const postClone = post.cloneNode(true);
-        postClone.addEventListener('click', async (e) => {
-            e.preventDefault();
-            let urlParams = new URLSearchParams();
-            urlParams.set("postId", data.posts[x].id)
-            window.location.search = urlParams.toString()
-        })
+        postClick(postClone);
 
         //posts-host
         let postHost = postClone.querySelector(".post_host")
@@ -424,6 +470,7 @@ async function toStations(stationID) {
         template.appendChild(postClone);
 
         const forMobileVision = postClone.cloneNode(true);
+        postClick(forMobileVision);
         mobileVision.appendChild(forMobileVision);
     };
 
@@ -522,21 +569,21 @@ leaveCreatePost.addEventListener('click', () => {
 let newPostFormElm = document.querySelector('.createPostForm')
 
 newPostFormElm.addEventListener('submit', async (e) => {
-	e.preventDefault()
+    e.preventDefault()
 
-	let formData = new FormData(newPostFormElm)
+    let formData = new FormData(newPostFormElm)
 
-	let res = await fetch('/posts', {
-		method: 'POST',
-		body: formData
-	})
+    let res = await fetch('/posts', {
+        method: 'POST',
+        body: formData
+    })
 
-	if (res.ok) {
+    if (res.ok) {
         newPostFormElm.reset();
         toStations(selectStation.value);
-	} else {
-		console.log('post fail')
-	}
+    } else {
+        console.log('post fail')
+    }
 })
 
 
