@@ -135,7 +135,7 @@ inner JOIN users on users.id = replies.user_id
             where post_id = 2
 			and show = true
             order by replies.id ASC
-            LIMIT 25 OFFSET 25 * (2 -1);
+            LIMIT 25 OFFSET 25 * (1 -1);
 
 insert into replies
 (user_id, post_id, content, reference_id, likes, dislikes)
@@ -154,5 +154,5 @@ values (7, 2, '胡蘿蔔素', null, 0, 3),
 
 UPDATE replies SET likes = likes + 1 WHERE replies.id = 1;
 UPDATE replies set dislikes = 5 where replies.id = 29;
-SELECT * FROM replies where replies.id = 3;
+SELECT * FROM replies where replies.post_id = 2;
 
