@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import e from 'express';
-import { logout, checkSession, block } from './user.js';
-=======
+
 import { logout, checkSession } from './user.js';
->>>>>>> f56a5b3573cdd37f1b5bd69249eac0b522249cc9
 
 //login
 let loginButton = document.querySelector(".signUp_btn")
@@ -521,25 +517,40 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         //like && dislike btn
         const likeButton = replyClone.querySelector(".like_btn button");
         const dislikeButton = replyClone.querySelector(".dislike_btn button");
-        likeButton.addEventListener("click", () => repliesLike(replies[r].id))
-        dislikeButton.addEventListener("click", () => repliesDislike(replies[r].id))
+        likeButton.addEventListener("click", () => likeReply(replies[r].id, true))
+        dislikeButton.addEventListener("click", () => dislikeReply(replies[r].id, false))
 
-        async function likeOrDislikeReply(id, isLike) {
-            const res = await fetch(`/replies/${id}/${isLike ? 'like' : 'dislike'}`, {
+        async function likeReply(id, isLike) {
+            console.log({ id, isLike })
+            const res = await fetch(`/replies/${id}/like`, {
                 method: 'PATCH'
             });
-            const replyLike = await repliesLike.rows;
-            console.log(res)
-            console.log(replyLike)
+
+            const likeData = await res.json();
+            if (res.ok) {
+                const latestReplyLike = likeData.latestReplyLike
+                console.log({ latestReplyLike })
+                replyClone.querySelector('.reply_like').innerText = latestReplyLike.likes;
+                console.log(`isLike is true`)
+                return;
+            }
         }
 
-        async function repliesLike(id) {
-            likeOrDislikeReply(id, true);
-        }
-        async function repliesDislike(id) {
-            likeOrDislikeReply(id, false);
-        }
+        async function dislikeReply(id, isLike) {
+            console.log({ id, isLike })
+            const res = await fetch(`/replies/${id}/dislike`, {
+                method: 'PATCH'
+            });
 
+            const dislikeData = await res.json()
+            if (res.ok) {
+                const latestReplyDislike = dislikeData.latestReplyDislike
+                console.log({ latestReplyDislike })
+                replyClone.querySelector('.reply_dislike').innerText = latestReplyDislike.dislikes;
+                console.log(`isLike is false`)
+                return;
+            }
+        }
         replyTemplate.appendChild(replyClone);
     }
 }
@@ -654,7 +665,6 @@ newPostFormElm.addEventListener('submit', async (e) => {
     document.querySelector('.createPostForm').reset()
 })
 
-<<<<<<< HEAD
 //userProfile
 const leaveProfile = document.querySelector('.leave_profile');
 const showProfile = document.querySelector('.btn_bar .profile');
@@ -665,7 +675,8 @@ showProfile.addEventListener('click', () => {
 
 leaveProfile.addEventListener('click', () => {
     document.querySelector('.userProfile').classList.add('d-none');
-=======
+})
+
 // Create Reply
 const createReply = document.querySelector('.reply_btn');
 const createReplyContainer = document.querySelector('.createReplyContainer')
@@ -676,7 +687,6 @@ createReply.addEventListener('click', () => {
 const leaveCreateReply = document.querySelector('.leave_createReply_btn');
 leaveCreateReply.addEventListener('click', () => {
     createReplyContainer.classList.add("d-none");
->>>>>>> f56a5b3573cdd37f1b5bd69249eac0b522249cc9
 })
 
 let newReplyFormElm = document.querySelector('.createReplyForm')

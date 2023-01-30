@@ -117,7 +117,7 @@ values (7, 2, '胡峯', null, 0, 3),
         (6, 2, '胡妮晶', null, 20, 0)
 
 
-SELECT * FROM replies where post_id = 3;
+SELECT * FROM replies where post_id = 2;
 SELECT * FROM replies JOIN users ON replies.user_id = users.id JOIN posts ON replies.post_id = posts.id WHERE replies.post_id = 2;
 SELECT * FROM replies JOIN users ON replies.user_id = users.id JOIN posts ON replies.post_id = posts.id;
 
@@ -153,4 +153,6 @@ values (7, 2, '胡蘿蔔素', null, 0, 3),
         (6, 2, '胡妮晶', null, 20, 0)
 
 UPDATE replies SET likes = likes + 1 WHERE replies.id = 1;
+UPDATE replies set dislikes = 5 where replies.id = 29;
+SELECT * FROM replies where replies.id = 3;
 
