@@ -131,7 +131,6 @@
 .createPostContainer {
     background-color: rgba(38, 38, 38, 0.3);
 }
-<<<<<<< HEAD
 
 /* userProfile */
 .userProfile {
@@ -163,7 +162,6 @@
 
 .userProfile_container button:hover {
     background-color: #3c3c3b;
-=======
 #image{
     width: 220px;
 }
@@ -205,5 +203,4 @@
 }
 #replyImage{
     width: 220px;
->>>>>>> f56a5b3573cdd37f1b5bd69249eac0b522249cc9
 }
