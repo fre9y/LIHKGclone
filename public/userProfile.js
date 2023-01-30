@@ -48,7 +48,10 @@ async function loadProfileForAdmin() {
         let profileElem = document.querySelector(".profile")
         profileElem.innerHTML = ''
         for (let i = 0; i < profile.length; i++) {
-            //not working yet*
+            createDate = profile[i].created_at.split('T')[0]
+            createTime = profile[i].created_at.split('T')[1].split('.')[0]
+            updateDate = profile[i].updated_at.split('T')[0]
+            updateTime = profile[i].updated_at.split('T')[1].split('.')[0]
             profileElem.innerHTML += /*html */ `
             <div class= "profile" id = "profile_${profile[i].id}">
                 <div name = id>${profile[i].id}|</div>
@@ -58,8 +61,8 @@ async function loadProfileForAdmin() {
                 ${profile[i].is_admin}|
                 ${profile[i].is_male}|
                 ${profile[i].show}|     
-                ${profile[i].created_at}|
-                ${profile[i].updated_at}
+                ${createDate}_${createTime}|
+                ${updateDate}_${updateTime}|
 
                 <button 
                 class = "soft-delete-profile"

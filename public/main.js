@@ -1,38 +1,21 @@
-import { logout, checkSession } from './user.js';
+import { logout, redirectGoogle, loadUserProfileContainer, addPostBookmark, deletePostBookmark, blockUser, unblockUser, addFollowingUser, deleteFollowingUser} from './user.js';
 
 //login
 let loginButton = document.querySelector(".signUp_btn")
 loginButton.addEventListener('click', () => {
     console.log('click_login');
-    checkSession();
+    redirectGoogle();
 });
 
 //logout
 let logoutButton = document.querySelector('.logout');
-// logoutButton.addEventListener('click', () => {
-//     console.log('click_logout');
-//     logout();
-// });
+logoutButton.addEventListener('click', () => {
+    console.log('click_logout');
+    document.querySelector('.userProfile').classList.add('d-none');
+    logout();
 
-async function loadUserProfileContainer(){
-    let res = await fetch('/user/profile', {
-        method: 'GET'
-    })
-    if (res.ok) {
-        let data = await res.json()
-        let profile = data
-        console.log(profile);
-        let nicknameElem = document.querySelector(".nickname")
-        let userIdElem = document.querySelector(".user_id")
-        let createdAtElem = document.querySelector(".created_at")
-        nicknameElem.innerHTML = profile.nickname + " "
-        userIdElem.innerHTML = "#" +  profile.id
-        createdAtElem.innerHTML = profile.created_at
-    } else {
-        alert("PLEASE LOGIN")
-        checkSession();
-    }
-};
+});
+
 
 //star
 function starClick(postId) {
@@ -79,134 +62,6 @@ function sharePostClick(postId) {
             console.log('CANT SHARE', error);
         }
     });
-}
-
-
-//bookmark posts (star)
-async function addPostBookmark(post_id) {
-
-    let uploadData = {
-        id: post_id,
-    }
-
-    let res = await fetch('/user/bookmark', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(uploadData)
-    })
-
-    if (!res.ok) {
-        alert("[ERR0R: CANT FETCH]")
-    } else {
-        alert("[POST BOOKMARKED]")
-    }
-}
-
-async function deletePostBookmark(post_id) {
-    let uploadData = {
-        id: post_id,
-    }
-
-    let res = await fetch('/user/bookmark', {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(uploadData)
-    })
-
-    if (!res.ok) {
-        alert("[ERR0R: CANT FETCH]")
-    } else {
-        alert("[BOOKMARKED POST DELETED]")
-    }
-}
-
-//block user
-async function blockUser(blocked_user_id) {
-
-    let uploadData = {
-        id: blocked_user_id,
-    }
-
-    let res = await fetch('/user/block', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(uploadData)
-    })
-
-    if (!res.ok) {
-        alert("[ERR0R: CANT FETCH]")
-    } else {
-        alert("[USER BLOCKED]")
-    }
-}
-//not yet tested no entry button
-async function unblockUser(blocked_user_id) {
-    let uploadData = {
-        id: blocked_user_id,
-    }
-
-    let res = await fetch('/user/block', {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(uploadData)
-    })
-
-    if (!res.ok) {
-        alert("[ERR0R: CANT FETCH]")
-    } else {
-        alert("[BLOCKED USER UNBLOCKED]")
-    }
-};
-
-
-//add following users
-async function addFollowingUser(follow_user_id) {
-    let uploadData = {
-        id: follow_user_id,
-    }
-
-    let res = await fetch('/user/following', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(uploadData)
-    })
-
-    if (!res.ok) {
-        alert("[ERR0R: CANT FETCH]")
-    } else {
-        alert("[USER FOLLOWED]")
-    }
-}
-
-//delete following users
-async function deleteFollowingUser(follow_user_id) {
-    let uploadData = {
-        id: follow_user_id,
-    }
-
-    let res = await fetch('/user/following', {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(uploadData)
-    })
-
-    if (!res.ok) {
-        alert("[ERR0R: CANT FETCH]")
-    } else {
-        alert("[USER UNFOLLOWED]")
-    }
 }
 
 
@@ -743,17 +598,21 @@ newPostFormElm.addEventListener('submit', async (e) => {
 })
 
 //userProfile
-const leaveProfile = document.querySelector('.leave_profile');
-const showProfile = document.querySelector('.btn_bar .profile');
-
-showProfile.addEventListener('click', () => {
-    document.querySelector('.userProfile').classList.remove('d-none');
-    loadUserProfileContainer();
+function profileClick(){
+    //click profile icon (open)
+    const showProfile = document.querySelector('.btn_bar .profile');
+    showProfile.addEventListener('click', () => {
+        loadUserProfileContainer()
+    })
+    //click leave profile icon (close)
+    const leaveProfile = document.querySelector('.leave_profile');
+    leaveProfile.addEventListener('click', () => {
+        document.querySelector('.userProfile').classList.add('d-none');
 })
+}
+profileClick();
 
-leaveProfile.addEventListener('click', () => {
-    document.querySelector('.userProfile').classList.add('d-none');
-})
+
 
 // Create Reply
 const createReply = document.querySelector('.reply_btn');
