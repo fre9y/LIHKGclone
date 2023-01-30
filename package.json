@@ -34,6 +34,7 @@
     "fs": "^0.0.1-security",
     "grant": "^5.4.21",
     "masonry-layout": "^4.2.2",
+    "navigator": "^1.0.1",
     "node-fetch": "^3.3.0",
     "nodemon": "^2.0.20",
     "path": "^0.12.7",

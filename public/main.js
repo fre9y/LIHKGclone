@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-import e from 'express';
-import { logout, checkSession, block } from './user.js';
-=======
 import { logout, checkSession } from './user.js';
->>>>>>> f56a5b3573cdd37f1b5bd69249eac0b522249cc9
 
 //login
 let loginButton = document.querySelector(".signUp_btn")
@@ -654,7 +649,7 @@ newPostFormElm.addEventListener('submit', async (e) => {
     document.querySelector('.createPostForm').reset()
 })
 
-<<<<<<< HEAD
+
 //userProfile
 const leaveProfile = document.querySelector('.leave_profile');
 const showProfile = document.querySelector('.btn_bar .profile');
@@ -665,7 +660,7 @@ showProfile.addEventListener('click', () => {
 
 leaveProfile.addEventListener('click', () => {
     document.querySelector('.userProfile').classList.add('d-none');
-=======
+})
 // Create Reply
 const createReply = document.querySelector('.reply_btn');
 const createReplyContainer = document.querySelector('.createReplyContainer')
@@ -676,7 +671,7 @@ createReply.addEventListener('click', () => {
 const leaveCreateReply = document.querySelector('.leave_createReply_btn');
 leaveCreateReply.addEventListener('click', () => {
     createReplyContainer.classList.add("d-none");
->>>>>>> f56a5b3573cdd37f1b5bd69249eac0b522249cc9
+
 })
 
 let newReplyFormElm = document.querySelector('.createReplyForm')
