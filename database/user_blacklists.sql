@@ -16,6 +16,7 @@ CREATE TABLE user_blacklists (
 
 
 
+
 insert into user_blacklists
 (user_id_block_others, user_id_being_blocked)
 values

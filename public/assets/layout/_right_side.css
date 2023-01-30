@@ -94,6 +94,7 @@
     left: 25%;
     top: 100px;
     padding: 15px;
+    z-index: 99999;
 }
 
 .postFormFirstRow{
@@ -117,7 +118,7 @@
 }
 #content{
     background-color: #333333;
-    height: 65vh;
+    height: 62vh;
     border-radius: 5px;
     margin: 5px;
     color: white;
@@ -130,6 +131,7 @@
 .createPostContainer {
     background-color: rgba(38, 38, 38, 0.3);
 }
+<<<<<<< HEAD
 
 /* userProfile */
 .userProfile {
@@ -161,4 +163,47 @@
 
 .userProfile_container button:hover {
     background-color: #3c3c3b;
+=======
+#image{
+    width: 220px;
+}
+
+/* Create Reply */
+
+.createReplyForm{
+    background-color: #454545;
+    width: 50vw;
+    height: 80vh;
+    position: absolute;
+    left: 25%;
+    top: 100px;
+    padding: 15px;
+    z-index: 99999;
+}
+
+.replyFormFirstRow{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: white;
+}
+
+#replyContent{
+    background-color: #333333;
+    height: 66vh;
+    border-radius: 5px;
+    margin: 5px;
+    color: white;
+}
+.createReplySubmit{
+    justify-content: end;
+    align-items: flex-end;
+    text-align: end;
+}
+.createReplyContainer {
+    background-color: rgba(38, 38, 38, 0.3);
+}
+#replyImage{
+    width: 220px;
+>>>>>>> f56a5b3573cdd37f1b5bd69249eac0b522249cc9
 }

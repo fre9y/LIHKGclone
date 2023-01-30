@@ -31,6 +31,7 @@ export async function logout() {
             
 }
 
+<<<<<<< HEAD
 //DOXXING
 export async function doxx() {}
 
@@ -38,3 +39,5 @@ export async function doxx() {}
 export async function block() {
     
 }
+=======
+>>>>>>> f56a5b3573cdd37f1b5bd69249eac0b522249cc9

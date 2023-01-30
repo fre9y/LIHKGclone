@@ -8,11 +8,11 @@ import { formParsePromise } from '../util/formidable'
 export const postRoutes = express.Router()
 
 // postRoutes.get('/:stationId', getPosts)
-postRoutes.post('/', isLoggedInAPI, createPosts)
+postRoutes.post('/', isLoggedInAPI, isP, createPosts)
 // postRoutes.put('/', isLoggedInAPI, isP, isYourPost, updatePostById)
 // postRoutes.put('/', isLoggedInAPI, isAdmin, hidePostById)
 // postRoutes.put('/', isLoggedInAPI, isAdmin, showPostById)
-postRoutes.get('/:userId', getUserPosts)
+// postRoutes.get('/:userId', getUserPosts)
 // postRoutes.get('/', getHotPosts)
 // postRoutes.get('/', isLoggedInAPI, getMyPosts)
 
@@ -83,7 +83,7 @@ export async function createPosts(req: express.Request, res: express.Response) {
 		if (files.image){
 			let fileName = files.image['newFilename']
 			await client.query(
-				`insert into images (name, post_id, replies_id, created_at, updated_at) values ($1, $2, $3, now(), now())`,
+				`insert into images (name, posts_id, replies_id, created_at, updated_at) values ($1, $2, $3, now(), now())`,
 				[fileName, Number(postId), Number(replyId)]
 			)
 		}

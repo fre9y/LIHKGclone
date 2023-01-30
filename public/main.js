@@ -1,9 +1,13 @@
+<<<<<<< HEAD
 import e from 'express';
 import { logout, checkSession, block } from './user.js';
+=======
+import { logout, checkSession } from './user.js';
+>>>>>>> f56a5b3573cdd37f1b5bd69249eac0b522249cc9
 
 //login
-let profileIcon = document.querySelector(".profile")
-profileIcon.addEventListener('click', () => {
+let loginButton = document.querySelector(".signUp_btn")
+loginButton.addEventListener('click', () => {
     console.log('click_login');
     checkSession();
 });
@@ -473,7 +477,15 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         let blockButton = replyClone.querySelector('.block');
         blockButton.addEventListener('click', () => {
             console.log('click_block');
-            blockUser(userID);
+            if (replyClone.querySelector('.block').innerText === '封鎖') {
+                replyClone.querySelector('.block').innerText = '解除封鎖'
+                console.log(replyClone.querySelector('.block').innerText);
+                blockUser(userID);
+            } else {
+                replyClone.querySelector('.block').innerText = '封鎖'
+                console.log(replyClone.querySelector('.block').innerText);
+                unblockUser(userID);
+            }
 
         });
         //follow
@@ -633,8 +645,16 @@ newPostFormElm.addEventListener('submit', async (e) => {
 
     let result = await res.json()
     console.log(result.message)
+
+    createPostContainer.classList.add("d-none");
+
+    let selectStationId = document.getElementById("selectStation").value
+    goToStation(Number(selectStationId))
+
+    document.querySelector('.createPostForm').reset()
 })
 
+<<<<<<< HEAD
 //userProfile
 const leaveProfile = document.querySelector('.leave_profile');
 const showProfile = document.querySelector('.btn_bar .profile');
@@ -645,5 +665,40 @@ showProfile.addEventListener('click', () => {
 
 leaveProfile.addEventListener('click', () => {
     document.querySelector('.userProfile').classList.add('d-none');
+=======
+// Create Reply
+const createReply = document.querySelector('.reply_btn');
+const createReplyContainer = document.querySelector('.createReplyContainer')
+createReply.addEventListener('click', () => {
+    createReplyContainer.classList.remove("d-none");
 })
 
+const leaveCreateReply = document.querySelector('.leave_createReply_btn');
+leaveCreateReply.addEventListener('click', () => {
+    createReplyContainer.classList.add("d-none");
+>>>>>>> f56a5b3573cdd37f1b5bd69249eac0b522249cc9
+})
+
+let newReplyFormElm = document.querySelector('.createReplyForm')
+
+newReplyFormElm.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    let formData = new FormData(newPostFormElm)
+    const postId = urlParams.get('postId');
+    formData.append('postId', postId)
+
+    let res = await fetch('/replies', {
+        method: 'POST',
+        body: formData
+    })
+
+    let result = await res.json()
+    console.log(result.message)
+
+    createReplyContainer.classList.add("d-none");
+
+    goToPost(postId, 1)
+
+    document.querySelector('.createReplyForm').reset()
+})

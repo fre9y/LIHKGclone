@@ -46,11 +46,11 @@ export const isP = (
 	next: express.NextFunction
 ) => {
 	if (req.session?.['p']) {
-		next()
-	} else {
 		res.status(403).json({
 			message: 'Unauthorized'
 		})
+	} else {
+		next()
 	}
 }
 
