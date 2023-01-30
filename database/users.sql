@@ -38,7 +38,7 @@ values
 ('Anton', 'antonyeung919@gmail.com', true, false, true);
 
 
-
+update users set is_p = false where id = 13;
 
 -- select id,
 -- 				(select nickname
