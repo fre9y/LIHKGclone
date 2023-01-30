@@ -15,7 +15,19 @@ logoutButton.addEventListener('click', () => {
     logout();
 
 });
+//change profile
+let changeProfileButton = document.querySelector('.change_profile');
+changeProfileButton.addEventListener('click', () => {
+    console.log('click_change-profile');
+    window.location = "/userProfile.html"
+});
 
+let share_container = document.querySelector(".share_container");
+let shareButton = document.querySelector(".share_btn");
+shareButton.addEventListener('click', () => {
+    console.log('click_share');
+    //share_container.classList.toggle("d-none");
+});
 
 //star
 function starClick(postId) {
