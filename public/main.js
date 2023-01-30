@@ -507,10 +507,18 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         const storyModeButton = replyClone.querySelector('.block_replies_btn')
         let storyModeToggle = false
         storyModeButton.addEventListener('click', () => {
-            !storyModeToggle;
+            storyModeToggle = !storyModeToggle
             if (storyModeToggle === true) {
+                console.log('StoryMode')
+                document.querySelector('.fa-eye-slash').classList.remove("d-none");
+                document.querySelector('.fa-eye').classList.add("d-none");
+                console.log(userID)
 
             } else {
+                console.log('NormalMode')
+                document.querySelector('.fa-eye').classList.remove("d-none");
+                document.querySelector('.fa-eye-slash').classList.add("d-none");
+                let urlParams = new URLSearchParams(window.location.search);
                 const postId = urlParams.get('postId');
                 goToPost(postId, 1)
             }
