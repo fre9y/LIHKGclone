@@ -510,14 +510,22 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
             storyModeToggle = !storyModeToggle
             if (storyModeToggle === true) {
                 console.log('StoryMode')
-                document.querySelector('.fa-eye-slash').classList.remove("d-none");
-                document.querySelector('.fa-eye').classList.add("d-none");
+                replyClone.querySelector('.fa-eye-slash').classList.remove("d-none");
+                replyClone.querySelector('.fa-eye').classList.add("d-none");
                 console.log(userID)
+                console.log(nicknameElement.innerText)
+                // (1) newReplyArray = replies filtered by userID
+                // (2) userID -> unique user Nickname
+                //display none / display block : ".reply"
+
+                // if(userID)
+
+                
 
             } else {
                 console.log('NormalMode')
-                document.querySelector('.fa-eye').classList.remove("d-none");
-                document.querySelector('.fa-eye-slash').classList.add("d-none");
+                replyClone.querySelector('.fa-eye').classList.remove("d-none");
+                replyClone.querySelector('.fa-eye-slash').classList.add("d-none");
                 let urlParams = new URLSearchParams(window.location.search);
                 const postId = urlParams.get('postId');
                 goToPost(postId, 1)
@@ -573,6 +581,8 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         }
         replyTemplate.appendChild(replyClone);
     }
+
+
 }
 
 //newest & hit switch
