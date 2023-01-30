@@ -34,3 +34,7 @@ insert into images (name, created_at, updated_at, posts_id, replies_id) values (
                                                         ('ryQhdDa.jpg', '2022-07-01 00:00:00', '2022-07-01 00:00:00',5,23),
                                                         ('Rpr1i3A.jpg', '2022-07-01 00:00:00', '2022-07-01 00:00:00',5,22);
 
+SELECT * FROM replies where replies.id = 1;
+SELECT * FROM images JOIN replies ON images.replies_id = replies.id WHERE images.replies_id = 1;
+SELECT * FROM images JOIN posts ON images.posts_id = posts.id WHERE images.posts_id = 1;
+SELECT posts_id, name FROM images where posts_id = 2
