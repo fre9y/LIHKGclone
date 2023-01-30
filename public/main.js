@@ -1,169 +1,67 @@
-import { logout, checkSession } from './user.js';
+import { logout, redirectGoogle, loadUserProfileContainer, addPostBookmark, deletePostBookmark, blockUser, unblockUser, addFollowingUser, deleteFollowingUser} from './user.js';
 
 //login
 let loginButton = document.querySelector(".signUp_btn")
 loginButton.addEventListener('click', () => {
     console.log('click_login');
-    checkSession();
+    redirectGoogle();
 });
 
 //logout
-// let logoutButton = document.querySelector('.create_post_btn');
-// logoutButton.addEventListener('click', () => {
-//     console.log('click_logout');
-//     logout();
-// });
+let logoutButton = document.querySelector('.logout');
+logoutButton.addEventListener('click', () => {
+    console.log('click_logout');
+    document.querySelector('.userProfile').classList.add('d-none');
+    logout();
 
-//bookmark posts (star)
-async function addPostBookmark(post_id) {
+});
 
-    let uploadData = {
-        id: post_id,
-    }
 
-    let res = await fetch('/user/bookmark', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(uploadData)
-    })
-
-    if (!res.ok) {
-        alert("[ERR0R: CANT FETCH]")
-    } else {
-        alert("[POST BOOKMARKED]")
-    }
-}
-
-async function deletePostBookmark(post_id) {
-    let uploadData = {
-        id: post_id,
-    }
-
-    let res = await fetch('/user/bookmark', {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(uploadData)
-    })
-
-    if (!res.ok) {
-        alert("[ERR0R: CANT FETCH]")
-    } else {
-        alert("[BOOKMARKED POST DELETED]")
-    }
-}
-
+//star
 function starClick(postId) {
-    let starButton = document.querySelector(".fa-star")
-    let starToggle = false;
-    starButton.style.color = "rgb(255,255,255)"
+    if (postId){
+        let starButton = document.querySelector(".fa-star")
+        let favButton = document.querySelector(".fav_btn")
+        let starToggle = false;
+        starButton.style.color = "rgb(255,255,255)"
 
-    starButton.addEventListener('click', () => {
-        console.log('click_star');
-        console.log(starButton.style.color);
-        if (starToggle) { //yellow to white
-            deletePostBookmark(postId)
-            starButton.style.color = "rgb(255,255,255)"
-            starToggle = false;
-            console.log(starToggle);
+        favButton.addEventListener('click', () => {
+            console.log('click_star');
+            console.log(starButton.style.color);
+            if (starToggle) { //yellow to white
+                deletePostBookmark(postId)
+                starButton.style.color = "rgb(255,255,255)"
+                starToggle = false;
+                console.log(starToggle);
 
-        } else { //white to yellow
-            addPostBookmark(postId)
-            starButton.style.color = "rgb(250,194,9)"
-            starToggle = true;
-            console.log(starToggle);
+            } else { //white to yellow
+                addPostBookmark(postId)
+                starButton.style.color = "rgb(250,194,9)"
+                starToggle = true;
+                console.log(starToggle);
 
+            }
+        });
+    }
+}
+
+//share post //not using
+function sharePostClick(postId) {
+    let shareButton = document.querySelector(".fa-share-nodes")
+    let postTitle = document.querySelector(".replyPostTitle");
+    shareButton.addEventListener('click', async() => {
+        console.log('click_share');
+        try {
+            await navigator.share({
+                title: postTitle,
+                text: postTitle,
+                url: `http://localhost:8080/stations/2?postId=${postId}`,
+            })
+            console.log('SHARE SUCCESS')
+        } catch(error){
+            console.log('CANT SHARE', error);
         }
     });
-}
-
-
-//block user
-async function blockUser(blocked_user_id) {
-
-    let uploadData = {
-        id: blocked_user_id,
-    }
-
-    let res = await fetch('/user/block', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(uploadData)
-    })
-
-    if (!res.ok) {
-        alert("[ERR0R: CANT FETCH]")
-    } else {
-        alert("[USER BLOCKED]")
-    }
-}
-//not yet tested no entry button
-async function unblockUser(blocked_user_id) {
-    let uploadData = {
-        id: blocked_user_id,
-    }
-
-    let res = await fetch('/user/block', {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(uploadData)
-    })
-
-    if (!res.ok) {
-        alert("[ERR0R: CANT FETCH]")
-    } else {
-        alert("[BLOCKED USER UNBLOCKED]")
-    }
-};
-
-
-//add following users
-async function addFollowingUser(follow_user_id) {
-    let uploadData = {
-        id: follow_user_id,
-    }
-
-    let res = await fetch('/user/following', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(uploadData)
-    })
-
-    if (!res.ok) {
-        alert("[ERR0R: CANT FETCH]")
-    } else {
-        alert("[USER FOLLOWED]")
-    }
-}
-
-//delete following users
-async function deleteFollowingUser(follow_user_id) {
-    let uploadData = {
-        id: follow_user_id,
-    }
-
-    let res = await fetch('/user/following', {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(uploadData)
-    })
-
-    if (!res.ok) {
-        alert("[ERR0R: CANT FETCH]")
-    } else {
-        alert("[USER UNFOLLOWED]")
-    }
 }
 
 
@@ -220,7 +118,7 @@ async function goToStation(stationId) {
 
     goToPost(postId, page);
     starClick(postId); //favourite post (C+D)
-
+    //sharePostClick(postId); //not using
     // getStationsPost
     setPostsOfStation(stations[0], posts);
 
@@ -353,8 +251,6 @@ async function goToPost(postId, currentPage) {
     const { replies, repliesTotal, posts } = await res.json();
     const pageCount = Math.ceil(repliesTotal / pageSize);
 
-    document.querySelector('.img_container').innerHTML = " ";
-    document.querySelector(".total_img").innerText = "0";
     setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage);
     setPageDropdown(postId, pageCount, currentPage);
 }
@@ -441,37 +337,18 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
 
     replyTemplate.innerHTML = "";
 
-    const totalImg = document.querySelector(".total_img");
-    const imageTotal = [];
     for (let r = 0; r < replies.length; r++) {
         const replyClone = reply.cloneNode(true);
         const nicknameElement = replyClone.querySelector('.user_nickname_btn');
-        const contentElement = replyClone.querySelector(".reply_second_row .reply_content");
-        const imageElement = replyClone.querySelector('.reply_second_row .reply_image');
+        const contentElement = replyClone.querySelector(".reply_second_row");
         const likeElement = replyClone.querySelector(".reply_like");
         const dislikeElement = replyClone.querySelector(".reply_dislike");
         const postTitleForReply = document.querySelector('.post_first_row .post_title');
-        const createImgEle = document.querySelector('.img_container');
 
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
         replyClone.querySelector('.reply_num').setAttribute('id', r + 1); //replybox id
         nicknameElement.innerText = replies[r].nickname;
-        //replies content && image
-        if (replies[r].images_id == null) {
-            contentElement.innerHTML = replies[r].content;
-        } else {
-            for (let image of replies[r].images_id) {
-                imageElement.classList.remove('d-none');
-                imageElement.querySelector('img').setAttribute('src', `/${image}`);
-                imageTotal.push(replies[r].images_id);
-
-                const img = document.createElement("img");
-                img.setAttribute('class', 'grid-item img-fluid');
-                img.src = `http://localhost:8080/${image}`;
-                createImgEle.appendChild(img);
-            }
-            totalImg.innerText = imageTotal.length;
-        }
+        contentElement.innerHTML = replies[r].content;
         likeElement.innerText = replies[r].likes;
         dislikeElement.innerHTML = replies[r].dislikes;
         postTitleForReply.innerText = title;
@@ -531,11 +408,19 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
                 replyClone.querySelector('.fa-eye').classList.add("d-none");
                 console.log(userID)
                 console.log(nicknameElement.innerText)
+                // console.log(replyClone.innerHTML)
+                console.log(replyTemplate.innerHTML.userdetail)
+                // document.querySelector('.reply').classList.add("d-none");
+                // replyTemplate.querySelector('.reply').classList.add("d-none");
                 // (1) newReplyArray = replies filtered by userID
                 // (2) userID -> unique user Nickname
                 //display none / display block : ".reply"
 
-                // if(userID)
+                // for(reply of replyTemplate)
+                //     replyId = reply.querySelector(".userDetail_id").innerText
+                //     if(replyId != userID){
+
+                //     }
 
                 
 
@@ -636,51 +521,32 @@ for (let refreshBtn of refreshBtns) {
     })
 }
 
-// //image
-// const image = document.querySelector('.imgBtn');
-// const leaveImg = document.querySelector('.leave_btn');
-// const imgWall = document.querySelector('.img_wall');
-// const createImgEle = document.querySelector('.img_container');
-
-// image.addEventListener('click', async () => {
-//     let urlParams = new URLSearchParams(window.location.search);
-//     const postId = urlParams.get('postId');
-//     imgWall.classList.remove("d-none");
-
-//     const res = await fetch(`/post/${postId}/media`);
-//     let data = await res.json()
-//     let images = data.images;
-
-//     for (let path of images) {
-//         const img = document.createElement("img");
-//         img.setAttribute('class', 'grid-item img-fluid');
-//         img.src = `http://localhost:8080/${path.name}`;
-//         createImgEle.appendChild(img);
-//     }
-// })
-
-// leaveImg.addEventListener('click', () => {
-//     imgWall.classList.add('d-none');
-//     createImgEle.innerHTML = " ";
-// })
-
 //image
 const image = document.querySelector('.imgBtn');
 const leaveImg = document.querySelector('.leave_btn');
 const imgWall = document.querySelector('.img_wall');
+const createImgEle = document.querySelector('.img_container');
 
 image.addEventListener('click', async () => {
+    let urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('postId');
     imgWall.classList.remove("d-none");
-    // for (let path of images) {
-    //     const img = document.createElement("img");
-    //     img.setAttribute('class', 'grid-item img-fluid');
-    //     img.src = `http://localhost:8080/${path.name}`;
-    //     createImgEle.appendChild(img);
-    // }
+
+    const res = await fetch(`/post/${postId}/media`);
+    let data = await res.json()
+    let images = data.images;
+
+    for (let path of images) {
+        const img = document.createElement("img");
+        img.setAttribute('class', 'grid-item img-fluid');
+        img.src = `http://localhost:8080/${path.name}`;
+        createImgEle.appendChild(img);
+    }
 })
 
 leaveImg.addEventListener('click', () => {
     imgWall.classList.add('d-none');
+    createImgEle.innerHTML = " ";
 })
 
 
@@ -732,16 +598,21 @@ newPostFormElm.addEventListener('submit', async (e) => {
 })
 
 //userProfile
-const leaveProfile = document.querySelector('.leave_profile');
-const showProfile = document.querySelector('.btn_bar .profile');
-
-showProfile.addEventListener('click', () => {
-    document.querySelector('.userProfile').classList.remove('d-none');
+function profileClick(){
+    //click profile icon (open)
+    const showProfile = document.querySelector('.btn_bar .profile');
+    showProfile.addEventListener('click', () => {
+        loadUserProfileContainer()
+    })
+    //click leave profile icon (close)
+    const leaveProfile = document.querySelector('.leave_profile');
+    leaveProfile.addEventListener('click', () => {
+        document.querySelector('.userProfile').classList.add('d-none');
 })
+}
+profileClick();
 
-leaveProfile.addEventListener('click', () => {
-    document.querySelector('.userProfile').classList.add('d-none');
-})
+
 
 // Create Reply
 const createReply = document.querySelector('.reply_btn');
@@ -750,7 +621,7 @@ createReply.addEventListener('click', () => {
     let postTitle = document.getElementById("replyPostTitle")
 
     let replyFormTitle = document.querySelector('.replyFormTitle')
-    replyFormTitle.innerText = '回覆：' + postTitle.innerHTML
+    replyFormTitle.innerText = '回覆：'+ postTitle.innerHTML
     createReplyContainer.classList.remove("d-none");
 })
 
