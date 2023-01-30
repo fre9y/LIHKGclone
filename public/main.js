@@ -448,7 +448,7 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         const postTitleForReply = document.querySelector('.post_first_row .post_title');
 
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
-
+        replyClone.querySelector('.reply_num').setAttribute('id', r + 1); //replybox id
         nicknameElement.innerText = replies[r].nickname;
         contentElement.innerHTML = replies[r].content;
         likeElement.innerText = replies[r].likes;
@@ -485,13 +485,9 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         });
         //follow
         let followButton = replyClone.querySelector('.follow');
-        let followToggle = false
-        let followText = replyClone.querySelector('.follow').innerText
         followButton.addEventListener('click', () => {
             console.log('click_follow');
             //css broken
-            //addFollowingUser(userID);
-            //deleteFollowingUser(userID);
             if (replyClone.querySelector('.follow').innerText === '追蹤') {
                 replyClone.querySelector('.follow').innerText = '取消追蹤'
                 console.log(replyClone.querySelector('.follow').innerText);
