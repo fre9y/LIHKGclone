@@ -1,8 +1,8 @@
 import { logout, checkSession } from './user.js';
 
 //login
-let profileIcon = document.querySelector(".profile")
-profileIcon.addEventListener('click', () => {
+let loginButton = document.querySelector(".signUp_btn")
+loginButton.addEventListener('click', () => {
     console.log('click_login');
     checkSession();
 });
