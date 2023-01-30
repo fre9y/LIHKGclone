@@ -8,11 +8,79 @@ loginButton.addEventListener('click', () => {
 });
 
 //logout
-// let logoutButton = document.querySelector('.create_post_btn');
+let logoutButton = document.querySelector('.logout');
 // logoutButton.addEventListener('click', () => {
 //     console.log('click_logout');
 //     logout();
 // });
+
+async function loadUserProfileContainer(){
+    let res = await fetch('/user/profile', {
+        method: 'GET'
+    })
+    if (res.ok) {
+        let data = await res.json()
+        let profile = data
+        console.log(profile);
+        let nicknameElem = document.querySelector(".nickname")
+        let userIdElem = document.querySelector(".user_id")
+        let createdAtElem = document.querySelector(".created_at")
+        nicknameElem.innerHTML = profile.nickname + " "
+        userIdElem.innerHTML = "#" +  profile.id
+        createdAtElem.innerHTML = profile.created_at
+    } else {
+        alert("PLEASE LOGIN")
+        checkSession();
+    }
+};
+
+
+
+
+//star
+function starClick(postId) {
+    let starButton = document.querySelector(".fa-star")
+    let starToggle = false;
+    starButton.style.color = "rgb(255,255,255)"
+
+    starButton.addEventListener('click', () => {
+        console.log('click_star');
+        console.log(starButton.style.color);
+        if (starToggle) { //yellow to white
+            deletePostBookmark(postId)
+            starButton.style.color = "rgb(255,255,255)"
+            starToggle = false;
+            console.log(starToggle);
+
+        } else { //white to yellow
+            addPostBookmark(postId)
+            starButton.style.color = "rgb(250,194,9)"
+            starToggle = true;
+            console.log(starToggle);
+
+        }
+    });
+}
+
+//share post
+function sharePostClick(postId) {
+    let shareButton = document.querySelector(".fa-share-nodes")
+    let postTitle = document.querySelector(".replyPostTitle");
+    shareButton.addEventListener('click', async() => {
+        console.log('click_share');
+        try {
+            await navigator.share({
+                title: postTitle,
+                text: postTitle,
+                url: `http://localhost:8080/stations/2?postId=${postId}`,
+            })
+            console.log('SHARE SUCCESS')
+        } catch(error){
+            console.log('CANT SHARE', error);
+        }
+    });
+}
+
 
 //bookmark posts (star)
 async function addPostBookmark(post_id) {
@@ -222,7 +290,7 @@ async function goToStation(stationId) {
 
     goToPost(postId, page);
     starClick(postId); //favourite post (C+D)
-
+    //sharePostClick(postId); //not using
     // getStationsPost
     setPostsOfStation(stations[0], posts);
 
@@ -705,6 +773,7 @@ const showProfile = document.querySelector('.btn_bar .profile');
 
 showProfile.addEventListener('click', () => {
     document.querySelector('.userProfile').classList.remove('d-none');
+    loadUserProfileContainer();
 })
 
 leaveProfile.addEventListener('click', () => {
