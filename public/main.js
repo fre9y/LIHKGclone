@@ -34,17 +34,15 @@ async function loadUserProfileContainer(){
     }
 };
 
-
-
-
 //star
 function starClick(postId) {
     if (postId){
         let starButton = document.querySelector(".fa-star")
+        let favButton = document.querySelector(".fav_btn")
         let starToggle = false;
         starButton.style.color = "rgb(255,255,255)"
 
-        starButton.addEventListener('click', () => {
+        favButton.addEventListener('click', () => {
             console.log('click_star');
             console.log(starButton.style.color);
             if (starToggle) { //yellow to white
@@ -125,33 +123,6 @@ async function deletePostBookmark(post_id) {
         alert("[BOOKMARKED POST DELETED]")
     }
 }
-
-function starClick(postId) {
-    let starButton = document.querySelector(".fa-star")
-    let favButton = document.querySelector(".fav_btn")
-    
-    let starToggle = false;
-    starButton.style.color = "rgb(255,255,255)"
-
-    favButton.addEventListener('click', () => {
-        console.log('click_star');
-        console.log(starButton.style.color);
-        if (starToggle) { //yellow to white
-            deletePostBookmark(postId)
-            starButton.style.color = "rgb(255,255,255)"
-            starToggle = false;
-            console.log(starToggle);
-
-        } else { //white to yellow
-            addPostBookmark(postId)
-            starButton.style.color = "rgb(250,194,9)"
-            starToggle = true;
-            console.log(starToggle);
-
-        }
-    });
-}
-
 
 //block user
 async function blockUser(blocked_user_id) {
