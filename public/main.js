@@ -454,7 +454,7 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         const createImgEle = document.querySelector('.img_container');
 
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
-
+        replyClone.querySelector('.reply_num').setAttribute('id', r + 1); //replybox id
         nicknameElement.innerText = replies[r].nickname;
         //replies content && image
         if (replies[r].images_id == null) {
@@ -506,13 +506,9 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         });
         //follow
         let followButton = replyClone.querySelector('.follow');
-        let followToggle = false
-        let followText = replyClone.querySelector('.follow').innerText
         followButton.addEventListener('click', () => {
             console.log('click_follow');
             //css broken
-            //addFollowingUser(userID);
-            //deleteFollowingUser(userID);
             if (replyClone.querySelector('.follow').innerText === '追蹤') {
                 replyClone.querySelector('.follow').innerText = '取消追蹤'
                 console.log(replyClone.querySelector('.follow').innerText);
@@ -528,10 +524,26 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         const storyModeButton = replyClone.querySelector('.block_replies_btn')
         let storyModeToggle = false
         storyModeButton.addEventListener('click', () => {
-            !storyModeToggle;
+            storyModeToggle = !storyModeToggle
             if (storyModeToggle === true) {
+                console.log('StoryMode')
+                replyClone.querySelector('.fa-eye-slash').classList.remove("d-none");
+                replyClone.querySelector('.fa-eye').classList.add("d-none");
+                console.log(userID)
+                console.log(nicknameElement.innerText)
+                // (1) newReplyArray = replies filtered by userID
+                // (2) userID -> unique user Nickname
+                //display none / display block : ".reply"
+
+                // if(userID)
+
+                
 
             } else {
+                console.log('NormalMode')
+                replyClone.querySelector('.fa-eye').classList.remove("d-none");
+                replyClone.querySelector('.fa-eye-slash').classList.add("d-none");
+                let urlParams = new URLSearchParams(window.location.search);
                 const postId = urlParams.get('postId');
                 goToPost(postId, 1)
             }
@@ -586,6 +598,8 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         }
         replyTemplate.appendChild(replyClone);
     }
+
+
 }
 
 //newest & hit switch
