@@ -11,7 +11,9 @@ loginButton.addEventListener('click', () => {
 let logoutButton = document.querySelector('.logout');
 logoutButton.addEventListener('click', () => {
     console.log('click_logout');
+    document.querySelector('.userProfile').classList.add('d-none');
     logout();
+
 });
 
 
