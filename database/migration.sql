@@ -1,3 +1,12 @@
+-- # 1/ users
+-- # 2/ stations
+-- # 3/ posts
+-- # 4/ replies
+-- # 5/ images
+-- # 6/ favourite_posts
+-- # 7/ user_blacklists
+-- # 8/ user_followings
+
 /*POSTS*/
 
 create table users(
@@ -26,7 +35,8 @@ values
 ('2機械人二', 'bot2@botbot.com', false, true, true),
 ('3機械人三', 'bot3@botbot.com', false, true, true),
 ('漢語多功能字庫', 'bbb@cuhk.edu.hk', false, true, false),
-('me', '0fr3ddy0@gmail.com', true, false, false);
+('me', '0fr3ddy0@gmail.com', true, false, false),
+('Anton', 'antonyeung919@gmail.com', true, false, true);
 
 
 
@@ -78,7 +88,7 @@ insert into stations (name) values ('吹水台'),
                                     ('World'),
                                     ('自選台');
 
-update stations set id = 999 where id = 39
+update stations set id = 999 where id = 39;
 
 /*POSTS*/
 
@@ -103,12 +113,8 @@ values
 ('［突發］小弟姓胡 個女就黎出世 請問改咩名好？', 2, 2),
 ('第一次買樓，首選第一城，希望大家畀少少意見', 13, 2),
 ('李家超冀今年內取消口罩令', 8, 3),
-('召喚痴線西 (216)', 10, 1);
-
-insert into posts
-(post_title, station_id, user_id)
-values
-('只知道是時候拿著金莎 將心意預留在藍罐之下', 2, 3)
+('召喚痴線西 (216)', 10, 1),
+('只知道是時候拿著金莎 將心意預留在藍罐之下', 2, 3);
 
 /* REPLIES */
 CREATE TABLE replies (
@@ -127,13 +133,6 @@ CREATE TABLE replies (
     show Boolean not null default true
 );
 
-
-
-
-
-
-
-
 insert into replies
 (user_id, post_id, content, reference_id, likes, dislikes)
 values
@@ -148,14 +147,14 @@ values
 小view就恥笑
 永遠唔可以正面面對一件事
 跟本唔值得擁有好既人同事', null, 5, 7),
-(5, 2, '胡鴻均👍🏻
+(2, 2, '胡鴻均👍🏻
 
 一定孝順', null, 13, 1),
 (3, 2, '胡錦濤', null, 9, 1),
 (1, 2, '胡家寶藏', null, 2, 11),
 (2, 2, '力威', null, 1, 23),
 (4, 2, '唔練下身', 4, 0, 1),
-(1, 3, '背景：自住，一個灣仔番工，一個觀塘番工，冇小朋友
+(2, 3, '背景：自住，一個灣仔番工，一個觀塘番工，冇小朋友
 筆直大約450萬
 之前冇住過沙田區
 睇中第一城交通，有商鋪食肆，靜中帶旺
@@ -170,7 +169,7 @@ Concern位係大廈維修費/漏水問題
 (4, 3, '都40年樓, 真係好咩', null, 3, 2),
 (3, 3, '與其買第一城咁舊嘅樓不如俾貴少少買啲同區新啲嘅樓，舊樓遲早無人買只會一路眨值', null, 0, 0),
 (1, 3, '你就唔送', 2, 0, 0),
-(4, 4, '香港與內地月初起恢復通關，高鐵香港段前日（15日）亦復運，社會期待香港可進一步邁向復常之路。行政長官李家超今日（17日）接受報章專訪時表示，通關第一階段的開放安全、有序、暢順，符合預期，自言很心急的他希望可以盡早開啟第二階段：「一定不會讓市民失望，而且能給多一點點驚喜。」通關之後，李家超表示希望今年內取消所有防疫限制，包括口罩令，揚言希望今年第一季解決所有問題，但重申作決策要務實，要看有沒有風險，不可只是盲衝。
+(3, 4, '香港與內地月初起恢復通關，高鐵香港段前日（15日）亦復運，社會期待香港可進一步邁向復常之路。行政長官李家超今日（17日）接受報章專訪時表示，通關第一階段的開放安全、有序、暢順，符合預期，自言很心急的他希望可以盡早開啟第二階段：「一定不會讓市民失望，而且能給多一點點驚喜。」通關之後，李家超表示希望今年內取消所有防疫限制，包括口罩令，揚言希望今年第一季解決所有問題，但重申作決策要務實，要看有沒有風險，不可只是盲衝。
 
 原文網址: 李家超冀今年內取消口罩令　稱通關將有驚喜：第一季解決所有問題
 
@@ -190,53 +189,42 @@ Sean 話夠100k 有證據 （自拍相）爆
 無人迫你哋follow', null, 1, 1),
 (1, 5, 'lm', null, 5, 5),
 (3, 5, 'lm', null, 6, 1),
-(4, 5, '建議新嘅金剛棒update返欠債alex柒事', null, 3, 4);
-
-insert into replies
-(user_id, post_id, content, reference_id, likes, dislikes)
-values (3, 6, '做你親友或許 容易團聚下又再傾舊時
+(4, 5, '建議新嘅金剛棒update返欠債alex柒事', null, 3, 4),
+(3, 6, '做你親友或許 容易團聚下又再傾舊時
                             二伯聽說有喜 初一的餐宴
                             恭喜 我再賀你新年
                             做你親友或許 容易
                             團聚下又再傾 舊時
                             二伯聽說有喜 初一的餐宴
-                            恭喜 我再賀你新年', null, 3, 4)
-
-insert into replies
-(user_id, post_id, content, reference_id, likes, dislikes)
-values (7, 2, '胡峯', null, 0, 3),
-        (8, 2, '胡香', null, 5, 11),
-        (9, 2, '胡說樓市', null, 2, 0),
-        (10, 2, '胡，單字一個「雪」，加埋就係「胡雪」', null, 5, 43),
-        (11, 2, '胡瑰麗', null, 0, 0),
-        (9, 2, '胡理小姐', null, 4, 0),
-        (1, 2, '胡朝豬吐', null, 21, 11),
-        (2, 2, '胡一刀', null, 0, 0),
-        (3, 2, '胡辣三小', null, 52, 11),
-        (4, 2, '胡桃', null, 2, 0),
-        (5, 2, '胡奕凡', null, 8, 19),
-        (6, 2, 'skr wu', null, 20, 0),
-        (7, 2, '胡杏兒', null, 2, 1),
-        (8, 2, '胡雪樹', null, 0, 0),
-        (9, 2, '胡鬧', null, 5, 9),
-        (10, 2, '胡囧囧', null, 2, 11)
-
-insert into replies
-(user_id, post_id, content, reference_id, likes, dislikes)
-values (7, 2, '胡蘿蔔素', null, 0, 3),
-        (8, 2, '女仔就當然要佢理性 同 精明 胡理精', null, 5, 11),
-        (9, 2, '胡咁圖or老母', null, 2, 0),
-        (10, 2, '胡呢單刀', null, 5, 43),
-        (11, 2, '定欣，實西口西面', null, 0, 0),
-        (9, 2, '胡理小姐', null, 4, 0),
-        (1, 2, '就出世先上黎問', null, 21, 11),
-        (2, 2, '舒寶', null, 0, 0),
-        (3, 2, '胡作非', null, 52, 11),
-        (4, 2, '胡狸先生幾多點', null, 2, 0),
-        (5, 2, '胡十三幺', null, 8, 19),
-        (6, 2, '胡妮晶', null, 20, 0)
-
-
+                            恭喜 我再賀你新年', null, 3, 4),
+(7, 2, '胡峯', null, 0, 3),
+(8, 2, '胡香', null, 5, 11),
+(9, 2, '胡說樓市', null, 2, 0),
+(10, 2, '胡，單字一個「雪」，加埋就係「胡雪」', null, 5, 43),
+(11, 2, '胡瑰麗', null, 0, 0),
+(9, 2, '胡理小姐', null, 4, 0),
+(1, 2, '胡朝豬吐', null, 21, 11),
+(2, 2, '胡一刀', null, 0, 0),
+(3, 2, '胡辣三小', null, 52, 11),
+(4, 2, '胡桃', null, 2, 0),
+(5, 2, '胡奕凡', null, 8, 19),
+(6, 2, 'skr wu', null, 20, 0),
+(7, 2, '胡杏兒', null, 2, 1),
+(8, 2, '胡雪樹', null, 0, 0),
+(9, 2, '胡鬧', null, 5, 9),
+(10, 2, '胡囧囧', null, 2, 11),
+(7, 2, '胡蘿蔔素', null, 0, 3),
+(8, 2, '女仔就當然要佢理性 同 精明 胡理精', null, 5, 11),
+(9, 2, '胡咁圖or老母', null, 2, 0),
+(10, 2, '胡呢單刀', null, 5, 43),
+(11, 2, '定欣，實西口西面', null, 0, 0),
+(9, 2, '胡理小姐', null, 4, 0),
+(1, 2, '就出世先上黎問', null, 21, 11),
+(2, 2, '舒寶', null, 0, 0),
+(3, 2, '胡作非', null, 52, 11),
+(4, 2, '胡狸先生幾多點', null, 2, 0),
+(5, 2, '胡十三幺', null, 8, 19),
+(6, 2, '胡妮晶', null, 20, 0);
 
 
 CREATE TABLE images (
@@ -272,35 +260,24 @@ insert into images (name, created_at, updated_at, posts_id, replies_id) values (
                                                         ('ryQhdDa.jpg', '2022-07-01 00:00:00', '2022-07-01 00:00:00',5,23),
                                                         ('Rpr1i3A.jpg', '2022-07-01 00:00:00', '2022-07-01 00:00:00',5,22);
 
+-- SELECT * FROM replies where post_id = 5;
 
+-- SELECT * FROM replies where post_id = 5;
 
+-- SELECT * FROM replies JOIN users ON replies.user_id = users.id JOIN posts ON replies.post_id = posts.id WHERE replies.post_id = 2;
+-- SELECT * FROM replies JOIN users ON replies.user_id = users.id JOIN posts ON replies.post_id = posts.id;
 
-
-SELECT * FROM replies where post_id = 5;
-
-
-
-
-
-SELECT * FROM replies where post_id = 5;
-
-SELECT * FROM replies JOIN users ON replies.user_id = users.id JOIN posts ON replies.post_id = posts.id WHERE replies.post_id = 2;
-SELECT * FROM replies JOIN users ON replies.user_id = users.id JOIN posts ON replies.post_id = posts.id;
-
-
-
-
-select (
-    select  json_agg(name) as images_id  from images  where replies_id = replies.id),      
-    (select is_male
-     from users 
-     where users.id = replies.user_id) as is_male,
-    users.nickname,
-    replies.* from replies
-inner JOIN users on users.id = replies.user_id
-            where post_id = 5
-			and replies.show = TRUE
-            order by replies.id ASC;
+-- select (
+--     select  json_agg(name) as images_id  from images  where replies_id = replies.id),      
+--     (select is_male
+--      from users 
+--      where users.id = replies.user_id) as is_male,
+--     users.nickname,
+--     replies.* from replies
+-- inner JOIN users on users.id = replies.user_id
+--             where post_id = 5
+-- 			and replies.show = TRUE
+--             order by replies.id ASC;
 
 create table favourite_posts(
     id SERIAL primary key,
@@ -355,7 +332,7 @@ values
 (4,10),
 (5,6);
 
-select * from user_blacklists;
+-- select * from user_blacklists;
 
 
 
@@ -383,4 +360,4 @@ values
 (11,4),
 (11,5);
 
-select * from user_followings;
+-- select * from user_followings;

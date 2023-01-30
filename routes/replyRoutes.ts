@@ -255,12 +255,19 @@ export async function likeReplyById(
 	try {
 		let replyId = req.params.id
 
-		const replyLike =  await client.query(`update replies set likes = likes + 1 where id = $1`, [
+		await client.query(`update replies set likes = likes + 1 where id = $1`, [
 			replyId,
 		])
 
-		console.table(replyLike.rows)
-		res.json({ replyLike: replyLike.rows})
+		const latestReplyLike = await client.query(
+			`SELECT * FROM replies where replies.id = $1` , [
+				replyId,
+			]
+			)
+
+		res.json({ 
+			latestReplyLike: latestReplyLike.rows[0]
+		})
 	} catch (error) {
 		logger.error(error)
 		res.status(500).json({
@@ -280,13 +287,21 @@ export async function dislikeReplyById(
 			replyId,
 		])
 
-		res.json({ message: 'ok' })
-	} catch (error) {
-		logger.error(error)
-		res.status(500).json({
-			message: '[REP002] - Server error'
-		})
-	}
+		const latestReplyDislike = await client.query(
+			`SELECT * FROM replies where replies.id = $1` , [
+				replyId,
+			]
+			)
+
+			res.json({ 
+				latestReplyDislike: latestReplyDislike.rows[0]
+			})
+		} catch (error) {
+			logger.error(error)
+			res.status(500).json({
+				message: '[REP002] - Server error'
+			})
+		}
 }
 
 export async function getOthersById(

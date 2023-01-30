@@ -503,10 +503,18 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         const storyModeButton = replyClone.querySelector('.block_replies_btn')
         let storyModeToggle = false
         storyModeButton.addEventListener('click', () => {
-            !storyModeToggle;
+            storyModeToggle = !storyModeToggle
             if (storyModeToggle === true) {
+                console.log('StoryMode')
+                document.querySelector('.fa-eye-slash').classList.remove("d-none");
+                document.querySelector('.fa-eye').classList.add("d-none");
+                console.log(userID)
 
             } else {
+                console.log('NormalMode')
+                document.querySelector('.fa-eye').classList.remove("d-none");
+                document.querySelector('.fa-eye-slash').classList.add("d-none");
+                let urlParams = new URLSearchParams(window.location.search);
                 const postId = urlParams.get('postId');
                 goToPost(postId, 1)
             }
@@ -525,25 +533,40 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         //like && dislike btn
         const likeButton = replyClone.querySelector(".like_btn button");
         const dislikeButton = replyClone.querySelector(".dislike_btn button");
-        likeButton.addEventListener("click", () => repliesLike(replies[r].id))
-        dislikeButton.addEventListener("click", () => repliesDislike(replies[r].id))
+        likeButton.addEventListener("click", () => likeReply(replies[r].id, true))
+        dislikeButton.addEventListener("click", () => dislikeReply(replies[r].id, false))
 
-        async function likeOrDislikeReply(id, isLike) {
-            const res = await fetch(`/replies/${id}/${isLike ? 'like' : 'dislike'}`, {
+        async function likeReply(id, isLike) {
+            console.log({ id, isLike })
+            const res = await fetch(`/replies/${id}/like`, {
                 method: 'PATCH'
             });
-            const replyLike = await repliesLike.rows;
-            console.log(res)
-            console.log(replyLike)
+
+            const likeData = await res.json();
+            if (res.ok) {
+                const latestReplyLike = likeData.latestReplyLike
+                console.log({ latestReplyLike })
+                replyClone.querySelector('.reply_like').innerText = latestReplyLike.likes;
+                console.log(`isLike is true`)
+                return;
+            }
         }
 
-        async function repliesLike(id) {
-            likeOrDislikeReply(id, true);
-        }
-        async function repliesDislike(id) {
-            likeOrDislikeReply(id, false);
-        }
+        async function dislikeReply(id, isLike) {
+            console.log({ id, isLike })
+            const res = await fetch(`/replies/${id}/dislike`, {
+                method: 'PATCH'
+            });
 
+            const dislikeData = await res.json()
+            if (res.ok) {
+                const latestReplyDislike = dislikeData.latestReplyDislike
+                console.log({ latestReplyDislike })
+                replyClone.querySelector('.reply_dislike').innerText = latestReplyDislike.dislikes;
+                console.log(`isLike is false`)
+                return;
+            }
+        }
         replyTemplate.appendChild(replyClone);
     }
 }
@@ -658,7 +681,6 @@ newPostFormElm.addEventListener('submit', async (e) => {
     document.querySelector('.createPostForm').reset()
 })
 
-
 //userProfile
 const leaveProfile = document.querySelector('.leave_profile');
 const showProfile = document.querySelector('.btn_bar .profile');
@@ -670,20 +692,21 @@ showProfile.addEventListener('click', () => {
 leaveProfile.addEventListener('click', () => {
     document.querySelector('.userProfile').classList.add('d-none');
 })
+
 // Create Reply
 const createReply = document.querySelector('.reply_btn');
 const createReplyContainer = document.querySelector('.createReplyContainer')
 createReply.addEventListener('click', () => {
     let postTitle = document.getElementById("replyPostTitle")
+
     let replyFormTitle = document.querySelector('.replyFormTitle')
-    replyFormTitle.innerText = '回覆：'+ postTitle.innerTEXT
+    replyFormTitle.innerText = '回覆：'+ postTitle.innerHTML
     createReplyContainer.classList.remove("d-none");
 })
 
 const leaveCreateReply = document.querySelector('.leave_createReply_btn');
 leaveCreateReply.addEventListener('click', () => {
     createReplyContainer.classList.add("d-none");
-
 })
 
 let newReplyFormElm = document.querySelector('.createReplyForm')
@@ -692,6 +715,7 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     e.preventDefault()
 
     let formData = new FormData(newReplyFormElm)
+    let urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     formData.append('postId', postId)
 
