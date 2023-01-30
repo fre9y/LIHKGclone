@@ -1,4 +1,3 @@
-
 import { logout, checkSession } from './user.js';
 
 //login
@@ -504,6 +503,19 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
             }
         });
 
+        // Story Mode
+        const storyModeButton = replyClone.querySelector('.block_replies_btn')
+        let storyModeToggle = false
+        storyModeButton.addEventListener('click', () => {
+            !storyModeToggle;
+            if (storyModeToggle === true) {
+
+            } else {
+                const postId = urlParams.get('postId');
+                goToPost(postId, 1)
+            }
+        })
+
         userDetail.addEventListener('click', () => {
             userDetailContent.classList.remove("d-none");
             console.log("replyID:", userID);
@@ -681,6 +693,10 @@ leaveProfile.addEventListener('click', () => {
 const createReply = document.querySelector('.reply_btn');
 const createReplyContainer = document.querySelector('.createReplyContainer')
 createReply.addEventListener('click', () => {
+    let postTitle = document.getElementById("replyPostTitle")
+
+    let replyFormTitle = document.querySelector('.replyFormTitle')
+    replyFormTitle.innerText = '回覆：'+ postTitle.innerHTML
     createReplyContainer.classList.remove("d-none");
 })
 
@@ -694,7 +710,8 @@ let newReplyFormElm = document.querySelector('.createReplyForm')
 newReplyFormElm.addEventListener('submit', async (e) => {
     e.preventDefault()
 
-    let formData = new FormData(newPostFormElm)
+    let formData = new FormData(newReplyFormElm)
+    let urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     formData.append('postId', postId)
 
