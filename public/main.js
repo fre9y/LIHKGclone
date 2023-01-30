@@ -514,6 +514,19 @@ function setRepliesOfPage(title, replies, pageSize, currentPage) {
             }
         });
 
+        // Story Mode
+        const storyModeButton = replyClone.querySelector('.block_replies_btn')
+        let storyModeToggle = false
+        storyModeButton.addEventListener('click', () => {
+            !storyModeToggle;
+            if (storyModeToggle === true) {
+
+            } else {
+                const postId = urlParams.get('postId');
+                goToPost(postId, 1)
+            }
+        })
+
         userDetail.addEventListener('click', () => {
             userDetailContent.classList.remove("d-none");
             console.log("replyID:", userID);
@@ -642,6 +655,9 @@ newPostFormElm.addEventListener('submit', async (e) => {
 const createReply = document.querySelector('.reply_btn');
 const createReplyContainer = document.querySelector('.createReplyContainer')
 createReply.addEventListener('click', () => {
+    let postTitle = document.getElementById("replyPostTitle")
+    let replyFormTitle = document.querySelector('.replyFormTitle')
+    replyFormTitle.innerText = '回覆：'+ postTitle.innerTEXT
     createReplyContainer.classList.remove("d-none");
 })
 
@@ -655,7 +671,7 @@ let newReplyFormElm = document.querySelector('.createReplyForm')
 newReplyFormElm.addEventListener('submit', async (e) => {
     e.preventDefault()
 
-    let formData = new FormData(newPostFormElm)
+    let formData = new FormData(newReplyFormElm)
     const postId = urlParams.get('postId');
     formData.append('postId', postId)
 
