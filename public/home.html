@@ -708,7 +708,8 @@
                 <input class="col" id="postTitle" name="postTitle" placeholder="標題（揀啱分台可避免太快沉底）">
             </div>
             <div class="row">
-                <input type="file" name="image" multiple="multiple" accept="image/jpeg, image/png, image/jpg" id="image">
+                <input type="file" name="image" multiple="multiple" accept="image/jpeg, image/png, image/jpg"
+                    id="image">
             </div>
             <div class="row">
                 <textarea class="col" id="content" name="content"></textarea>
@@ -720,7 +721,7 @@
     </div>
 
     <div
-    class="createReplyContainer d-none position-absolute top-0 end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
+        class="createReplyContainer d-none position-absolute top-0 end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
         <form class="createReplyForm">
             <div class="row">
                 <div class="replyFormFirstRow">
@@ -731,7 +732,8 @@
                 </div>
             </div>
             <div class="row">
-                <input type="file" name="image" multiple="multiple" accept="image/jpeg, image/png, image/jpg" id="replyImage">
+                <input type="file" name="image" multiple="multiple" accept="image/jpeg, image/png, image/jpg"
+                    id="replyImage">
             </div>
             <div class="row">
                 <textarea class="col" id="replyContent" name="replyContent"></textarea>
@@ -746,7 +748,7 @@
         <div class="reply py-3 my-2">
             <div class="reply_first_row d-flex justify-content-between">
                 <span class="px-3">
-                    <span class="px-1"># <span class="reply_num" >1</span></span>
+                    <span class="px-1"># <span class="reply_num" id="reply_id">1</span></span>
 
                     <span class="user_nickname px-1">
                         <button class="user_nickname_btn">  
@@ -776,18 +778,24 @@
             </div>
 
             <div class="reply_second_row px-4 py-3">
-                做你親友或許 容易
-                團聚下又再傾 舊時
-                二伯聽說有喜 初一的餐宴
-                恭喜 我再賀你新年
-                做你親友或許 容易
-                團聚下又再傾 舊時
-                二伯聽說有喜 初一的餐宴
-                恭喜 我再賀你新年
-                做你親友或許 容易
-                團聚下又再傾 舊時
-                二伯聽說有喜 初一的餐宴
-                恭喜 我再賀你新年
+                <div class="reply_content">
+                    做你親友或許 容易
+                    團聚下又再傾 舊時
+                    二伯聽說有喜 初一的餐宴
+                    恭喜 我再賀你新年
+                    做你親友或許 容易
+                    團聚下又再傾 舊時
+                    二伯聽說有喜 初一的餐宴
+                    恭喜 我再賀你新年
+                    做你親友或許 容易
+                    團聚下又再傾 舊時
+                    二伯聽說有喜 初一的餐宴
+                    恭喜 我再賀你新年
+                </div>
+
+                <div class="reply_image d-none">
+                    <img src="#" width="30%" alt="img">
+                </div>
             </div>
 
             <div class="reply_third_row px-4">
@@ -857,7 +865,8 @@
         </div>
     </div>
 
-    <div class="userProfile d-none position-absolute top-0 end-0 bottom-0 start-0 d-flex justify-content-center align-items-center">
+    <div
+        class="userProfile d-none position-absolute top-0 end-0 bottom-0 start-0 d-flex justify-content-center align-items-center">
         <div class="userProfile_container">
             <div class="d-flex justify-content-between">
                 <span>帳號</span>

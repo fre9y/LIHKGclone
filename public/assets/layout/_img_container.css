@@ -1,5 +1,6 @@
 .img_wall {
     background-color: black;
+    z-index: 10087;
 }
 
 .img_wall_first_row {
