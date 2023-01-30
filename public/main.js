@@ -1,4 +1,4 @@
-import { logout, redirectGoogle, loadUserProfileContainer, addPostBookmark, deletePostBookmark, blockUser, unblockUser, addFollowingUser, deleteFollowingUser} from './user.js';
+import { logout, redirectGoogle, loadUserProfileContainer, addPostBookmark, deletePostBookmark, blockUser, unblockUser, addFollowingUser, deleteFollowingUser } from './user.js';
 
 //login
 let loginButton = document.querySelector(".signUp_btn")
@@ -19,7 +19,7 @@ logoutButton.addEventListener('click', () => {
 
 //star
 function starClick(postId) {
-    if (postId){
+    if (postId) {
         let starButton = document.querySelector(".fa-star")
         let favButton = document.querySelector(".fav_btn")
         let starToggle = false;
@@ -49,7 +49,7 @@ function starClick(postId) {
 function sharePostClick(postId) {
     let shareButton = document.querySelector(".fa-share-nodes")
     let postTitle = document.querySelector(".replyPostTitle");
-    shareButton.addEventListener('click', async() => {
+    shareButton.addEventListener('click', async () => {
         console.log('click_share');
         try {
             await navigator.share({
@@ -58,7 +58,7 @@ function sharePostClick(postId) {
                 url: `http://localhost:8080/stations/2?postId=${postId}`,
             })
             console.log('SHARE SUCCESS')
-        } catch(error){
+        } catch (error) {
             console.log('CANT SHARE', error);
         }
     });
@@ -251,6 +251,8 @@ async function goToPost(postId, currentPage) {
     const { replies, repliesTotal, posts } = await res.json();
     const pageCount = Math.ceil(repliesTotal / pageSize);
 
+    document.querySelector('.img_container').innerHTML = " ";
+    document.querySelector(".total_img").innerText = "0";
     setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage);
     setPageDropdown(postId, pageCount, currentPage);
 }
@@ -336,22 +338,43 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
     const reply = document.querySelector(".replies_container_template_sample .reply");
 
     replyTemplate.innerHTML = "";
+    const totalImg = document.querySelector(".total_img");
+    const imageTotal = [];
 
     for (let r = 0; r < replies.length; r++) {
         const replyClone = reply.cloneNode(true);
         const nicknameElement = replyClone.querySelector('.user_nickname_btn');
-        const contentElement = replyClone.querySelector(".reply_second_row");
         const likeElement = replyClone.querySelector(".reply_like");
         const dislikeElement = replyClone.querySelector(".reply_dislike");
         const postTitleForReply = document.querySelector('.post_first_row .post_title');
+        const contentElement = replyClone.querySelector(".reply_second_row .reply_content");
+        const imageElement = replyClone.querySelector('.reply_second_row .reply_image');
+        const createImgEle = document.querySelector('.img_container');
+        
 
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
         replyClone.querySelector('.reply_num').setAttribute('id', r + 1); //replybox id
         nicknameElement.innerText = replies[r].nickname;
-        contentElement.innerHTML = replies[r].content;
         likeElement.innerText = replies[r].likes;
         dislikeElement.innerHTML = replies[r].dislikes;
         postTitleForReply.innerText = title;
+
+        //replies content && image
+        if (replies[r].images_id == null) {
+            contentElement.innerHTML = replies[r].content;
+        } else {
+            for (let image of replies[r].images_id) {
+                imageElement.classList.remove('d-none');
+                imageElement.querySelector('img').setAttribute('src', `/${image}`);
+                imageTotal.push(replies[r].images_id);
+
+                const img = document.createElement("img");
+                img.setAttribute('class', 'grid-item img-fluid');
+                img.src = `http://localhost:8080/${image}`;
+                createImgEle.appendChild(img);
+            }
+            totalImg.innerText = imageTotal.length;
+        }
 
         //replies
         const userDetail = replyClone.querySelector('.user_nickname_btn');
@@ -422,7 +445,7 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
 
                 //     }
 
-                
+
 
             } else {
                 console.log('NormalMode')
@@ -525,28 +548,13 @@ for (let refreshBtn of refreshBtns) {
 const image = document.querySelector('.imgBtn');
 const leaveImg = document.querySelector('.leave_btn');
 const imgWall = document.querySelector('.img_wall');
-const createImgEle = document.querySelector('.img_container');
 
-image.addEventListener('click', async () => {
-    let urlParams = new URLSearchParams(window.location.search);
-    const postId = urlParams.get('postId');
+image.addEventListener('click', () => {
     imgWall.classList.remove("d-none");
-
-    const res = await fetch(`/post/${postId}/media`);
-    let data = await res.json()
-    let images = data.images;
-
-    for (let path of images) {
-        const img = document.createElement("img");
-        img.setAttribute('class', 'grid-item img-fluid');
-        img.src = `http://localhost:8080/${path.name}`;
-        createImgEle.appendChild(img);
-    }
 })
 
 leaveImg.addEventListener('click', () => {
     imgWall.classList.add('d-none');
-    createImgEle.innerHTML = " ";
 })
 
 
@@ -598,7 +606,7 @@ newPostFormElm.addEventListener('submit', async (e) => {
 })
 
 //userProfile
-function profileClick(){
+function profileClick() {
     //click profile icon (open)
     const showProfile = document.querySelector('.btn_bar .profile');
     showProfile.addEventListener('click', () => {
@@ -608,7 +616,7 @@ function profileClick(){
     const leaveProfile = document.querySelector('.leave_profile');
     leaveProfile.addEventListener('click', () => {
         document.querySelector('.userProfile').classList.add('d-none');
-})
+    })
 }
 profileClick();
 
@@ -621,7 +629,7 @@ createReply.addEventListener('click', () => {
     let postTitle = document.getElementById("replyPostTitle")
 
     let replyFormTitle = document.querySelector('.replyFormTitle')
-    replyFormTitle.innerText = '回覆：'+ postTitle.innerHTML
+    replyFormTitle.innerText = '回覆：' + postTitle.innerHTML
     createReplyContainer.classList.remove("d-none");
 })
 
