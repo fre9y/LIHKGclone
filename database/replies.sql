@@ -102,11 +102,8 @@ values (7, 2, '胡峯', null, 0, 3),
         (7, 2, '胡杏兒', null, 2, 1),
         (8, 2, '胡雪樹', null, 0, 0),
         (9, 2, '胡鬧', null, 5, 9),
-        (10, 2, '胡囧囧', null, 2, 11)
-
-insert into replies
-(user_id, post_id, content, reference_id, likes, dislikes)
-values (7, 2, '胡蘿蔔素', null, 0, 3),
+        (10, 2, '胡囧囧', null, 2, 11),
+        (7, 2, '胡蘿蔔素', null, 0, 3),
         (8, 2, '女仔就當然要佢理性 同 精明 胡理精', null, 5, 11),
         (9, 2, '胡咁圖or老母', null, 2, 0),
         (10, 2, '胡呢單刀', null, 5, 43),
@@ -154,3 +151,6 @@ values (7, 2, '胡蘿蔔素', null, 0, 3),
         (4, 2, '胡狸先生幾多點', null, 2, 0),
         (5, 2, '胡十三幺', null, 8, 19),
         (6, 2, '胡妮晶', null, 20, 0)
+
+UPDATE replies SET likes = likes + 1 WHERE replies.id = 1;
+

@@ -130,3 +130,35 @@
 .createPostContainer {
     background-color: rgba(38, 38, 38, 0.3);
 }
+
+/* userProfile */
+.userProfile {
+    background-color: rgba(38, 38, 38, 0.3);
+}
+
+.userProfile_container {
+    width: 600px;
+    border-radius: 5px;
+    background-color: #222222;
+}
+
+.userProfile_container button {
+    width: 600px;
+    color: white;
+    border: none;
+    background-color: transparent;
+}
+
+.userProfile_container .d-flex {
+    height: 50px;
+    border: 1px solid #3c3c3b;
+}
+
+.log_out {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.userProfile_container button:hover {
+    background-color: #3c3c3b;
+}

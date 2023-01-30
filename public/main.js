@@ -1,3 +1,4 @@
+import e from 'express';
 import { logout, checkSession, block } from './user.js';
 
 //login
@@ -167,13 +168,6 @@ async function deleteFollowingUser(follow_user_id) {
 }
 
 
-
-
-
-
-
-
-
 //clone left_side for responsive
 const postContainer = document.querySelector(".post-container_template");
 function showPostContainer() {
@@ -197,12 +191,8 @@ function hidePostContainer() {
     }
 })();
 
-
-
-
 //stations
 const addAElem = document.querySelectorAll('.stations .link');
-
 
 for (let i = 0; i < addAElem.length; i++) {
     const stationID = addAElem[i].getAttribute("data-link");
@@ -443,7 +433,7 @@ function setPageDropdown(postId, pageCount, currentPage) {
     );
 }
 
-function setRepliesOfPage(title, replies, pageSize, currentPage) {
+function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
     const replyNumOffset = (currentPage - 1) * pageSize;
     const replyTemplate = document.querySelector(".replies_container_template");
     const reply = document.querySelector(".replies_container_template_sample .reply");
@@ -515,6 +505,28 @@ function setRepliesOfPage(title, replies, pageSize, currentPage) {
         leaveUserDetail.addEventListener('click', () => {
             userDetailContent.classList.add("d-none");
         })
+
+        //like && dislike btn
+        const likeButton = replyClone.querySelector(".like_btn button");
+        const dislikeButton = replyClone.querySelector(".dislike_btn button");
+        likeButton.addEventListener("click", () => repliesLike(replies[r].id))
+        dislikeButton.addEventListener("click", () => repliesDislike(replies[r].id))
+
+        async function likeOrDislikeReply(id, isLike) {
+            const res = await fetch(`/replies/${id}/${isLike ? 'like' : 'dislike'}`, {
+                method: 'PATCH'
+            });
+            const replyLike = await repliesLike.rows;
+            console.log(res)
+            console.log(replyLike)
+        }
+
+        async function repliesLike(id) {
+            likeOrDislikeReply(id, true);
+        }
+        async function repliesDislike(id) {
+            likeOrDislikeReply(id, false);
+        }
 
         replyTemplate.appendChild(replyClone);
     }
@@ -623,5 +635,15 @@ newPostFormElm.addEventListener('submit', async (e) => {
     console.log(result.message)
 })
 
+//userProfile
+const leaveProfile = document.querySelector('.leave_profile');
+const showProfile = document.querySelector('.btn_bar .profile');
 
+showProfile.addEventListener('click', () => {
+    document.querySelector('.userProfile').classList.remove('d-none');
+})
+
+leaveProfile.addEventListener('click', () => {
+    document.querySelector('.userProfile').classList.add('d-none');
+})
 

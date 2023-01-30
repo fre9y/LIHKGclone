@@ -14,9 +14,10 @@ replyRoutes.put('/', isAdmin, hideReplyById)
 replyRoutes.put('/', isAdmin, showReplyById)
 replyRoutes.get('/', getUserReplies)
 replyRoutes.get('/', getHotReplies)
-replyRoutes.put('/', isLoggedInAPI, isP, likeReplyById)
-replyRoutes.put('/', isLoggedInAPI, isP, dislikeReplyById)
+replyRoutes.patch('/:id/like', isLoggedInAPI, isP, likeReplyById)
+replyRoutes.patch('/:id/dislike', isLoggedInAPI, isP, dislikeReplyById)
 replyRoutes.get('/:userId', getOthersById)
+
 // likes/dislikes check repeat
 export async function getReplies(req: express.Request, res: express.Response) {
 	try {
@@ -245,14 +246,13 @@ export async function likeReplyById(
 ) {
 	try {
 		let replyId = req.params.id
-		let replyLike = req.body.like
 
-		await client.query(`update replies set likes = $2 + 1 where id = $1`, [
-			replyLike,
-			replyId
+		const replyLike =  await client.query(`update replies set likes = likes + 1 where id = $1`, [
+			replyId,
 		])
 
-		res.json({ message: 'ok' })
+		console.table(replyLike.rows)
+		res.json({ replyLike: replyLike.rows})
 	} catch (error) {
 		logger.error(error)
 		res.status(500).json({
@@ -267,11 +267,9 @@ export async function dislikeReplyById(
 ) {
 	try {
 		let replyId = req.params.id
-		let replyDislike = req.body.dislike
 
-		await client.query(`update replies set dislikes = $2 + 1 where id = $1`, [
-			replyDislike,
-			replyId
+		await client.query(`update replies set dislikes = dislikes + 1 where id = $1`, [
+			replyId,
 		])
 
 		res.json({ message: 'ok' })

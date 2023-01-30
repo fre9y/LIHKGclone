@@ -69,6 +69,8 @@ app.use(grantExpress as express.RequestHandler);
 
 app.use('/user', userRoutes)
 app.use('/posts', postRoutes)
+app.use('/replies', replyRoutes)
+
 // app.use('/replies', replyRoutes)
 app.use(express.static("protected"));
 app.use(express.static("public"));
@@ -168,7 +170,6 @@ app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
   const page = Math.ceil( replyCount.rows[0].count / 25);
   const repliesTotal =  replyCount.rows[0].count;
 
-  console.table(postDetail.rows)
   return res.json({
     replies: repliesDetail.rows,
     posts: postDetail.rows,
@@ -176,35 +177,7 @@ app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
     repliesTotal: repliesTotal
   })
 
-  // return
 })
-// app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
-//   let postID = req.params.id;
-//   let currentPage = req.params.currentPage;
-//   const repliesPage = await client.query(
-//     `select (
-//       select  json_agg(name) as images_id  from images  where replies_id = replies.id),      
-//       (select is_male
-//        from users 
-//        where users.id = replies.user_id) as is_male,
-//       users.nickname,
-//       replies.* from replies
-//   inner JOIN users on users.id = replies.user_id
-//               where post_id = ${postID}
-//         and show = true
-//               order by replies.id ASC
-//               LIMIT 25 OFFSET 25 * (${currentPage} -1);`
-//   );
-  
-//   res.json({
-//     currentPage: repliesPage.rows
-//   })
-//   // const homePages = path.resolve(__dirname, 'public/home.html');
-//   // res.sendFile(homePages);
-
-//   // return
-// })
-
 
 //image
 app.get('/post/:post/media', async (req, res) => {
@@ -217,42 +190,6 @@ app.get('/post/:post/media', async (req, res) => {
     images: images.rows
   });
 })
-
-app.patch('/post/:post/like', () => {
-  // -- post's like + 1
-});
-app.patch('/post/:post/dislike', () => {
-  // -- post's dislike + 1
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// app.use((req, res) => {
-//     res.redirect("404.html");
-// });
 
 const port = 8080;
 app.listen(port, () => {
