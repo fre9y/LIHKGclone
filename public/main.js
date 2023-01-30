@@ -510,11 +510,17 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
                 replyClone.querySelector('.fa-eye').classList.add("d-none");
                 console.log(userID)
                 console.log(nicknameElement.innerText)
+                // console.log(replyTemplate.innerHTML)
+                replyTemplate.querySelector('.reply').classList.add("d-none");
                 // (1) newReplyArray = replies filtered by userID
                 // (2) userID -> unique user Nickname
                 //display none / display block : ".reply"
 
-                // if(userID)
+                // for(reply of replyTemplate)
+                //     replyId = reply.querySelector(".userDetail_id").innerText
+                //     if(replyId != userID){
+
+                //     }
 
                 
 
