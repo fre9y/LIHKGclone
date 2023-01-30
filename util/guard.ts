@@ -20,9 +20,10 @@ export const isLoggedInAPI = (
 	if (req.session?.['user']) {
 		next()
 	} else {
-		res.status(403).json({
-			message: 'Unauthorized'
-		})
+		res.redirect('/userProfile.html')
+		// res.status(403).json({
+		// 	message: 'Unauthorized'
+		// })
 	}
 }
 

@@ -30,3 +30,7 @@ export async function logout() {
     }
             
 }
+<<<<<<< HEAD
+
+=======
+>>>>>>> 153c8941e98e45b453527bbc38f9d8b7e39a1e85
