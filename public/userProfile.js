@@ -47,30 +47,53 @@ async function loadProfileForAdmin() {
         //console.log(profile);
         let profileElem = document.querySelector(".profile")
         profileElem.innerHTML = ''
+        profileElem.innerHTML += /*html */ `
+        <table>
+        <tr>
+            <div class= "profile" >
+                <th name = id class = id>ID</th>
+                <th class = nickname>Nickname</th>
+                <th name = email class = email>Email</th>
+                <th class = "p">P</th>
+                <th class = "admin">Adm</th>
+                <th class = "gender">Male</th>
+                <th class = "show">Show</th>     
+                <th class = "date">Create Time</th>
+                <th class = "date">Update Time</th>
+                <th>DELETE</th>
+            </div>
+        </tr>   
+    </table>    
+        `
         for (let i = 0; i < profile.length; i++) {
             createDate = profile[i].created_at.split('T')[0]
             createTime = profile[i].created_at.split('T')[1].split('.')[0]
             updateDate = profile[i].updated_at.split('T')[0]
             updateTime = profile[i].updated_at.split('T')[1].split('.')[0]
             profileElem.innerHTML += /*html */ `
-            <div class= "profile" id = "profile_${profile[i].id}">
-                <div name = id>${profile[i].id}|</div>
-                ${profile[i].nickname}|
-                <div name = email>${profile[i].email}|</div>
-                ${profile[i].is_p}|
-                ${profile[i].is_admin}|
-                ${profile[i].is_male}|
-                ${profile[i].show}|     
-                ${createDate}_${createTime}|
-                ${updateDate}_${updateTime}|
 
-                <button 
-                class = "soft-delete-profile"
-                onclick = 'deleteUser("${profile[i].id}","${profile[i].email}")'>
-                    DELETE
-                </button> 
+            <table>
+            <tr>
+    
+                <td name = id class = id>${profile[i].id}</td>
+                <td class = nickname>${profile[i].nickname}</td>
+                <td name = email class = email>${profile[i].email}</td>
+                <td class = "p">${profile[i].is_p}</td>
+                <td class = "admin">${profile[i].is_admin}</td>
+                <td class = "gender">${profile[i].is_male}</td>
+                <td class = "show">${profile[i].show}</td>     
+                <td class = "date">${createDate}_${createTime}</td>
+                <td class = "date">${updateDate}_${updateTime}</td>
+                <td>
+                    <button 
+                    class = "soft-delete-profile"
+                    onclick = 'deleteUser("${profile[i].id}","${profile[i].email}")'>
+                        DELETE
+                    </button> 
+                </td>
 
-            </div>
+            </tr>
+            </table>
             `
             //pass ${profile[i].id and ${profile[i].email} userRoutes.ts
             
