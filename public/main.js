@@ -58,10 +58,12 @@ async function deletePostBookmark(post_id) {
 
 function starClick(postId) {
     let starButton = document.querySelector(".fa-star")
+    let favButton = document.querySelector(".fav_btn")
+    
     let starToggle = false;
     starButton.style.color = "rgb(255,255,255)"
 
-    starButton.addEventListener('click', () => {
+    favButton.addEventListener('click', () => {
         console.log('click_star');
         console.log(starButton.style.color);
         if (starToggle) { //yellow to white
@@ -170,7 +172,7 @@ async function deleteFollowingUser(follow_user_id) {
 //clone left_side for responsive
 const postContainer = document.querySelector(".post-container_template");
 function showPostContainer() {
-    postContainer.style.zIndex = 10086;
+    postContainer.style.zIndex = 10087;
 }
 function hidePostContainer() {
     postContainer.style.zIndex = 0;
@@ -353,8 +355,6 @@ async function goToPost(postId, currentPage) {
     const { replies, repliesTotal, posts } = await res.json();
     const pageCount = Math.ceil(repliesTotal / pageSize);
 
-    document.querySelector('.img_container').innerHTML = " ";
-    document.querySelector(".total_img").innerText = "0";
     setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage);
     setPageDropdown(postId, pageCount, currentPage);
 }
@@ -441,37 +441,18 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
 
     replyTemplate.innerHTML = "";
 
-    const totalImg = document.querySelector(".total_img");
-    const imageTotal = [];
     for (let r = 0; r < replies.length; r++) {
         const replyClone = reply.cloneNode(true);
         const nicknameElement = replyClone.querySelector('.user_nickname_btn');
-        const contentElement = replyClone.querySelector(".reply_second_row .reply_content");
-        const imageElement = replyClone.querySelector('.reply_second_row .reply_image');
+        const contentElement = replyClone.querySelector(".reply_second_row");
         const likeElement = replyClone.querySelector(".reply_like");
         const dislikeElement = replyClone.querySelector(".reply_dislike");
         const postTitleForReply = document.querySelector('.post_first_row .post_title');
-        const createImgEle = document.querySelector('.img_container');
 
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
         replyClone.querySelector('.reply_num').setAttribute('id', r + 1); //replybox id
         nicknameElement.innerText = replies[r].nickname;
-        //replies content && image
-        if (replies[r].images_id == null) {
-            contentElement.innerHTML = replies[r].content;
-        } else {
-            for (let image of replies[r].images_id) {
-                imageElement.classList.remove('d-none');
-                imageElement.querySelector('img').setAttribute('src', `/${image}`);
-                imageTotal.push(replies[r].images_id);
-
-                const img = document.createElement("img");
-                img.setAttribute('class', 'grid-item img-fluid');
-                img.src = `http://localhost:8080/${image}`;
-                createImgEle.appendChild(img);
-            }
-            totalImg.innerText = imageTotal.length;
-        }
+        contentElement.innerHTML = replies[r].content;
         likeElement.innerText = replies[r].likes;
         dislikeElement.innerHTML = replies[r].dislikes;
         postTitleForReply.innerText = title;
@@ -642,51 +623,32 @@ for (let refreshBtn of refreshBtns) {
     })
 }
 
-// //image
-// const image = document.querySelector('.imgBtn');
-// const leaveImg = document.querySelector('.leave_btn');
-// const imgWall = document.querySelector('.img_wall');
-// const createImgEle = document.querySelector('.img_container');
-
-// image.addEventListener('click', async () => {
-//     let urlParams = new URLSearchParams(window.location.search);
-//     const postId = urlParams.get('postId');
-//     imgWall.classList.remove("d-none");
-
-//     const res = await fetch(`/post/${postId}/media`);
-//     let data = await res.json()
-//     let images = data.images;
-
-//     for (let path of images) {
-//         const img = document.createElement("img");
-//         img.setAttribute('class', 'grid-item img-fluid');
-//         img.src = `http://localhost:8080/${path.name}`;
-//         createImgEle.appendChild(img);
-//     }
-// })
-
-// leaveImg.addEventListener('click', () => {
-//     imgWall.classList.add('d-none');
-//     createImgEle.innerHTML = " ";
-// })
-
 //image
 const image = document.querySelector('.imgBtn');
 const leaveImg = document.querySelector('.leave_btn');
 const imgWall = document.querySelector('.img_wall');
+const createImgEle = document.querySelector('.img_container');
 
 image.addEventListener('click', async () => {
+    let urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('postId');
     imgWall.classList.remove("d-none");
-    // for (let path of images) {
-    //     const img = document.createElement("img");
-    //     img.setAttribute('class', 'grid-item img-fluid');
-    //     img.src = `http://localhost:8080/${path.name}`;
-    //     createImgEle.appendChild(img);
-    // }
+
+    const res = await fetch(`/post/${postId}/media`);
+    let data = await res.json()
+    let images = data.images;
+
+    for (let path of images) {
+        const img = document.createElement("img");
+        img.setAttribute('class', 'grid-item img-fluid');
+        img.src = `http://localhost:8080/${path.name}`;
+        createImgEle.appendChild(img);
+    }
 })
 
 leaveImg.addEventListener('click', () => {
     imgWall.classList.add('d-none');
+    createImgEle.innerHTML = " ";
 })
 
 
@@ -756,7 +718,7 @@ createReply.addEventListener('click', () => {
     let postTitle = document.getElementById("replyPostTitle")
 
     let replyFormTitle = document.querySelector('.replyFormTitle')
-    replyFormTitle.innerText = '回覆：' + postTitle.innerHTML
+    replyFormTitle.innerText = '回覆：'+ postTitle.innerHTML
     createReplyContainer.classList.remove("d-none");
 })
 
