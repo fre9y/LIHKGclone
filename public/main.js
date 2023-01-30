@@ -39,30 +39,32 @@ async function loadUserProfileContainer(){
 
 //star
 function starClick(postId) {
-    let starButton = document.querySelector(".fa-star")
-    let starToggle = false;
-    starButton.style.color = "rgb(255,255,255)"
+    if (postId){
+        let starButton = document.querySelector(".fa-star")
+        let starToggle = false;
+        starButton.style.color = "rgb(255,255,255)"
 
-    starButton.addEventListener('click', () => {
-        console.log('click_star');
-        console.log(starButton.style.color);
-        if (starToggle) { //yellow to white
-            deletePostBookmark(postId)
-            starButton.style.color = "rgb(255,255,255)"
-            starToggle = false;
-            console.log(starToggle);
+        starButton.addEventListener('click', () => {
+            console.log('click_star');
+            console.log(starButton.style.color);
+            if (starToggle) { //yellow to white
+                deletePostBookmark(postId)
+                starButton.style.color = "rgb(255,255,255)"
+                starToggle = false;
+                console.log(starToggle);
 
-        } else { //white to yellow
-            addPostBookmark(postId)
-            starButton.style.color = "rgb(250,194,9)"
-            starToggle = true;
-            console.log(starToggle);
+            } else { //white to yellow
+                addPostBookmark(postId)
+                starButton.style.color = "rgb(250,194,9)"
+                starToggle = true;
+                console.log(starToggle);
 
-        }
-    });
+            }
+        });
+    }
 }
 
-//share post
+//share post //not using
 function sharePostClick(postId) {
     let shareButton = document.querySelector(".fa-share-nodes")
     let postTitle = document.querySelector(".replyPostTitle");
