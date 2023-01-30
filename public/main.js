@@ -680,8 +680,9 @@ const createReply = document.querySelector('.reply_btn');
 const createReplyContainer = document.querySelector('.createReplyContainer')
 createReply.addEventListener('click', () => {
     let postTitle = document.getElementById("replyPostTitle")
+
     let replyFormTitle = document.querySelector('.replyFormTitle')
-    replyFormTitle.innerText = '回覆：'+ postTitle.innerTEXT
+    replyFormTitle.innerText = '回覆：'+ postTitle.innerHTML
     createReplyContainer.classList.remove("d-none");
 })
 
@@ -697,6 +698,7 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     e.preventDefault()
 
     let formData = new FormData(newReplyFormElm)
+    let urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     formData.append('postId', postId)
 
