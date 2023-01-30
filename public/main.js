@@ -674,6 +674,7 @@ showProfile.addEventListener('click', () => {
 leaveProfile.addEventListener('click', () => {
     document.querySelector('.userProfile').classList.add('d-none');
 })
+
 // Create Reply
 const createReply = document.querySelector('.reply_btn');
 const createReplyContainer = document.querySelector('.createReplyContainer')
