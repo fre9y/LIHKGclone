@@ -86,7 +86,7 @@
 }
 
 /* CreatePost */
-.createPostForm{
+.createPostForm {
     background-color: #454545;
     width: 50vw;
     height: 80vh;
@@ -97,37 +97,42 @@
     z-index: 99999;
 }
 
-.postFormFirstRow{
+.postFormFirstRow {
     display: flex;
     justify-content: space-between;
     margin-bottom: 8px;
     color: white;
 }
-#selectStation{
+
+#selectStation {
     background-color: #333333;
     color: white;
     border-radius: 5px;
     margin: 5px;
     max-width: 100px;
 }
-#postTitle{
+
+#postTitle {
     background-color: #333333;
     border-radius: 5px;
     margin: 5px;
     color: white;
 }
-#content{
+
+#content {
     background-color: #333333;
     height: 62vh;
     border-radius: 5px;
     margin: 5px;
     color: white;
 }
-.createPostSubmit{
+
+.createPostSubmit {
     justify-content: end;
     align-items: flex-end;
     text-align: end;
 }
+
 .createPostContainer {
     background-color: rgba(38, 38, 38, 0.3);
 }
@@ -141,6 +146,7 @@
     width: 600px;
     border-radius: 5px;
     background-color: #222222;
+    z-index: 10085;
 }
 
 .userProfile_container button {
@@ -163,13 +169,14 @@
 .userProfile_container button:hover {
     background-color: #3c3c3b;
 }
-#image{
+
+#image {
     width: 220px;
 }
 
 /* Create Reply */
 
-.createReplyForm{
+.createReplyForm {
     background-color: #454545;
     width: 50vw;
     height: 80vh;
@@ -180,28 +187,131 @@
     z-index: 99999;
 }
 
-.replyFormFirstRow{
+.replyFormFirstRow {
     display: flex;
     justify-content: space-between;
     margin-bottom: 8px;
     color: white;
 }
 
-#replyContent{
+#replyContent {
     background-color: #333333;
     height: 66vh;
     border-radius: 5px;
     margin: 5px;
     color: white;
 }
-.createReplySubmit{
+
+.createReplySubmit {
     justify-content: end;
     align-items: flex-end;
     text-align: end;
 }
+
 .createReplyContainer {
     background-color: rgba(38, 38, 38, 0.3);
 }
-#replyImage{
+
+#replyImage {
     width: 220px;
+}
+
+/* share_container */
+.share_container {
+    background-color: rgba(38, 38, 38, 0.3);
+}
+
+.share_div {
+    width: 600px;
+    background-color: #292827;
+    border: 1px solid #292827;
+    border-radius: 5px;
+}
+
+.share_div.first_row {
+    background-color: #222222;
+}
+
+.share_content {
+    background-color: #151515;
+    border: 1px solid #292827;
+}
+
+.leave_share_btn {
+    border: none;
+    color: white;
+    background-color: transparent;
+}
+
+.fa-copy {
+    top: 9px;
+    left: 9px;
+    font-size: 20px;
+    color: white;
+}
+
+.telegram {
+    background-color: white;
+    border: none;
+    border-radius: 50px;
+}
+
+.fa-telegram {
+    top: -2px;
+    left: -2px;
+    font-size: 37px;
+    color: #3b86c6;
+}
+
+.copy {
+    width: 37px;
+    height: 37px;
+    background-color: #7a7a7a;
+    border: none;
+    border-radius: 50px;
+}
+
+.whatsapp {
+    width: 37px;
+    height: 37px;
+    background-color: #429488;
+    border: none;
+    border-radius: 50px;
+}
+
+.fa-whatsapp {
+    top: 6px;
+    left: 9px;
+    font-size: 24px;
+    color: white;
+}
+
+.facebook {
+    width: 37px;
+    height: 37px;
+    background-color: #4c60a1;
+    border: none;
+    border-radius: 50px;
+}
+
+.fa-facebook-f {
+    top: 10px;
+    left: 12px;
+    font-size: 20px;
+    color: white;
+}
+
+.twitter {
+    width: 37px;
+    height: 37px;
+    background-color: #4da9e5;
+    border: none;
+    border-radius: 50px;
+}
+
+.fa-twitter {
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    color: white;
 }

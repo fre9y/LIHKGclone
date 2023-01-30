@@ -170,7 +170,7 @@ async function deleteFollowingUser(follow_user_id) {
 //clone left_side for responsive
 const postContainer = document.querySelector(".post-container_template");
 function showPostContainer() {
-    postContainer.style.zIndex = 10086;
+    postContainer.style.zIndex = 10080;
 }
 function hidePostContainer() {
     postContainer.style.zIndex = 0;
