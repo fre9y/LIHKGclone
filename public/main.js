@@ -68,14 +68,14 @@ function starClick(postId) {
 function copyToClipboard() {
 
     let copyText = document.querySelector(".share_content").innerText;
-    const copyContent = async() => {
+    const copyContent = async () => {
         console.log("123");
-        try{
+        try {
             await navigator.clipboard.writeText(copyText);
             console.log(copyText);
             console.log("copied to clipboard");
         } catch (error) {
-            console.log("failed to copy: ", error); 
+            console.log("failed to copy: ", error);
         }
     }
     copyContent();
@@ -169,6 +169,7 @@ for (let i = 0; i < addAElem.length; i++) {
 
         goToStation(stationID);
         setTabButtons(stationID);
+        // document.querySelector('.post_first_row').innerHTML = ""
     })
 };
 
@@ -195,8 +196,6 @@ async function goToStation(stationId) {
     // getStationsPost
     setPostsOfStation(stations[0], posts);
 
-    //visited onclick function
-    // let visited = postClone.querySelector('.visited')
 }
 
 //toHitStations && createPost
@@ -435,6 +434,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
     const reply = document.querySelector(".replies_container_template_sample .reply");
 
     replyTemplate.innerHTML = "";
+    document.querySelector('.post_div').classList.add('d-none');
     const totalImg = document.querySelector(".total_img");
     const imageTotal = [];
 
@@ -449,13 +449,14 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         const createImgEle = document.querySelector('.img_container');
 
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
-        replyClone.querySelector('.reply_num').setAttribute('id','replynum'+ (Number(r) + 1));  //replybox id to link
+        replyClone.querySelector('.reply_num').setAttribute('id', 'replynum' + (Number(r) + 1));  //replybox id to link
         nicknameElement.innerText = replies[r].nickname;
         likeElement.innerText = replies[r].likes;
         dislikeElement.innerHTML = replies[r].dislikes;
+        document.querySelector('.post_div').classList.remove('d-none');
         postTitleForReply.innerText = title;
-        
-        function shareReplyClick(){
+
+        function shareReplyClick() {
             let shareButton = replyClone.querySelector(".share_btn")
             let leaveShareButton = replyClone.querySelector(".leave_share_btn")
             let copyButton = replyClone.querySelector(".copy")
@@ -464,8 +465,8 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
             const constantText = '- 分享自 LIHKG 討論區'
             let shareURL = window.location.href.split('&')[0] + '#replynum' + replyClone.querySelector('.reply_num').innerText
 
-            replyClone.querySelector(".post-title").innerText = postTitle 
-            replyClone.querySelector(".constant-text").innerText = constantText 
+            replyClone.querySelector(".post-title").innerText = postTitle
+            replyClone.querySelector(".constant-text").innerText = constantText
             replyClone.querySelector(".share-url").innerText = shareURL
 
             // if (r==5) {
@@ -570,32 +571,32 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         const storyModeButtonOn = replyClone.querySelector('.fa-eye')
         const storyModeButtonOff = replyClone.querySelector('.fa-eye-slash')
         storyModeButtonOn.addEventListener('click', () => {
-                console.log('StoryMode')
-                let eyes = document.querySelectorAll(".fa-eye")
-                let eyeSlashes = document.querySelectorAll(".fa-eye-slash")
-                for (let eye of eyes){
-                    eye.classList.add("d-none")
-                }
-                for (let eyeSlash of eyeSlashes){
-                    eyeSlash.classList.remove("d-none")
-                }
-                storyMode(userID)
+            console.log('StoryMode')
+            let eyes = document.querySelectorAll(".fa-eye")
+            let eyeSlashes = document.querySelectorAll(".fa-eye-slash")
+            for (let eye of eyes) {
+                eye.classList.add("d-none")
+            }
+            for (let eyeSlash of eyeSlashes) {
+                eyeSlash.classList.remove("d-none")
+            }
+            storyMode(userID)
         })
 
         storyModeButtonOff.addEventListener('click', () => {
-                console.log('NormalMode')
-                let eyes = document.querySelectorAll(".fa-eye")
-                let eyeSlashes = document.querySelectorAll(".fa-eye-slash")
-                for (let eye of eyes){
-                    eye.classList.remove("d-none")
-                }
-                for (let eyeSlash of eyeSlashes){
-                    eyeSlash.classList.add("d-none")
-                }
-                let replyBoxes = document.querySelectorAll(".reply")
-                for (let reply of replyBoxes){
-                        reply.classList.remove("d-none")
-                }
+            console.log('NormalMode')
+            let eyes = document.querySelectorAll(".fa-eye")
+            let eyeSlashes = document.querySelectorAll(".fa-eye-slash")
+            for (let eye of eyes) {
+                eye.classList.remove("d-none")
+            }
+            for (let eyeSlash of eyeSlashes) {
+                eyeSlash.classList.add("d-none")
+            }
+            let replyBoxes = document.querySelectorAll(".reply")
+            for (let reply of replyBoxes) {
+                reply.classList.remove("d-none")
+            }
 
         })
 
@@ -711,7 +712,7 @@ newPostFormElm.addEventListener('submit', async (e) => {
     })
 
     let result = await res.json()
-    if(result.message === "add post success"){
+    if (result.message === "add post success") {
         console.log(result.message)
     } else {
         alert([unauthorized])
@@ -783,10 +784,10 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     document.querySelector('.createReplyForm').reset()
 })
 
-function storyMode(userID){
+function storyMode(userID) {
     let replyBoxes = document.querySelectorAll(".reply")
-    for (let reply of replyBoxes){
-        if(reply.classList.contains(`user${userID}`)){
+    for (let reply of replyBoxes) {
+        if (reply.classList.contains(`user${userID}`)) {
         } else {
             reply.classList.add("d-none")
         }
