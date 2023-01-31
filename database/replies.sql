@@ -134,7 +134,7 @@ select (
 inner JOIN users on users.id = replies.user_id
             where post_id = 2
 			and show = true
-            order by replies.id ASC
+            order by replies.id DESC
             LIMIT 25 OFFSET 25 * (1 -1);
 
 insert into replies
