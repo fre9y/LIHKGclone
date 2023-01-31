@@ -58,28 +58,7 @@ function starClick(postId) {
     }
 }
 
-//share reply
-// function sharePostClick(postTitle,leaveShareButton,copyButton) { 
-//     //box = post title + url
-//     let shareButton = document.querySelector(".share")
-//     //let leaveShareButton = replyClone.querySelector(".leave_share_btn")
-//     //let copyButton = replyClone.querySelector(".fa-copy")
-//     //let postTitle = document.querySelector(".post_title"); //1
-//     const constantText = '- 分享自 LIHKG 討論區' //2
-//     let shareURL = window.location.href //3
-//     shareButton.addEventListener('click', () => {
-//         console.log('click_share');
-//         replyClone.querySelector('.share_container').classList.remove('d-none');
-//     })
-//     // leaveShareButton.addEventListener('click', () => { //not ok
-//     //     console.log('click_leave-share');
-//     //     replyClone.querySelector('.share_container').classList.add('d-none');
-//     // })
-//     // copyButton.addEventListener('click', () => {
-//     //     console.log('click_copy');
-//     // })
-// };
-//sharePostClick();
+
 
 function copyToClipboard(text) {
 
@@ -476,6 +455,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
             let shareButton = replyClone.querySelector(".share_btn")
             let leaveShareButton = replyClone.querySelector(".leave_share_btn")
             let copyButton = replyClone.querySelector(".copy")
+            let tgButton = replyClone.querySelector(".telegram")
             let postTitle = postTitleForReply.innerText
             const constantText = '- 分享自 LIHKG 討論區'
             let shareURL = window.location.href.split('&')[0] + '#replynum' + replyClone.querySelector('.reply_num').innerText
@@ -503,6 +483,10 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
                 
                 copyToClipboard(replyClone.querySelector('.share_content').innerText)
                 console.log('click_copy');
+            })
+            tgButton.addEventListener('click', () => {
+                console.log('click_tg');
+                window.location ='tg://msg_url&text=<encoded-text>?url=google.com'
             })
         }
         shareReplyClick();
