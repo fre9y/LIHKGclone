@@ -28,7 +28,12 @@ changeProfileButton.addEventListener('click', () => {
     window.location = "/userProfile.html"
 });
 
-
+// let share_container = document.querySelector(".share_container");
+// let shareButton = document.querySelector(".share_btn");
+// shareButton.addEventListener('click', () => {
+//     console.log('click_share');
+//     //share_container.classList.toggle("d-none");
+// });
 
 //star
 function starClick(postId) {
@@ -81,14 +86,14 @@ function starClick(postId) {
 // };
 //sharePostClick();
 
-function copyToClipboard(text) {
+function copyToClipboard() {
 
+    let copyText = document.querySelector(".share_content").innerText;
     const copyContent = async() => {
-        let copyText = document.querySelector(".share_content").innerText;
-
+        console.log("123");
         try{
-            console.log(text);
-            await navigator.clipboard.writeText(text);
+            await navigator.clipboard.writeText(copyText);
+            console.log(copyText);
             console.log("copied to clipboard");
         } catch (error) {
             console.log("failed to copy: ", error); 
@@ -125,13 +130,9 @@ window.addEventListener('load', async () => {
         }
     }
     const hash = window.location.hash
-    console.log(window.location);
-    if (hash) {
-        const elem = document.querySelector(hash)
-        console.log(elem)
-        elem.scrollIntoView(true)
-    }
-
+    const elem = document.querySelector(hash)
+    console.log(elem)
+    elem.scrollIntoView(true)
 })
 
 async function setTabButtons(stationId) {
@@ -148,7 +149,7 @@ async function setTabButtons(stationId) {
             button.classList.remove("active");
         }
     }
-
+    
     active(document.querySelectorAll(".second_row_div .newest_btn"));
     inactive(document.querySelectorAll(".second_row_div .hit_btn"));
 
@@ -167,7 +168,7 @@ async function setTabButtons(stationId) {
         clone.addEventListener("click", () => {
             inactive(document.querySelectorAll(".second_row_div .newest_btn"));
             active(document.querySelectorAll(".second_row_div .hit_btn"));
-
+            
             goToHitStation(stationId);
         });
         button.parentNode.replaceChild(clone, button);
@@ -362,12 +363,12 @@ function setPostsOfStation(station, posts) {
 async function goToPost(postId, currentPage) {
     const pageSize = 25;
     const res = await fetch(`/post/${postId}/replies/pages/${currentPage}`);
-    const { replies, repliesTotal, posts, repliesImage } = await res.json();
+    const { replies, repliesTotal, posts } = await res.json();
     const pageCount = Math.ceil(repliesTotal / pageSize);
 
     document.querySelector('.img_container').innerHTML = " ";
     document.querySelector(".total_img").innerText = "0";
-    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage, repliesImage);
+    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage);
     setPageDropdown(postId, pageCount, currentPage);
 }
 
@@ -446,11 +447,10 @@ function setPageDropdown(postId, pageCount, currentPage) {
     );
 }
 
-async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesImage) {
+async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
     const replyNumOffset = (currentPage - 1) * pageSize;
     const replyTemplate = document.querySelector(".replies_container_template");
     const reply = document.querySelector(".replies_container_template_sample .reply");
-    const createImgEle = document.querySelector('.img_container');
 
     replyTemplate.innerHTML = "";
     const totalImg = document.querySelector(".total_img");
@@ -464,6 +464,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
         const postTitleForReply = document.querySelector('.post_first_row .post_title');
         const contentElement = replyClone.querySelector(".reply_second_row .reply_content");
         const imageElement = replyClone.querySelector('.reply_second_row .reply_image');
+        const createImgEle = document.querySelector('.img_container');
 
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
         replyClone.querySelector('.reply_num').setAttribute('id','replynum'+ (Number(r) + 1));  //replybox id to link
@@ -479,7 +480,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
             let postTitle = postTitleForReply.innerText
             const constantText = '- 分享自 LIHKG 討論區'
             let shareURL = window.location.href.split('&')[0] + '#replynum' + replyClone.querySelector('.reply_num').innerText
-            //console.log(shareURL)
+
             replyClone.querySelector(".post-title").innerText = postTitle 
             replyClone.querySelector(".constant-text").innerText = constantText 
             replyClone.querySelector(".share-url").innerText = shareURL
@@ -494,14 +495,13 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
             shareButton.addEventListener('click', () => {
                 console.log('click_share');
                 replyClone.querySelector('.share_container').classList.remove('d-none');
-            }) 
+            })
             leaveShareButton.addEventListener('click', () => { //not ok
                 console.log('click_leave-share');
                 replyClone.querySelector('.share_container').classList.add('d-none');
             })
             copyButton.addEventListener('click', () => {
-                
-                copyToClipboard(replyClone.querySelector('.share_content').innerText)
+                copyToClipboard()
                 console.log('click_copy');
             })
         }
@@ -515,7 +515,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
             nicknameElement.style.color = "red";
         }
 
-        // replies content && image
+        //replies content && image
         if (replies[r].images_id == null) {
             contentElement.innerHTML = replies[r].content;
         } else {
@@ -523,8 +523,14 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
                 contentElement.innerHTML = replies[r].content;
                 imageElement.classList.remove('d-none');
                 imageElement.querySelector('img').setAttribute('src', `/${image}`);
-                // imageTotal.push(replies[r].images_id);
+                imageTotal.push(replies[r].images_id);
+
+                const img = document.createElement("img");
+                img.setAttribute('class', 'grid-item img-fluid');
+                img.src = `http://localhost:8080/${image}`;
+                createImgEle.appendChild(img);
             }
+            totalImg.innerText = imageTotal.length;
         }
 
         //replies
@@ -656,19 +662,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
         replyTemplate.appendChild(replyClone);
     }
 
-    for (let image of repliesImage) {
-        if (image.images_id == null) {
-            continue;
-        } else {
-            const img = document.createElement("img");
-            img.setAttribute('class', 'grid-item img-fluid');
-            img.src = `http://localhost:8080/${image.images_id}`;
-            createImgEle.appendChild(img);
 
-            imageTotal.push(image.images_id);
-        }
-    }
-    totalImg.innerText = imageTotal.length;
 }
 
 // refresh_btn
@@ -822,84 +816,10 @@ async function doxxUser(userId) {
     document.querySelector('.station_name').innerText = posts[0].nickname;
 
     setPostsOfUser(posts)
-    // updateUserPosts(posts)
+
+    document.querySelector('.second_row_btn').classList.add("d-none")
 
 }
-
-// function updateUserPosts(posts) {
-// 	let userPostElem = document.querySelector('.second_row')
-
-// 	userPostElem.innerHTML = ''
-// 	for (let post of posts) {
-//         let now = Date.now();
-//         let updatedTime = new Date(post.updated_at).getTime()
-//         let timePassed = (now - updatedTime) / 1000;
-//         let showTimePassed = '';
-//         if (timePassed > 31104000) {
-//             showTimePassed = parseInt(timePassed / 31104000) + '年前'
-//         } else if (timePassed > 2592000) {
-//             showTimePassed = parseInt(timePassed / 2592000) + '月前'
-//         } else if (timePassed > 86400) {
-//             showTimePassed = parseInt(timePassed / 86400) + '天前'
-//         } else if (timePassed > 3600) {
-//             showTimePassed = parseInt(timePassed / 3600) + '小時前'
-//         } else if (timePassed > 60) {
-//             showTimePassed = parseInt(timePassed / 60) + '分鐘前'
-//         } else {
-//             showTimePassed = parseInt(timePassed) + '秒前'
-//         }
-
-// 		userPostElem.innerHTML += `
-//         <a class="post d-none1 col-12 row g-0 d-flex justify-content-end" href="#" onclick='goToPost(${post.post_id}, 1)'>
-//             <!--first-line-->
-//             <span class="lightning_icon col-1 d-flex justify-content-center pt-2 pb-1 ps-2">
-//                 <i class="fa-solid fa-bolt pt-2 pe-2 color_yellow"></i>
-//             </span></span>
-
-//             <span class="col-9 d-flex justify-content-start pt-2 pb-1">
-//                 <span class="post_host color_white px-1">${post.nickname}</span>
-//                 <span class="isP px-1 position-relative"><i class="fa-solid fa-square"></i><span
-//                         class="position-absolute">P</span></span>
-//                 <span class="post_created_time color_white px-1">${showTimePassed}</span>
-//                 <span class="post_like d-none">
-//                     <i class="fa-solid fa-thumbs-up"></i>
-//                 </span>
-
-//                 <span class="post_dislike d-none">
-//                     <i class="fa-solid fa-thumbs-down"></i>
-//                 </span>
-
-//                 <span class="like color_white px-1">like 0</span>
-//             </span>
-
-//             <span class="col-2 d-flex justify-content-center position-relative pt-2 pb-1">
-//                 <form class="select">
-//                     <select></select><!--opacity:0-->
-//                 </form>
-//                 <span class="select_cover col-2 position-absolute start-0">
-//                     <button class="post_pages_btn d-flex justify-content-evenly">
-//                         <span class="post_pages">1</span> 頁</button>
-//                 </span>
-//             </span>
-
-//             <!--second-line-->
-//             <span class="visited col-1 d-flex justify-content-center pt-1">
-//                 <i class="fa-solid fa-circle color_white"></i>
-//             </span>
-
-//             <span class="post_title col-9 color_white pb-2">${post.post_title}</span>
-
-//             <span class="post_stations_btn col-2">
-//                 <span class="post_station d-flex justify-content-center">
-//                     <!-- <a href="#">
-//                         吹水台
-//                     </a> -->
-//                 </span>
-//             </span>
-//         </a>
-//         `
-// 	}
-// }
 
 function setPostsOfUser(posts) {
     const pageSize = 25;
@@ -913,7 +833,7 @@ function setPostsOfUser(posts) {
     }
 
     for (let post of posts) {
-        const {  nickname, is_male, updated_at, likes, post_title, number_of_replies } = post;
+        const {  nickname, updated_at, likes, number_of_replies, post_title, station_name, user_is_male, post_id } = post;
         const pageCount = Math.ceil(number_of_replies / pageSize);
         const postClone = postTemplateNode.cloneNode(true);
         const pageSelectElement = postClone.querySelector("select");
@@ -922,9 +842,9 @@ function setPostsOfUser(posts) {
             post.addEventListener('click', async (e) => {
                 e.preventDefault();
                 let urlParams = new URLSearchParams();
-                urlParams.set("postId", id)
+                urlParams.set("postId", post_id)
                 history.pushState({}, '', '?' + urlParams.toString());
-                goToPost(id, 1);
+                goToPost(post_id, 1);
                 showPostContainer();
             });
         };
@@ -941,7 +861,7 @@ function setPostsOfUser(posts) {
             pageSelectElement.appendChild(optionNode);
         }
         pageSelectElement.addEventListener("click", e => e.stopPropagation());
-        pageSelectElement.addEventListener("change", (e) => goToPost(id, e.target.value));
+        pageSelectElement.addEventListener("change", (e) => goToPost(post_id, e.target.value));
         postClick(postClone);
 
         //posts-host
@@ -950,7 +870,7 @@ function setPostsOfUser(posts) {
         postHost.innerText = hostNameText;
 
         // host-gender
-        let hostGender = is_male;
+        let hostGender = user_is_male;
         if (hostGender == true) {
             postHost.style.color = "#34aadc";
         } else {
@@ -997,15 +917,7 @@ function setPostsOfUser(posts) {
 
         //posts-stations Btn
         const postStationsBtn = postClone.querySelector('.post_station')
-        postStationsBtn.innerText = post
-        postStationsBtn.setAttribute("href", `/stations/${stationId}`);
-        const postStationsBtnLink = document.createElement("a");
-        postStationsBtnLink.setAttribute("href", `/stations/${stationId}`);
-        postStationsBtn.appendChild(postStationsBtnLink);
-
-        // posts-stations Btn replace post-link
-        // postClone.parentNode.replaceChild(postStationsBtnLink, postLinkNode);
-
+        postStationsBtn.innerText = post.station_name
 
         //hidden post_template
         postClone.classList.remove("d-none");

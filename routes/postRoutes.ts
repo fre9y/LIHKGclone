@@ -1,6 +1,7 @@
 import express from 'express'
 import { logger } from '../util/logger'
-import { Post, UserPosts } from '../model/model'
+import { Post} from '../model/model'
+import { UserPosts } from '../model/model'
 import { isLoggedInAPI, isP, isAdmin } from '../util/guard'
 import { client } from '../main'
 import { formParsePromise } from '../util/formidable'
@@ -210,7 +211,7 @@ export async function getUserPosts(
 					id as post_id
 				from posts
 				where user_id = $1
-				and show = true
+				and posts.show = true
 				`,
 				[Number(userId)]
 			)
