@@ -1,7 +1,7 @@
 import express from 'express'
 import { logger } from '../util/logger'
 import { Post } from '../model/model'
-import { isLoggedInAPI, isP, isAdmin, isYourPost } from '../util/guard'
+import { isLoggedInAPI, isP, isAdmin } from '../util/guard'
 import { client } from '../main'
 import { formParsePromise } from '../util/formidable'
 
