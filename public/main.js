@@ -22,12 +22,12 @@ changeProfileButton.addEventListener('click', () => {
     window.location = "/userProfile.html"
 });
 
-let share_container = document.querySelector(".share_container");
-let shareButton = document.querySelector(".share_btn");
-shareButton.addEventListener('click', () => {
-    console.log('click_share');
-    //share_container.classList.toggle("d-none");
-});
+// let share_container = document.querySelector(".share_container");
+// let shareButton = document.querySelector(".share_btn");
+// shareButton.addEventListener('click', () => {
+//     console.log('click_share');
+//     //share_container.classList.toggle("d-none");
+// });
 
 //star
 function starClick(postId) {
@@ -57,25 +57,39 @@ function starClick(postId) {
     }
 }
 
-//share post //not using
-function sharePostClick(postId) {
-    let shareButton = document.querySelector(".fa-share-nodes")
-    let postTitle = document.querySelector(".replyPostTitle");
-    shareButton.addEventListener('click', async () => {
+//share reply
+function sharePostClick(url) { //box = post title + url
+    let shareButton = document.querySelector(".share")
+    let leaveShareButton = replyClone.querySelector(".leave_share_btn")
+    let copyButton = replyClone.querySelector(".fa-copy")
+    let postTitle = document.querySelector(".post_title"); //1
+    const constantText = '- 分享自 LIHKG 討論區' //2
+    shareButton.addEventListener('click', () => {
         console.log('click_share');
-        try {
-            await navigator.share({
-                title: postTitle,
-                text: postTitle,
-                url: `http://localhost:8080/stations/2?postId=${postId}`,
-            })
-            console.log('SHARE SUCCESS')
-        } catch (error) {
-            console.log('CANT SHARE', error);
-        }
-    });
-}
+        document.querySelector('.share_container').classList.remove('d-none');
+    })
+    leaveShareButton.addEventListener('click', () => { //not ok
+        console.log('click_leave-share');
+        document.querySelector('.share_container').classList.add('d-none');
+    })
+    copyButton.addEventListener('click', () => {
+        console.log('click_copy');
+    })
+};
+//sharePostClick();
 
+function copyToClipboard() {
+    console.log("123");
+    let copyText = document.querySelector(".share_content");
+    // const copyContent = async() => {
+    //     try{
+    //         await navigator.clipboard.writeText(copyText.value);
+    //         console.log("copied to clipboard");
+    //     } catch (error) {
+    //         console.log("failed to copy: ", error); 
+    //     }
+    // }  
+}
 
 //clone left_side for responsive
 const postContainer = document.querySelector(".post-container_template");
@@ -170,7 +184,9 @@ async function goToStation(stationId) {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     const page = urlParams.get('page') || 1;
-
+;
+    console.log(stations[0].id); //stationID
+    console.log(postId);// postID
     hidePostContainer();
     if (stations.length > 0) {
         document.querySelector('.station_name').innerText = stations[0].name;
@@ -435,9 +451,9 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         const imageElement = replyClone.querySelector('.reply_second_row .reply_image');
         const createImgEle = document.querySelector('.img_container');
 
-
+        console.log(replies[r]);
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
-        replyClone.querySelector('.reply_num').setAttribute('id', r + 1); //replybox id
+        replyClone.querySelector('.reply_num').setAttribute('id', r + 1);  //replybox id to link
         nicknameElement.innerText = replies[r].nickname;
         likeElement.innerText = replies[r].likes;
         dislikeElement.innerHTML = replies[r].dislikes;
