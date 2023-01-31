@@ -812,28 +812,202 @@ async function doxxUser(userId) {
     })
     let data = await res.json()
     let posts = data.data
-    console.log(posts)
 
-    // const { stations, posts } = await res.json();
+    document.querySelector('.station_name').innerText = posts[0].nickname;
 
-    // const urlParams = new URLSearchParams(window.location.search);
-    // const postId = urlParams.get('postId');
-    // const page = urlParams.get('page') || 1;
+    setPostsOfUser(posts)
+    // updateUserPosts(posts)
 
-    // console.log((window.location.href)); // current url
-    //console.log(stations[0].id); //stationID
-    // //console.log(postId);// postID
-    // hidePostContainer();
-    // if (stations.length > 0) {
-    //     document.querySelector('.station_name').innerText = stations[0].name;
-    // }
+}
 
-    // goToPost(postId, page);
-    // starClick(postId); //favourite post (C+D)
-    //sharePostClick(postId); //not using
-    // getStationsPost
-    // setPostsOfStation(stations[0], posts);
+// function updateUserPosts(posts) {
+// 	let userPostElem = document.querySelector('.second_row')
 
-    //visited onclick function
-    // let visited = postClone.querySelector('.visited')
+// 	userPostElem.innerHTML = ''
+// 	for (let post of posts) {
+//         let now = Date.now();
+//         let updatedTime = new Date(post.updated_at).getTime()
+//         let timePassed = (now - updatedTime) / 1000;
+//         let showTimePassed = '';
+//         if (timePassed > 31104000) {
+//             showTimePassed = parseInt(timePassed / 31104000) + '年前'
+//         } else if (timePassed > 2592000) {
+//             showTimePassed = parseInt(timePassed / 2592000) + '月前'
+//         } else if (timePassed > 86400) {
+//             showTimePassed = parseInt(timePassed / 86400) + '天前'
+//         } else if (timePassed > 3600) {
+//             showTimePassed = parseInt(timePassed / 3600) + '小時前'
+//         } else if (timePassed > 60) {
+//             showTimePassed = parseInt(timePassed / 60) + '分鐘前'
+//         } else {
+//             showTimePassed = parseInt(timePassed) + '秒前'
+//         }
+
+// 		userPostElem.innerHTML += `
+//         <a class="post d-none1 col-12 row g-0 d-flex justify-content-end" href="#" onclick='goToPost(${post.post_id}, 1)'>
+//             <!--first-line-->
+//             <span class="lightning_icon col-1 d-flex justify-content-center pt-2 pb-1 ps-2">
+//                 <i class="fa-solid fa-bolt pt-2 pe-2 color_yellow"></i>
+//             </span></span>
+
+//             <span class="col-9 d-flex justify-content-start pt-2 pb-1">
+//                 <span class="post_host color_white px-1">${post.nickname}</span>
+//                 <span class="isP px-1 position-relative"><i class="fa-solid fa-square"></i><span
+//                         class="position-absolute">P</span></span>
+//                 <span class="post_created_time color_white px-1">${showTimePassed}</span>
+//                 <span class="post_like d-none">
+//                     <i class="fa-solid fa-thumbs-up"></i>
+//                 </span>
+
+//                 <span class="post_dislike d-none">
+//                     <i class="fa-solid fa-thumbs-down"></i>
+//                 </span>
+
+//                 <span class="like color_white px-1">like 0</span>
+//             </span>
+
+//             <span class="col-2 d-flex justify-content-center position-relative pt-2 pb-1">
+//                 <form class="select">
+//                     <select></select><!--opacity:0-->
+//                 </form>
+//                 <span class="select_cover col-2 position-absolute start-0">
+//                     <button class="post_pages_btn d-flex justify-content-evenly">
+//                         <span class="post_pages">1</span> 頁</button>
+//                 </span>
+//             </span>
+
+//             <!--second-line-->
+//             <span class="visited col-1 d-flex justify-content-center pt-1">
+//                 <i class="fa-solid fa-circle color_white"></i>
+//             </span>
+
+//             <span class="post_title col-9 color_white pb-2">${post.post_title}</span>
+
+//             <span class="post_stations_btn col-2">
+//                 <span class="post_station d-flex justify-content-center">
+//                     <!-- <a href="#">
+//                         吹水台
+//                     </a> -->
+//                 </span>
+//             </span>
+//         </a>
+//         `
+// 	}
+// }
+
+function setPostsOfUser(posts) {
+    const pageSize = 25;
+    const template = document.querySelector(".post_template");
+    const mobileVision = document.querySelector(".mobile_vision");
+    const postTemplateNode = document.querySelector(".post_template_sample .post");
+
+    template.innerHTML = "";
+    for (let child of mobileVision.querySelectorAll(".post")) {
+        mobileVision.removeChild(child);
+    }
+
+    for (let post of posts) {
+        const {  nickname, is_male, updated_at, likes, post_title, number_of_replies } = post;
+        const pageCount = Math.ceil(number_of_replies / pageSize);
+        const postClone = postTemplateNode.cloneNode(true);
+        const pageSelectElement = postClone.querySelector("select");
+
+        function postClick(post) {
+            post.addEventListener('click', async (e) => {
+                e.preventDefault();
+                let urlParams = new URLSearchParams();
+                urlParams.set("postId", id)
+                history.pushState({}, '', '?' + urlParams.toString());
+                goToPost(id, 1);
+                showPostContainer();
+            });
+        };
+
+
+        for (let k = 0; k < pageCount; k++) {
+            const pageNumber = k + 1;
+            const optionNode = document.createElement('option');
+            const textNode = document.createTextNode(getPageName(pageNumber));
+
+            optionNode.setAttribute('value', `${pageNumber}`);
+            optionNode.appendChild(textNode);
+
+            pageSelectElement.appendChild(optionNode);
+        }
+        pageSelectElement.addEventListener("click", e => e.stopPropagation());
+        pageSelectElement.addEventListener("change", (e) => goToPost(id, e.target.value));
+        postClick(postClone);
+
+        //posts-host
+        let postHost = postClone.querySelector(".post_host")
+        let hostNameText = nickname;
+        postHost.innerText = hostNameText;
+
+        // host-gender
+        let hostGender = is_male;
+        if (hostGender == true) {
+            postHost.style.color = "#34aadc";
+        } else {
+            postHost.style.color = "red";
+        }
+
+        //post-created-time
+        let createTime = postClone.querySelector('.post_created_time');
+        let now = Date.now();
+        let updatedTime = new Date(updated_at).getTime()
+        let timePassed = (now - updatedTime) / 1000;
+        let showTimePassed = '';
+        if (timePassed > 31104000) {
+            showTimePassed = parseInt(timePassed / 31104000) + '年前'
+        } else if (timePassed > 2592000) {
+            showTimePassed = parseInt(timePassed / 2592000) + '月前'
+        } else if (timePassed > 86400) {
+            showTimePassed = parseInt(timePassed / 86400) + '天前'
+        } else if (timePassed > 3600) {
+            showTimePassed = parseInt(timePassed / 3600) + '小時前'
+        } else if (timePassed > 60) {
+            showTimePassed = parseInt(timePassed / 60) + '分鐘前'
+        } else {
+            showTimePassed = parseInt(timePassed) + '秒前'
+        }
+        createTime.innerText = showTimePassed;
+
+        //posts-like
+        let postLike = postClone.querySelector(".like");
+        let likeNUM = likes;
+        postLike.innerText = likeNUM;
+
+        const countOfLike = Number(likeNUM);
+        if (countOfLike > 0) {
+            postClone.querySelector('.post_like').classList.remove('d-none');
+        } else {
+            postClone.querySelector('.post_dislike').classList.remove('d-none');
+        }
+
+        //posts-title
+        let postTitle = postClone.querySelector('.post_title');
+        let postTitleText = post_title;
+        postTitle.innerText = postTitleText;
+
+        //posts-stations Btn
+        const postStationsBtn = postClone.querySelector('.post_station')
+        postStationsBtn.innerText = post
+        postStationsBtn.setAttribute("href", `/stations/${stationId}`);
+        const postStationsBtnLink = document.createElement("a");
+        postStationsBtnLink.setAttribute("href", `/stations/${stationId}`);
+        postStationsBtn.appendChild(postStationsBtnLink);
+
+        // posts-stations Btn replace post-link
+        // postClone.parentNode.replaceChild(postStationsBtnLink, postLinkNode);
+
+
+        //hidden post_template
+        postClone.classList.remove("d-none");
+        //template + postClone && clone one more for mobileVision
+        template.appendChild(postClone);
+
+        const forMobileVision = postClone.cloneNode(true);
+        postClick(forMobileVision);
+        mobileVision.appendChild(forMobileVision);
+    };
 }

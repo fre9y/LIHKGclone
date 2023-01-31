@@ -33,5 +33,6 @@ export interface UserPosts{
 	numberOfReplies: number,
 	post_title: string,
 	station_name: string,
-	station_id: number,
+	post_id: number,
+	user_is_male: boolean,
 }
