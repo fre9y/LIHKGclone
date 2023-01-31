@@ -11,10 +11,10 @@ export const postRoutes = express.Router()
 // postRoutes.get('/:stationId', getPosts)
 postRoutes.post('/', isLoggedInAPI, isP, createPosts)
 postRoutes.get('/:id', getUserPosts)
+postRoutes.get('/:id/', getFollowingPosts)
 // postRoutes.put('/', isLoggedInAPI, isP, isYourPost, updatePostById)
 // postRoutes.put('/', isLoggedInAPI, isAdmin, hidePostById)
 // postRoutes.put('/', isLoggedInAPI, isAdmin, showPostById)
-// postRoutes.get('/:userId', getUserPosts)
 // postRoutes.get('/', getHotPosts)
 // postRoutes.get('/', isLoggedInAPI, getMyPosts)
 
@@ -315,6 +315,64 @@ export async function getMyPosts(
 		).rows
 
 		res.json(userPosts)
+	} catch (error) {
+		logger.error(error)
+		res.status(500).json({
+			message: '[ POS006 ] Server ERROR'
+		})
+	}
+}
+
+export async function getFollowingPosts(
+	req: express.Request,
+	res: express.Response
+) {
+	try {
+		let userId = req.params.id
+		if (!Number(userId)) {
+			res.status(400).json({
+				message: 'Invalid user id'
+			})
+			return
+		}
+
+		let data = (
+			await client.query(
+				`
+				select (select nickname 
+                    from users 
+                    where users.id = posts.user_id) as nickname, 
+                    (select max(updated_at)
+                    from replies
+                    where posts.id = replies.post_id) as updated_at, 
+                    (select sum(likes - dislikes)
+                    from replies
+                    where posts.id = replies.post_id) as likes, 
+                    (select count(post_id) 
+                    from replies
+                    where posts.id = replies.post_id) as number_of_replies, 
+                    post_title, 
+                    (select name 
+                    from stations
+                    where posts.station_id = stations.id) as station_name,
+					(select is_male 
+					from users
+					where users.id = posts.user_id) as user_is_male,
+					id as post_id
+				from posts
+				where user_id = $1
+				and posts.show = true
+				`,
+				[Number(userId)]
+			)
+		)
+		
+		let userPostsData: UserPosts[] = data.rows
+
+		res.json({
+			data: userPostsData,
+			message: 'Get userPosts success'
+		})
 	} catch (error) {
 		logger.error(error)
 		res.status(500).json({
