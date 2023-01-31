@@ -353,11 +353,11 @@
                 <div class="second_row">
                     <div class="second_row_btn d-flex justify-content-evenly col-12">
                         <span class="col-5 d-flex justify-content-center">
-                            <a href="#" class="w-100 pt-2 newest_btn active color_white">最新</a>
+                            <a href="#" class="newest_btn w-100 pt-2  active color_white">最新</a>
                         </span>
 
                         <span class="col-5 d-flex justify-content-center">
-                            <a href="#" class="w-100 pt-2 hit_btn color_white">熱門</a>
+                            <a href="#" class="hit_btn w-100 pt-2  color_white">熱門</a>
                         </span>
                     </div>
 
@@ -656,8 +656,7 @@
         </a>
     </div>
 
-    <div
-        class="createPostContainer d-none position-absolute top-0 end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
+    <div class="createPostContainer d-none position-absolute top-0 end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
         <form class="createPostForm">
             <div class="row">
                 <div class="postFormFirstRow">發表主題
@@ -720,8 +719,7 @@
         </form>
     </div>
 
-    <div
-        class="createReplyContainer d-none position-absolute top-0 end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
+    <div class="createReplyContainer d-none position-absolute top-0 end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
         <form class="createReplyForm">
             <div class="row">
                 <div class="replyFormFirstRow">
@@ -751,7 +749,7 @@
                     <span class="px-1"># <span class="reply_num" id="reply_id">1</span></span>
 
                     <span class="user_nickname px-1">
-                        <button class="user_nickname_btn">  
+                        <button class="user_nickname_btn">
                             user_nickname
                         </button>
                     </span>
@@ -816,10 +814,33 @@
                 </div>
             </div>
 
+            <div class="share_container d-none position-fixed top-0 end-0 bottom-0 start-0 d-flex justify-content-center align-items-center">
+                <div class="share_div">
+                    <div class="firs d-flex justify-content-between py-3 px-3">
+                        <span>分享個人主題</span>
+                        <button class="leave_share_btn"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
 
+                    <div class="share_content py-3 px-3 mx-3">
+                        share_content
+                    </div>
 
-            <div
-                class="userDetail d-none position-absolute top-0 end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
+                    <div class="button_section py-3 px-3">
+                        <button class="copy position-relative py-3 px-3 mx-1"><i
+                                class="fa-regular fa-copy position-absolute"></i></button>
+                        <button class="telegram position-relative py-3 px-3 mx-1"><i
+                                class="fa-brands fa-telegram position-absolute"></i></button>
+                        <button class="whatsapp position-relative py-3 px-3 mx-1"><i
+                                class="fa-brands fa-whatsapp position-absolute"></i></button>
+                        <button class="facebook position-relative py-3 px-3 mx-1"><i
+                                class="fa-brands fa-facebook-f position-absolute"></i></button>
+                        <button class="twitter position-relative py-3 px-3 mx-1"><i
+                                class="fa-brands fa-twitter position-absolute"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="userDetail d-none position-fixed top-0 end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
                 <div class="userDetail_content">
                     <div class="d-flex justify-content-between px-3 py-3">
                         <div>會員資料</div>
@@ -865,8 +886,7 @@
         </div>
     </div>
 
-    <div
-        class="userProfile d-none position-absolute top-0 end-0 bottom-0 start-0 d-flex justify-content-center align-items-center">
+    <div class="userProfile d-none position-absolute top-0 end-0 bottom-0 start-0 d-flex justify-content-center align-items-center">
         <div class="userProfile_container">
             <div class="d-flex justify-content-between">
                 <span>帳號</span>

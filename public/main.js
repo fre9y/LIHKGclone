@@ -22,12 +22,12 @@ changeProfileButton.addEventListener('click', () => {
     window.location = "/userProfile.html"
 });
 
-let share_container = document.querySelector(".share_container");
-let shareButton = document.querySelector(".share_btn");
-shareButton.addEventListener('click', () => {
-    console.log('click_share');
-    //share_container.classList.toggle("d-none");
-});
+// let share_container = document.querySelector(".share_container");
+// let shareButton = document.querySelector(".share_btn");
+// shareButton.addEventListener('click', () => {
+//     console.log('click_share');
+//     //share_container.classList.toggle("d-none");
+// });
 
 //star
 function starClick(postId) {
@@ -57,25 +57,39 @@ function starClick(postId) {
     }
 }
 
-//share post //not using
-function sharePostClick(postId) {
-    let shareButton = document.querySelector(".fa-share-nodes")
-    let postTitle = document.querySelector(".replyPostTitle");
-    shareButton.addEventListener('click', async () => {
+//share reply
+function sharePostClick(url) { //box = post title + url
+    let shareButton = document.querySelector(".share")
+    let leaveShareButton = replyClone.querySelector(".leave_share_btn")
+    let copyButton = replyClone.querySelector(".fa-copy")
+    let postTitle = document.querySelector(".post_title"); //1
+    const constantText = '- 分享自 LIHKG 討論區' //2
+    shareButton.addEventListener('click', () => {
         console.log('click_share');
-        try {
-            await navigator.share({
-                title: postTitle,
-                text: postTitle,
-                url: `http://localhost:8080/stations/2?postId=${postId}`,
-            })
-            console.log('SHARE SUCCESS')
-        } catch (error) {
-            console.log('CANT SHARE', error);
-        }
-    });
-}
+        document.querySelector('.share_container').classList.remove('d-none');
+    })
+    leaveShareButton.addEventListener('click', () => { //not ok
+        console.log('click_leave-share');
+        document.querySelector('.share_container').classList.add('d-none');
+    })
+    copyButton.addEventListener('click', () => {
+        console.log('click_copy');
+    })
+};
+//sharePostClick();
 
+function copyToClipboard() {
+    console.log("123");
+    let copyText = document.querySelector(".share_content");
+    // const copyContent = async() => {
+    //     try{
+    //         await navigator.clipboard.writeText(copyText.value);
+    //         console.log("copied to clipboard");
+    //     } catch (error) {
+    //         console.log("failed to copy: ", error); 
+    //     }
+    // }  
+}
 
 //clone left_side for responsive
 const postContainer = document.querySelector(".post-container_template");
@@ -88,17 +102,64 @@ function hidePostContainer() {
 
 (() => {
     const cloneNode = document.querySelector(".left_side .second_row_div");
-
     const leftSideClone = cloneNode.cloneNode(true);
+
     document.querySelector(".mobile_vision").appendChild(leftSideClone);
 
-    let pathname = window.location.pathname
-    const words = pathname.split('/');
-    if (words.length > 0) {
-        const stationID = words[words.length - 1]
-        goToStation(stationID);
+    const arr = window.location.pathname.split("/"); //stations/38
+    for (let i = 0; i < arr.length; i++) {
+        const word = arr[i].toLowerCase();
+        if (word == "stations") {
+            if (i + 1 < arr.length) {
+                const stationId = arr[i + 1];
+                goToStation(stationId);
+                setTabButtons(stationId);
+            }
+
+            break;
+        }
     }
 })();
+
+function setTabButtons(stationId) {
+    const newestButtons = document.querySelectorAll(".second_row_div .newest_btn");
+    const hitButtons = document.querySelectorAll(".second_row_div .hit_btn");
+
+    function active(buttons) {
+        for (let button of buttons) {
+            button.classList.add("active");
+        }
+    }
+    function inactive(buttons) {
+        for (let button of buttons) {
+            button.classList.remove("active");
+        }
+    }
+    
+    active(document.querySelectorAll(".second_row_div .newest_btn"));
+    inactive(document.querySelectorAll(".second_row_div .hit_btn"));
+
+    for (let button of newestButtons) {
+        const clone = button.cloneNode(true);
+        clone.addEventListener("click", () => {
+            active(document.querySelectorAll(".second_row_div .newest_btn"));
+            inactive(document.querySelectorAll(".second_row_div .hit_btn"));
+
+            goToStation(stationId);
+        });
+        button.parentNode.replaceChild(clone, button);
+    }
+    for (let button of hitButtons) {
+        const clone = button.cloneNode(true);
+        clone.addEventListener("click", () => {
+            inactive(document.querySelectorAll(".second_row_div .newest_btn"));
+            active(document.querySelectorAll(".second_row_div .hit_btn"));
+            
+            goToHitStation(stationId);
+        });
+        button.parentNode.replaceChild(clone, button);
+    }
+}
 
 //stations
 const addAElem = document.querySelectorAll('.stations .link');
@@ -111,6 +172,7 @@ for (let i = 0; i < addAElem.length; i++) {
         window.history.pushState({}, '', '/stations/' + stationID);
 
         goToStation(stationID);
+        setTabButtons(stationID);
     })
 };
 
@@ -118,6 +180,32 @@ for (let i = 0; i < addAElem.length; i++) {
 async function goToStation(stationId) {
     const res = await fetch(`/stations/${stationId}/posts`);
     const { stations, posts } = await res.json();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('postId');
+    const page = urlParams.get('page') || 1;
+;
+    console.log(stations[0].id); //stationID
+    console.log(postId);// postID
+    hidePostContainer();
+    if (stations.length > 0) {
+        document.querySelector('.station_name').innerText = stations[0].name;
+    }
+
+    goToPost(postId, page);
+    starClick(postId); //favourite post (C+D)
+    //sharePostClick(postId); //not using
+    // getStationsPost
+    setPostsOfStation(stations[0], posts);
+
+    //visited onclick function
+    // let visited = postClone.querySelector('.visited')
+}
+
+//toHitStations && createPost
+async function goToHitStation(stationId) {
+    const res = await fetch(`/stations/${stationId}/hit-posts`);
+    const { stations, hitStation } = await res.json();
 
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
@@ -132,7 +220,7 @@ async function goToStation(stationId) {
     starClick(postId); //favourite post (C+D)
     //sharePostClick(postId); //not using
     // getStationsPost
-    setPostsOfStation(stations[0], posts);
+    setPostsOfStation(stations[0], hitStation);
 
     //visited onclick function
     // let visited = postClone.querySelector('.visited')
@@ -362,20 +450,28 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         const contentElement = replyClone.querySelector(".reply_second_row .reply_content");
         const imageElement = replyClone.querySelector('.reply_second_row .reply_image');
         const createImgEle = document.querySelector('.img_container');
-        
 
+        console.log(replies[r]);
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
-        replyClone.querySelector('.reply_num').setAttribute('id', r + 1); //replybox id
+        replyClone.querySelector('.reply_num').setAttribute('id', r + 1);  //replybox id to link
         nicknameElement.innerText = replies[r].nickname;
         likeElement.innerText = replies[r].likes;
         dislikeElement.innerHTML = replies[r].dislikes;
         postTitleForReply.innerText = title;
+
+        //user is_male
+        if (replies[r].is_male == true) {
+            nicknameElement.style.color = "#34aadc";
+        } else {
+            nicknameElement.style.color = "red";
+        }
 
         //replies content && image
         if (replies[r].images_id == null) {
             contentElement.innerHTML = replies[r].content;
         } else {
             for (let image of replies[r].images_id) {
+                contentElement.innerHTML = replies[r].content;
                 imageElement.classList.remove('d-none');
                 imageElement.querySelector('img').setAttribute('src', `/${image}`);
                 imageTotal.push(replies[r].images_id);
@@ -509,32 +605,6 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
     }
 
 
-}
-
-//newest & hit switch
-const newestBtns = document.querySelectorAll(".newest_btn");
-const hitBtns = document.querySelectorAll(".hit_btn");
-
-for (let newestBtn of newestBtns) {
-    newestBtn.addEventListener('click', () => {
-        for (let btn of newestBtns) {
-            btn.classList.add('active');
-        }
-        for (let hitBtn of hitBtns) {
-            hitBtn.classList.remove('active');
-        }
-    })
-}
-
-for (let hitBtn of hitBtns) {
-    hitBtn.addEventListener('click', () => {
-        for (let btn of hitBtns) {
-            btn.classList.add('active');
-        }
-        for (let newestBtn of newestBtns) {
-            newestBtn.classList.remove('active');
-        }
-    })
 }
 
 // refresh_btn
