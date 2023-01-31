@@ -28,12 +28,7 @@ changeProfileButton.addEventListener('click', () => {
     window.location = "/userProfile.html"
 });
 
-// let share_container = document.querySelector(".share_container");
-// let shareButton = document.querySelector(".share_btn");
-// shareButton.addEventListener('click', () => {
-//     console.log('click_share');
-//     //share_container.classList.toggle("d-none");
-// });
+
 
 //star
 function starClick(postId) {
@@ -86,14 +81,14 @@ function starClick(postId) {
 // };
 //sharePostClick();
 
-function copyToClipboard() {
+function copyToClipboard(text) {
 
-    let copyText = document.querySelector(".share_content").innerText;
     const copyContent = async() => {
-        console.log("123");
+        let copyText = document.querySelector(".share_content").innerText;
+
         try{
-            await navigator.clipboard.writeText(copyText);
-            console.log(copyText);
+            console.log(text);
+            await navigator.clipboard.writeText(text);
             console.log("copied to clipboard");
         } catch (error) {
             console.log("failed to copy: ", error); 
@@ -130,9 +125,13 @@ window.addEventListener('load', async () => {
         }
     }
     const hash = window.location.hash
-    const elem = document.querySelector(hash)
-    console.log(elem)
-    elem.scrollIntoView(true)
+    console.log(window.location);
+    if (hash) {
+        const elem = document.querySelector(hash)
+        console.log(elem)
+        elem.scrollIntoView(true)
+    }
+
 })
 
 async function setTabButtons(stationId) {
@@ -149,7 +148,7 @@ async function setTabButtons(stationId) {
             button.classList.remove("active");
         }
     }
-    
+
     active(document.querySelectorAll(".second_row_div .newest_btn"));
     inactive(document.querySelectorAll(".second_row_div .hit_btn"));
 
@@ -168,7 +167,7 @@ async function setTabButtons(stationId) {
         clone.addEventListener("click", () => {
             inactive(document.querySelectorAll(".second_row_div .newest_btn"));
             active(document.querySelectorAll(".second_row_div .hit_btn"));
-            
+
             goToHitStation(stationId);
         });
         button.parentNode.replaceChild(clone, button);
@@ -363,12 +362,12 @@ function setPostsOfStation(station, posts) {
 async function goToPost(postId, currentPage) {
     const pageSize = 25;
     const res = await fetch(`/post/${postId}/replies/pages/${currentPage}`);
-    const { replies, repliesTotal, posts } = await res.json();
+    const { replies, repliesTotal, posts, repliesImage } = await res.json();
     const pageCount = Math.ceil(repliesTotal / pageSize);
 
     document.querySelector('.img_container').innerHTML = " ";
     document.querySelector(".total_img").innerText = "0";
-    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage);
+    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage, repliesImage);
     setPageDropdown(postId, pageCount, currentPage);
 }
 
@@ -447,10 +446,11 @@ function setPageDropdown(postId, pageCount, currentPage) {
     );
 }
 
-async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
+async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesImage) {
     const replyNumOffset = (currentPage - 1) * pageSize;
     const replyTemplate = document.querySelector(".replies_container_template");
     const reply = document.querySelector(".replies_container_template_sample .reply");
+    const createImgEle = document.querySelector('.img_container');
 
     replyTemplate.innerHTML = "";
     const totalImg = document.querySelector(".total_img");
@@ -464,7 +464,6 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         const postTitleForReply = document.querySelector('.post_first_row .post_title');
         const contentElement = replyClone.querySelector(".reply_second_row .reply_content");
         const imageElement = replyClone.querySelector('.reply_second_row .reply_image');
-        const createImgEle = document.querySelector('.img_container');
 
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
         replyClone.querySelector('.reply_num').setAttribute('id','replynum'+ (Number(r) + 1));  //replybox id to link
@@ -480,7 +479,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
             let postTitle = postTitleForReply.innerText
             const constantText = '- 分享自 LIHKG 討論區'
             let shareURL = window.location.href.split('&')[0] + '#replynum' + replyClone.querySelector('.reply_num').innerText
-
+            //console.log(shareURL)
             replyClone.querySelector(".post-title").innerText = postTitle 
             replyClone.querySelector(".constant-text").innerText = constantText 
             replyClone.querySelector(".share-url").innerText = shareURL
@@ -495,13 +494,14 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
             shareButton.addEventListener('click', () => {
                 console.log('click_share');
                 replyClone.querySelector('.share_container').classList.remove('d-none');
-            })
+            }) 
             leaveShareButton.addEventListener('click', () => { //not ok
                 console.log('click_leave-share');
                 replyClone.querySelector('.share_container').classList.add('d-none');
             })
             copyButton.addEventListener('click', () => {
-                copyToClipboard()
+                
+                copyToClipboard(replyClone.querySelector('.share_content').innerText)
                 console.log('click_copy');
             })
         }
@@ -515,7 +515,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
             nicknameElement.style.color = "red";
         }
 
-        //replies content && image
+        // replies content && image
         if (replies[r].images_id == null) {
             contentElement.innerHTML = replies[r].content;
         } else {
@@ -523,14 +523,8 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
                 contentElement.innerHTML = replies[r].content;
                 imageElement.classList.remove('d-none');
                 imageElement.querySelector('img').setAttribute('src', `/${image}`);
-                imageTotal.push(replies[r].images_id);
-
-                const img = document.createElement("img");
-                img.setAttribute('class', 'grid-item img-fluid');
-                img.src = `http://localhost:8080/${image}`;
-                createImgEle.appendChild(img);
+                // imageTotal.push(replies[r].images_id);
             }
-            totalImg.innerText = imageTotal.length;
         }
 
         //replies
@@ -662,7 +656,19 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         replyTemplate.appendChild(replyClone);
     }
 
+    for (let image of repliesImage) {
+        if (image.images_id == null) {
+            continue;
+        } else {
+            const img = document.createElement("img");
+            img.setAttribute('class', 'grid-item img-fluid');
+            img.src = `http://localhost:8080/${image.images_id}`;
+            createImgEle.appendChild(img);
 
+            imageTotal.push(image.images_id);
+        }
+    }
+    totalImg.innerText = imageTotal.length;
 }
 
 // refresh_btn

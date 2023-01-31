@@ -211,6 +211,20 @@ app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
               LIMIT 25 OFFSET 25 * (${currentPage} -1);`
   );
 
+  const repliesImage = await client.query(
+    `select (
+      select  json_agg(name) as images_id  from images  where replies_id = replies.id),      
+      (select is_male
+       from users 
+       where users.id = replies.user_id) as is_male,
+      users.nickname,
+      replies.* from replies
+  inner JOIN users on users.id = replies.user_id
+              where post_id = ${postID}
+        and show = true
+              order by replies.id DESC`
+  );
+
   const replyCount = await client.query(
     `select count(id) as count from replies where post_id = ${postID}`
   );
@@ -221,9 +235,11 @@ app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
   const page = Math.ceil( replyCount.rows[0].count / 25);
   const repliesTotal =  replyCount.rows[0].count;
 
+  console.table(repliesDetail.rows)
   return res.json({
     replies: repliesDetail.rows,
     posts: postDetail.rows,
+    repliesImage: repliesImage.rows,
     pages: page,
     repliesTotal: repliesTotal
   })
