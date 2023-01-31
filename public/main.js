@@ -1,11 +1,5 @@
 import { logout, redirectGoogle, loadUserProfileContainer, addPostBookmark, deletePostBookmark, blockUser, unblockUser, addFollowingUser, deleteFollowingUser } from './user.js';
-// window.addEventListener('load', () => {
-//     const hash = window.location.hash
-//     // const anchor = hash.split('#')[1]
-// console.log(hash)
-//     const elem = document.querySelector("#replynum4")
-//     console.log(elem)
-// })
+
 //login
 let loginButton = document.querySelector(".signUp_btn")
 loginButton.addEventListener('click', () => {
@@ -28,12 +22,59 @@ changeProfileButton.addEventListener('click', () => {
     window.location = "/userProfile.html"
 });
 
-// let share_container = document.querySelector(".share_container");
-// let shareButton = document.querySelector(".share_btn");
-// shareButton.addEventListener('click', () => {
-//     console.log('click_share');
-//     //share_container.classList.toggle("d-none");
-// });
+//read blocked list
+let readBlockedListButton = document.querySelector('.blocked_list');
+let leaveBlockedListButton = document.querySelector('.leave_blocked_list');
+readBlockedListButton.addEventListener('click', () => {
+    console.log('click_blocked-list');
+    document.querySelector('.blocked_list_container').classList.remove('d-none');
+    document.querySelector('.userProfile').classList.add('d-none');
+    showBlockedList() 
+});
+leaveBlockedListButton.addEventListener('click', () => {
+    console.log('click_leave-blocked-list');
+    document.querySelector('.blocked_list_container').classList.add('d-none');
+    
+});
+async function showBlockedList() {
+    let res = await fetch('/user/block', {
+        method: 'GET' 
+    })
+    if (res.ok) {
+        let data = await res.json()
+        let blockedList = data
+        let blockedListElem = document.querySelector(".blocked_table")
+        blockedListElem.innerHTML = ""
+        blockedListElem.innerHTML += /*html*/ `
+        <table>
+            <tr>
+                    <th class = "id">ID</th>
+                    <th class = "nickname">Nickname</th>
+                    <th class = "date">Create Date</th>
+                    <th class = "date">Create Time</th>
+                    <th>DELETE</th>
+            </tr>   
+        </table>
+        `
+        for (let i = 0; i < blockedList.length; i++) {
+            let blockedUser = blockedList[i]
+            let createDate = blockedList[i].created_at.split('T')[0]
+            let createTime = blockedList[i].created_at.split('T')[1].split('.')[0]
+            let blockedUserElem = document.createElement("tr")
+            blockedUserElem.innerHTML = `
+            <td class="blocked_user_id">${blockedUser.user_id_being_blocked}</td>
+            <td class="blocked_user_nickname">${blockedUser.nickname}</td>
+            <td class="blocked_user_create_time">${createDate}_${createTime}</td>
+            <td class="blocked_user_delete"><i class="fas fa-trash-alt"></i></td>
+            `
+            blockedListElem.appendChild(blockedUserElem)
+        }
+    } else {
+        alert("[ERR0R: CANT FETCH]")
+        return
+    }
+}
+
 
 //star
 function starClick(postId) {
@@ -108,13 +149,13 @@ window.addEventListener('load', async () => {
             break;
         }
     }
+
     const hash = window.location.hash
-    if (hash == true) {
+    if (hash){
         const elem = document.querySelector(hash)
         console.log(elem)
         elem.scrollIntoView(true)
     }
-
 })
 
 async function setTabButtons(stationId) {
@@ -167,9 +208,9 @@ for (let i = 0; i < addAElem.length; i++) {
         e.preventDefault();
         window.history.pushState({}, '', '/stations/' + stationID);
 
+        document.querySelector(".post_template").innerHTML = "";
         goToStation(stationID);
         setTabButtons(stationID);
-        // document.querySelector('.post_first_row').innerHTML = ""
     })
 };
 
@@ -230,7 +271,7 @@ function setPostsOfStation(station, posts) {
     const mobileVision = document.querySelector(".mobile_vision");
     const postTemplateNode = document.querySelector(".post_template_sample .post");
 
-    template.innerHTML = "";
+    // template.innerHTML = "";
     for (let child of mobileVision.querySelectorAll(".post")) {
         mobileVision.removeChild(child);
     }
@@ -344,12 +385,12 @@ function setPostsOfStation(station, posts) {
 async function goToPost(postId, currentPage) {
     const pageSize = 25;
     const res = await fetch(`/post/${postId}/replies/pages/${currentPage}`);
-    const { replies, repliesTotal, posts } = await res.json();
+    const { replies, repliesTotal, posts ,repliesImage } = await res.json();
     const pageCount = Math.ceil(repliesTotal / pageSize);
 
     document.querySelector('.img_container').innerHTML = " ";
     document.querySelector(".total_img").innerText = "0";
-    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage);
+    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage, repliesImage);
     setPageDropdown(postId, pageCount, currentPage);
 }
 
@@ -428,10 +469,11 @@ function setPageDropdown(postId, pageCount, currentPage) {
     );
 }
 
-async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
+async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesImage) {
     const replyNumOffset = (currentPage - 1) * pageSize;
     const replyTemplate = document.querySelector(".replies_container_template");
     const reply = document.querySelector(".replies_container_template_sample .reply");
+    const createImgEle = document.querySelector('.img_container');
 
     replyTemplate.innerHTML = "";
     document.querySelector('.post_div').classList.add('d-none');
@@ -446,7 +488,6 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         const postTitleForReply = document.querySelector('.post_first_row .post_title');
         const contentElement = replyClone.querySelector(".reply_second_row .reply_content");
         const imageElement = replyClone.querySelector('.reply_second_row .reply_image');
-        const createImgEle = document.querySelector('.img_container');
 
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
         replyClone.querySelector('.reply_num').setAttribute('id', 'replynum' + (Number(r) + 1));  //replybox id to link
@@ -490,7 +531,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
             })
             tgButton.addEventListener('click', () => {
                 console.log('click_tg');
-                window.location ='tg://msg_url&text=<encoded-text>?url=google.com'
+                window.location =`tg://msg_url?url=${replyClone.querySelector(".share-url").innerText}&text=${replyClone.querySelector(".post-title").innerText}${replyClone.querySelector(".constant-text").innerText}`
             })
         }
         shareReplyClick();
@@ -511,14 +552,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
                 contentElement.innerHTML = replies[r].content;
                 imageElement.classList.remove('d-none');
                 imageElement.querySelector('img').setAttribute('src', `/${image}`);
-                imageTotal.push(replies[r].images_id);
-
-                const img = document.createElement("img");
-                img.setAttribute('class', 'grid-item img-fluid');
-                img.src = `http://localhost:8080/${image}`;
-                createImgEle.appendChild(img);
             }
-            totalImg.innerText = imageTotal.length;
         }
 
         //replies
@@ -651,7 +685,19 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         replyTemplate.appendChild(replyClone);
     }
 
+    for (let image of repliesImage) {
+        if (image.images_id == null) {
+            continue;
+        } else {
+            const img = document.createElement("img");
+            img.setAttribute('class', 'grid-item img-fluid');
+            img.src = `http://localhost:8080/${image.images_id}`;
+            createImgEle.appendChild(img);
 
+            imageTotal.push(image.images_id);
+        }
+    }
+    totalImg.innerText = imageTotal.length;
 }
 
 // refresh_btn
