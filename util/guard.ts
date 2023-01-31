@@ -18,8 +18,12 @@ export const isLoggedInAPI = (
 	next: express.NextFunction
 ) => {
 	if (req.session?.['user']) {
+		console.log('isLoggedInAPI approved');
+		
 		next()
 	} else {
+		console.log('isLoggedInAPI not approved');
+
 		res.redirect('/userProfile.html')
 		// res.status(403).json({
 		// 	message: 'Unauthorized'

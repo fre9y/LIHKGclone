@@ -10,8 +10,8 @@ export const postRoutes = express.Router()
 
 // postRoutes.get('/:stationId', getPosts)
 postRoutes.post('/', isLoggedInAPI, isP, createPosts)
-postRoutes.get('/:id', getUserPosts)
-postRoutes.get('/:id/', getFollowingPosts)
+postRoutes.get('/:id/Users', getUserPosts)
+postRoutes.get('/following', isLoggedInAPI, getFollowingPosts)
 // postRoutes.put('/', isLoggedInAPI, isP, isYourPost, updatePostById)
 // postRoutes.put('/', isLoggedInAPI, isAdmin, hidePostById)
 // postRoutes.put('/', isLoggedInAPI, isAdmin, showPostById)
@@ -178,10 +178,10 @@ export async function getUserPosts(
 	res: express.Response
 ) {
 	try {
-		let userId = req.params.id
+		let userId = req.params['id']
 		if (!Number(userId)) {
 			res.status(400).json({
-				message: 'Invalid user id'
+				message: 'Invalid user id1'
 			})
 			return
 		}
@@ -282,7 +282,7 @@ export async function getMyPosts(
 
 		if (!Number(userId)) {
 			res.status(400).json({
-				message: 'Invalid user id'
+				message: 'Invalid user id2'
 			})
 			return
 		}
@@ -328,50 +328,54 @@ export async function getFollowingPosts(
 	res: express.Response
 ) {
 	try {
-		let userId = req.params.id
-		if (!Number(userId)) {
+		console.log('checking ->', req.session['user'])
+        let user = req.session['user'];
+		if (!Number(user.id)) {
 			res.status(400).json({
-				message: 'Invalid user id'
+				message: 'Invalid user id3'
 			})
 			return
 		}
 
+		console.log(user.id)
 		let data = (
 			await client.query(
 				`
-				select (select nickname 
-                    from users 
-                    where users.id = posts.user_id) as nickname, 
-                    (select max(updated_at)
-                    from replies
-                    where posts.id = replies.post_id) as updated_at, 
-                    (select sum(likes - dislikes)
-                    from replies
-                    where posts.id = replies.post_id) as likes, 
-                    (select count(post_id) 
-                    from replies
-                    where posts.id = replies.post_id) as number_of_replies, 
-                    post_title, 
-                    (select name 
-                    from stations
-                    where posts.station_id = stations.id) as station_name,
+				select 
+					(select nickname from users
+					where users.id = user_id_being_followed) as nickname,
+					(select max(updated_at)
+					from replies
+					where posts.id = replies.post_id) as updated_at,
+					(select sum(likes - dislikes)
+					from replies
+					where posts.id = replies.post_id) as likes, 
+					(select count(post_id) 
+					from replies
+					where posts.id = replies.post_id) as number_of_replies, 
+					post_title,
+					(select name 
+					from stations
+					where posts.station_id = stations.id) as station_name,
 					(select is_male 
 					from users
 					where users.id = posts.user_id) as user_is_male,
-					id as post_id
-				from posts
-				where user_id = $1
+					posts.id as post_id
+				from user_followings uf 
+				left join posts on posts.user_id = user_id_being_followed 
+				where user_id_follow_others  = $1
 				and posts.show = true
+				order by updated_at DESC
 				`,
-				[Number(userId)]
+				[Number(user.id)]
 			)
 		)
 		
-		let userPostsData: UserPosts[] = data.rows
+		let followingPostsData: UserPosts[] = data.rows
 
 		res.json({
-			data: userPostsData,
-			message: 'Get userPosts success'
+			data: followingPostsData,
+			message: 'Get FollowingPosts success'
 		})
 	} catch (error) {
 		logger.error(error)
