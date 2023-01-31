@@ -148,7 +148,7 @@ async function setTabButtons(stationId) {
             button.classList.remove("active");
         }
     }
-    
+
     active(document.querySelectorAll(".second_row_div .newest_btn"));
     inactive(document.querySelectorAll(".second_row_div .hit_btn"));
 
@@ -167,7 +167,7 @@ async function setTabButtons(stationId) {
         clone.addEventListener("click", () => {
             inactive(document.querySelectorAll(".second_row_div .newest_btn"));
             active(document.querySelectorAll(".second_row_div .hit_btn"));
-            
+
             goToHitStation(stationId);
         });
         button.parentNode.replaceChild(clone, button);
@@ -362,12 +362,12 @@ function setPostsOfStation(station, posts) {
 async function goToPost(postId, currentPage) {
     const pageSize = 25;
     const res = await fetch(`/post/${postId}/replies/pages/${currentPage}`);
-    const { replies, repliesTotal, posts } = await res.json();
+    const { replies, repliesTotal, posts, repliesImage } = await res.json();
     const pageCount = Math.ceil(repliesTotal / pageSize);
 
     document.querySelector('.img_container').innerHTML = " ";
     document.querySelector(".total_img").innerText = "0";
-    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage);
+    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage, repliesImage);
     setPageDropdown(postId, pageCount, currentPage);
 }
 
@@ -446,10 +446,11 @@ function setPageDropdown(postId, pageCount, currentPage) {
     );
 }
 
-async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
+async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesImage) {
     const replyNumOffset = (currentPage - 1) * pageSize;
     const replyTemplate = document.querySelector(".replies_container_template");
     const reply = document.querySelector(".replies_container_template_sample .reply");
+    const createImgEle = document.querySelector('.img_container');
 
     replyTemplate.innerHTML = "";
     const totalImg = document.querySelector(".total_img");
@@ -463,7 +464,6 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         const postTitleForReply = document.querySelector('.post_first_row .post_title');
         const contentElement = replyClone.querySelector(".reply_second_row .reply_content");
         const imageElement = replyClone.querySelector('.reply_second_row .reply_image');
-        const createImgEle = document.querySelector('.img_container');
 
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
         replyClone.querySelector('.reply_num').setAttribute('id','replynum'+ (Number(r) + 1));  //replybox id to link
@@ -515,7 +515,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
             nicknameElement.style.color = "red";
         }
 
-        //replies content && image
+        // replies content && image
         if (replies[r].images_id == null) {
             contentElement.innerHTML = replies[r].content;
         } else {
@@ -523,14 +523,8 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
                 contentElement.innerHTML = replies[r].content;
                 imageElement.classList.remove('d-none');
                 imageElement.querySelector('img').setAttribute('src', `/${image}`);
-                imageTotal.push(replies[r].images_id);
-
-                const img = document.createElement("img");
-                img.setAttribute('class', 'grid-item img-fluid');
-                img.src = `http://localhost:8080/${image}`;
-                createImgEle.appendChild(img);
+                // imageTotal.push(replies[r].images_id);
             }
-            totalImg.innerText = imageTotal.length;
         }
 
         //replies
@@ -544,7 +538,8 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         let doxxButton = replyClone.querySelector('.doxx');
         doxxButton.addEventListener('click', () => {
             console.log('click_doxx');
-            window.location = `/user/profile/${userID}`;
+            doxxUser(userID)
+            // window.location = `/user/profile/${userID}`;
         });
         //block
         let blockButton = replyClone.querySelector('.block');
@@ -661,7 +656,19 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         replyTemplate.appendChild(replyClone);
     }
 
+    for (let image of repliesImage) {
+        if (image.images_id == null) {
+            continue;
+        } else {
+            const img = document.createElement("img");
+            img.setAttribute('class', 'grid-item img-fluid');
+            img.src = `http://localhost:8080/${image.images_id}`;
+            createImgEle.appendChild(img);
 
+            imageTotal.push(image.images_id);
+        }
+    }
+    totalImg.innerText = imageTotal.length;
 }
 
 // refresh_btn
@@ -803,4 +810,36 @@ function storyMode(userID){
             reply.classList.add("d-none")
         }
     }
+}
+
+async function doxxUser(userId) {
+    let res = await fetch(`/posts/${userId}`, {
+        method: 'GET'
+    })
+    let data = await res.json()
+    let posts = data.data
+    console.log(posts)
+
+    // const { stations, posts } = await res.json();
+
+    // const urlParams = new URLSearchParams(window.location.search);
+    // const postId = urlParams.get('postId');
+    // const page = urlParams.get('page') || 1;
+
+    // console.log((window.location.href)); // current url
+    //console.log(stations[0].id); //stationID
+    // //console.log(postId);// postID
+    // hidePostContainer();
+    // if (stations.length > 0) {
+    //     document.querySelector('.station_name').innerText = stations[0].name;
+    // }
+
+    // goToPost(postId, page);
+    // starClick(postId); //favourite post (C+D)
+    //sharePostClick(postId); //not using
+    // getStationsPost
+    // setPostsOfStation(stations[0], posts);
+
+    //visited onclick function
+    // let visited = postClone.querySelector('.visited')
 }
