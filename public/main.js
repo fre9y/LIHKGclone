@@ -82,11 +82,12 @@ function starClick(postId) {
 
 function copyToClipboard() {
 
-    let copyText = document.querySelector(".share_content");
+    let copyText = document.querySelector(".share_content").innerText;
     const copyContent = async() => {
         console.log("123");
         try{
-            await navigator.clipboard.writeText(copyText.value);
+            await navigator.clipboard.writeText(copyText);
+            console.log(copyText);
             console.log("copied to clipboard");
         } catch (error) {
             console.log("failed to copy: ", error); 
@@ -470,6 +471,10 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
             let postTitle = postTitleForReply.innerText
             const constantText = '- 分享自 LIHKG 討論區'
             let shareURL = window.location.href
+
+            replyClone.querySelector(".post-title").innerText = postTitle 
+            replyClone.querySelector(".constant-text").innerText = constantText 
+            replyClone.querySelector(".share-url").innerText = shareURL
 
             shareButton.addEventListener('click', () => {
                 console.log('click_share');
