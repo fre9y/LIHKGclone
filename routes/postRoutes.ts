@@ -205,12 +205,13 @@ export async function getUserPosts(
                     (select name 
                     from stations
                     where posts.station_id = stations.id) as station_name,
-					(select id 
-					from stations
-					where posts.station_id = stations.id) as station_id
+					(select is_male 
+					from users
+					where users.id = posts.user_id) as user_is_male,
+					id as post_id
 				from posts
 				where user_id = $1
-				and show = true
+				and posts.show = true
 				`,
 				[Number(userId)]
 			)
