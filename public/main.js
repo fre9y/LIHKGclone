@@ -193,9 +193,9 @@ for (let i = 0; i < addAElem.length; i++) {
         e.preventDefault();
         window.history.pushState({}, '', '/stations/' + stationID);
 
+        document.querySelector(".post_template").innerHTML = "";
         goToStation(stationID);
         setTabButtons(stationID);
-        // document.querySelector('.post_first_row').innerHTML = ""
     })
 };
 
@@ -256,7 +256,7 @@ function setPostsOfStation(station, posts) {
     const mobileVision = document.querySelector(".mobile_vision");
     const postTemplateNode = document.querySelector(".post_template_sample .post");
 
-    template.innerHTML = "";
+    // template.innerHTML = "";
     for (let child of mobileVision.querySelectorAll(".post")) {
         mobileVision.removeChild(child);
     }
@@ -370,12 +370,12 @@ function setPostsOfStation(station, posts) {
 async function goToPost(postId, currentPage) {
     const pageSize = 25;
     const res = await fetch(`/post/${postId}/replies/pages/${currentPage}`);
-    const { replies, repliesTotal, posts } = await res.json();
+    const { replies, repliesTotal, posts ,repliesImage } = await res.json();
     const pageCount = Math.ceil(repliesTotal / pageSize);
 
     document.querySelector('.img_container').innerHTML = " ";
     document.querySelector(".total_img").innerText = "0";
-    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage);
+    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage, repliesImage);
     setPageDropdown(postId, pageCount, currentPage);
 }
 
@@ -454,10 +454,11 @@ function setPageDropdown(postId, pageCount, currentPage) {
     );
 }
 
-async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
+async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesImage) {
     const replyNumOffset = (currentPage - 1) * pageSize;
     const replyTemplate = document.querySelector(".replies_container_template");
     const reply = document.querySelector(".replies_container_template_sample .reply");
+    const createImgEle = document.querySelector('.img_container');
 
     replyTemplate.innerHTML = "";
     document.querySelector('.post_div').classList.add('d-none');
@@ -472,7 +473,6 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         const postTitleForReply = document.querySelector('.post_first_row .post_title');
         const contentElement = replyClone.querySelector(".reply_second_row .reply_content");
         const imageElement = replyClone.querySelector('.reply_second_row .reply_image');
-        const createImgEle = document.querySelector('.img_container');
 
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
         replyClone.querySelector('.reply_num').setAttribute('id', 'replynum' + (Number(r) + 1));  //replybox id to link
@@ -537,14 +537,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
                 contentElement.innerHTML = replies[r].content;
                 imageElement.classList.remove('d-none');
                 imageElement.querySelector('img').setAttribute('src', `/${image}`);
-                imageTotal.push(replies[r].images_id);
-
-                const img = document.createElement("img");
-                img.setAttribute('class', 'grid-item img-fluid');
-                img.src = `http://localhost:8080/${image}`;
-                createImgEle.appendChild(img);
             }
-            totalImg.innerText = imageTotal.length;
         }
 
         //replies
@@ -676,7 +669,19 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         replyTemplate.appendChild(replyClone);
     }
 
+    for (let image of repliesImage) {
+        if (image.images_id == null) {
+            continue;
+        } else {
+            const img = document.createElement("img");
+            img.setAttribute('class', 'grid-item img-fluid');
+            img.src = `http://localhost:8080/${image.images_id}`;
+            createImgEle.appendChild(img);
 
+            imageTotal.push(image.images_id);
+        }
+    }
+    totalImg.innerText = imageTotal.length;
 }
 
 // refresh_btn

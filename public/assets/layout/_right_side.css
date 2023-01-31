@@ -150,7 +150,7 @@
     width: 600px;
     border-radius: 5px;
     background-color: #222222;
-    z-index: 10085;
+    z-index: 10084;
 }
 
 .userProfile_container button {
@@ -323,6 +323,7 @@
 /* blocked_list_container */
 .blocked_list_container {
     background-color: rgba(38, 38, 38, 0.3);
+    z-index: 10085;
 }
 
 .blocked_list_content {
