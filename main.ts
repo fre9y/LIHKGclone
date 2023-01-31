@@ -81,7 +81,7 @@ app.use(express.static("uploads/image"));
 
 //stations
 app.get("/", (req: Request, res: Response) => {
-  res.redirect('/stations/1');
+  res.redirect('/stations/2');
 });
 
 app.get('/stations/:id', async (req, res) => {
