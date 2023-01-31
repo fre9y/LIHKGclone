@@ -231,16 +231,16 @@ app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
 })
 
 //image
-app.get('/post/:post/media', async (req, res) => {
-  let postId = req.params.post;
-  const images = await client.query(
-    `SELECT posts_id, name FROM images where posts_id = ${postId}`
-  );
+// app.get('/post/:post/media', async (req, res) => {
+//   let postId = req.params.post;
+//   const images = await client.query(
+//     `SELECT posts_id, name FROM images where posts_id = ${postId}`
+//   );
 
-  res.json({
-    images: images.rows
-  });
-})
+//   res.json({
+//     images: images.rows
+//   });
+// })
 
 const port = 8080;
 app.listen(port, () => {
