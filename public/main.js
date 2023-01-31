@@ -28,12 +28,7 @@ changeProfileButton.addEventListener('click', () => {
     window.location = "/userProfile.html"
 });
 
-// let share_container = document.querySelector(".share_container");
-// let shareButton = document.querySelector(".share_btn");
-// shareButton.addEventListener('click', () => {
-//     console.log('click_share');
-//     //share_container.classList.toggle("d-none");
-// });
+
 
 //star
 function starClick(postId) {
@@ -86,14 +81,14 @@ function starClick(postId) {
 // };
 //sharePostClick();
 
-function copyToClipboard() {
+function copyToClipboard(text) {
 
-    let copyText = document.querySelector(".share_content").innerText;
     const copyContent = async() => {
-        console.log("123");
+        let copyText = document.querySelector(".share_content").innerText;
+
         try{
-            await navigator.clipboard.writeText(copyText);
-            console.log(copyText);
+            console.log(text);
+            await navigator.clipboard.writeText(text);
             console.log("copied to clipboard");
         } catch (error) {
             console.log("failed to copy: ", error); 
@@ -130,9 +125,13 @@ window.addEventListener('load', async () => {
         }
     }
     const hash = window.location.hash
-    const elem = document.querySelector(hash)
-    console.log(elem)
-    elem.scrollIntoView(true)
+    console.log(window.location);
+    if (hash) {
+        const elem = document.querySelector(hash)
+        console.log(elem)
+        elem.scrollIntoView(true)
+    }
+
 })
 
 async function setTabButtons(stationId) {
@@ -480,7 +479,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
             let postTitle = postTitleForReply.innerText
             const constantText = '- 分享自 LIHKG 討論區'
             let shareURL = window.location.href.split('&')[0] + '#replynum' + replyClone.querySelector('.reply_num').innerText
-
+            //console.log(shareURL)
             replyClone.querySelector(".post-title").innerText = postTitle 
             replyClone.querySelector(".constant-text").innerText = constantText 
             replyClone.querySelector(".share-url").innerText = shareURL
@@ -495,13 +494,14 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
             shareButton.addEventListener('click', () => {
                 console.log('click_share');
                 replyClone.querySelector('.share_container').classList.remove('d-none');
-            })
+            }) 
             leaveShareButton.addEventListener('click', () => { //not ok
                 console.log('click_leave-share');
                 replyClone.querySelector('.share_container').classList.add('d-none');
             })
             copyButton.addEventListener('click', () => {
-                copyToClipboard()
+                
+                copyToClipboard(replyClone.querySelector('.share_content').innerText)
                 console.log('click_copy');
             })
         }
