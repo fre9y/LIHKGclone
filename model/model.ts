@@ -25,3 +25,13 @@ export interface User {
     created_at: Date,
     updated_at: Date,
 }
+
+export interface UserPosts{
+    nickname: string,
+	updated_at: Date,
+	likes: number,
+	numberOfReplies: number,
+	post_title: string,
+	station_name: string,
+	station_id: number,
+}

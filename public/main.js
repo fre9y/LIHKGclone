@@ -1,5 +1,11 @@
 import { logout, redirectGoogle, loadUserProfileContainer, addPostBookmark, deletePostBookmark, blockUser, unblockUser, addFollowingUser, deleteFollowingUser } from './user.js';
-
+// window.addEventListener('load', () => {
+//     const hash = window.location.hash
+//     // const anchor = hash.split('#')[1]
+// console.log(hash)
+//     const elem = document.querySelector("#replynum4")
+//     console.log(elem)
+// })
 //login
 let loginButton = document.querySelector(".signUp_btn")
 loginButton.addEventListener('click', () => {
@@ -22,12 +28,12 @@ changeProfileButton.addEventListener('click', () => {
     window.location = "/userProfile.html"
 });
 
-let share_container = document.querySelector(".share_container");
-let shareButton = document.querySelector(".share_btn");
-shareButton.addEventListener('click', () => {
-    console.log('click_share');
-    //share_container.classList.toggle("d-none");
-});
+// let share_container = document.querySelector(".share_container");
+// let shareButton = document.querySelector(".share_btn");
+// shareButton.addEventListener('click', () => {
+//     console.log('click_share');
+//     //share_container.classList.toggle("d-none");
+// });
 
 //star
 function starClick(postId) {
@@ -57,25 +63,44 @@ function starClick(postId) {
     }
 }
 
-//share post //not using
-function sharePostClick(postId) {
-    let shareButton = document.querySelector(".fa-share-nodes")
-    let postTitle = document.querySelector(".replyPostTitle");
-    shareButton.addEventListener('click', async () => {
-        console.log('click_share');
-        try {
-            await navigator.share({
-                title: postTitle,
-                text: postTitle,
-                url: `http://localhost:8080/stations/2?postId=${postId}`,
-            })
-            console.log('SHARE SUCCESS')
-        } catch (error) {
-            console.log('CANT SHARE', error);
-        }
-    });
-}
+//share reply
+// function sharePostClick(postTitle,leaveShareButton,copyButton) { 
+//     //box = post title + url
+//     let shareButton = document.querySelector(".share")
+//     //let leaveShareButton = replyClone.querySelector(".leave_share_btn")
+//     //let copyButton = replyClone.querySelector(".fa-copy")
+//     //let postTitle = document.querySelector(".post_title"); //1
+//     const constantText = '- 分享自 LIHKG 討論區' //2
+//     let shareURL = window.location.href //3
+//     shareButton.addEventListener('click', () => {
+//         console.log('click_share');
+//         replyClone.querySelector('.share_container').classList.remove('d-none');
+//     })
+//     // leaveShareButton.addEventListener('click', () => { //not ok
+//     //     console.log('click_leave-share');
+//     //     replyClone.querySelector('.share_container').classList.add('d-none');
+//     // })
+//     // copyButton.addEventListener('click', () => {
+//     //     console.log('click_copy');
+//     // })
+// };
+//sharePostClick();
 
+function copyToClipboard() {
+
+    let copyText = document.querySelector(".share_content").innerText;
+    const copyContent = async() => {
+        console.log("123");
+        try{
+            await navigator.clipboard.writeText(copyText);
+            console.log(copyText);
+            console.log("copied to clipboard");
+        } catch (error) {
+            console.log("failed to copy: ", error); 
+        }
+    }
+    copyContent();
+}
 
 //clone left_side for responsive
 const postContainer = document.querySelector(".post-container_template");
@@ -86,7 +111,7 @@ function hidePostContainer() {
     postContainer.style.zIndex = 0;
 }
 
-(() => {
+window.addEventListener('load', async () => {
     const cloneNode = document.querySelector(".left_side .second_row_div");
     const leftSideClone = cloneNode.cloneNode(true);
 
@@ -98,16 +123,19 @@ function hidePostContainer() {
         if (word == "stations") {
             if (i + 1 < arr.length) {
                 const stationId = arr[i + 1];
-                goToStation(stationId);
-                setTabButtons(stationId);
+                await goToStation(stationId);
+                await setTabButtons(stationId);
             }
-
             break;
         }
     }
-})();
+    const hash = window.location.hash
+    const elem = document.querySelector(hash)
+    console.log(elem)
+    elem.scrollIntoView(true)
+})
 
-function setTabButtons(stationId) {
+async function setTabButtons(stationId) {
     const newestButtons = document.querySelectorAll(".second_row_div .newest_btn");
     const hitButtons = document.querySelectorAll(".second_row_div .hit_btn");
 
@@ -171,12 +199,15 @@ async function goToStation(stationId) {
     const postId = urlParams.get('postId');
     const page = urlParams.get('page') || 1;
 
+    console.log((window.location.href)); // current url
+    //console.log(stations[0].id); //stationID
+    //console.log(postId);// postID
     hidePostContainer();
     if (stations.length > 0) {
         document.querySelector('.station_name').innerText = stations[0].name;
     }
 
-    goToPost(postId, page);
+    await goToPost(postId, page);
     starClick(postId); //favourite post (C+D)
     //sharePostClick(postId); //not using
     // getStationsPost
@@ -200,7 +231,7 @@ async function goToHitStation(stationId) {
         document.querySelector('.station_name').innerText = stations[0].name;
     }
 
-    goToPost(postId, page);
+    await goToPost(postId, page);
     starClick(postId); //favourite post (C+D)
     //sharePostClick(postId); //not using
     // getStationsPost
@@ -337,7 +368,7 @@ async function goToPost(postId, currentPage) {
 
     document.querySelector('.img_container').innerHTML = " ";
     document.querySelector(".total_img").innerText = "0";
-    setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage, repliesImage);
+    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage, repliesImage);
     setPageDropdown(postId, pageCount, currentPage);
 }
 
@@ -416,8 +447,7 @@ function setPageDropdown(postId, pageCount, currentPage) {
     );
 }
 
-
-function setRepliesOfPage(title, replies, pageSize, currentPage, repliesImage) {
+async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesImage) {
     const replyNumOffset = (currentPage - 1) * pageSize;
     const replyTemplate = document.querySelector(".replies_container_template");
     const reply = document.querySelector(".replies_container_template_sample .reply");
@@ -436,13 +466,47 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, repliesImage) {
         const contentElement = replyClone.querySelector(".reply_second_row .reply_content");
         const imageElement = replyClone.querySelector('.reply_second_row .reply_image');
 
-
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
-        replyClone.querySelector('.reply_num').setAttribute('id', r + 1); //replybox id
+        replyClone.querySelector('.reply_num').setAttribute('id','replynum'+ (Number(r) + 1));  //replybox id to link
         nicknameElement.innerText = replies[r].nickname;
         likeElement.innerText = replies[r].likes;
         dislikeElement.innerHTML = replies[r].dislikes;
         postTitleForReply.innerText = title;
+        
+        function shareReplyClick(){
+            let shareButton = replyClone.querySelector(".share_btn")
+            let leaveShareButton = replyClone.querySelector(".leave_share_btn")
+            let copyButton = replyClone.querySelector(".copy")
+            let postTitle = postTitleForReply.innerText
+            const constantText = '- 分享自 LIHKG 討論區'
+            let shareURL = window.location.href.split('&')[0] + '#replynum' + replyClone.querySelector('.reply_num').innerText
+
+            replyClone.querySelector(".post-title").innerText = postTitle 
+            replyClone.querySelector(".constant-text").innerText = constantText 
+            replyClone.querySelector(".share-url").innerText = shareURL
+
+            // if (r==5) {
+            //     const hash = window.location.hash
+            //     const elem = replyClone.querySelector(hash)
+            //     console.log(elem)
+            //     elem.scrollIntoView(true)
+
+            // }
+            shareButton.addEventListener('click', () => {
+                console.log('click_share');
+                replyClone.querySelector('.share_container').classList.remove('d-none');
+            })
+            leaveShareButton.addEventListener('click', () => { //not ok
+                console.log('click_leave-share');
+                replyClone.querySelector('.share_container').classList.add('d-none');
+            })
+            copyButton.addEventListener('click', () => {
+                copyToClipboard()
+                console.log('click_copy');
+            })
+        }
+        shareReplyClick();
+
 
         //user is_male
         if (replies[r].is_male == true) {
@@ -474,7 +538,8 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, repliesImage) {
         let doxxButton = replyClone.querySelector('.doxx');
         doxxButton.addEventListener('click', () => {
             console.log('click_doxx');
-            window.location = `/user/profile/${userID}`;
+            doxxUser(userID)
+            // window.location = `/user/profile/${userID}`;
         });
         //block
         let blockButton = replyClone.querySelector('.block');
@@ -508,40 +573,37 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, repliesImage) {
         });
 
         // Story Mode
-        const storyModeButton = replyClone.querySelector('.block_replies_btn')
-        let storyModeToggle = false
-        storyModeButton.addEventListener('click', () => {
-            storyModeToggle = !storyModeToggle
-            if (storyModeToggle === true) {
+        replyClone.classList.add(`user${userID}`)
+        const storyModeButtonOn = replyClone.querySelector('.fa-eye')
+        const storyModeButtonOff = replyClone.querySelector('.fa-eye-slash')
+        storyModeButtonOn.addEventListener('click', () => {
                 console.log('StoryMode')
-                replyClone.querySelector('.fa-eye-slash').classList.remove("d-none");
-                replyClone.querySelector('.fa-eye').classList.add("d-none");
-                console.log(userID)
-                console.log(nicknameElement.innerText)
-                // console.log(replyClone.innerHTML)
-                console.log(replyTemplate.innerHTML.userdetail)
-                // document.querySelector('.reply').classList.add("d-none");
-                // replyTemplate.querySelector('.reply').classList.add("d-none");
-                // (1) newReplyArray = replies filtered by userID
-                // (2) userID -> unique user Nickname
-                //display none / display block : ".reply"
+                let eyes = document.querySelectorAll(".fa-eye")
+                let eyeSlashes = document.querySelectorAll(".fa-eye-slash")
+                for (let eye of eyes){
+                    eye.classList.add("d-none")
+                }
+                for (let eyeSlash of eyeSlashes){
+                    eyeSlash.classList.remove("d-none")
+                }
+                storyMode(userID)
+        })
 
-                // for(reply of replyTemplate)
-                //     replyId = reply.querySelector(".userDetail_id").innerText
-                //     if(replyId != userID){
-
-                //     }
-
-
-
-            } else {
+        storyModeButtonOff.addEventListener('click', () => {
                 console.log('NormalMode')
-                replyClone.querySelector('.fa-eye').classList.remove("d-none");
-                replyClone.querySelector('.fa-eye-slash').classList.add("d-none");
-                let urlParams = new URLSearchParams(window.location.search);
-                const postId = urlParams.get('postId');
-                goToPost(postId, 1)
-            }
+                let eyes = document.querySelectorAll(".fa-eye")
+                let eyeSlashes = document.querySelectorAll(".fa-eye-slash")
+                for (let eye of eyes){
+                    eye.classList.remove("d-none")
+                }
+                for (let eyeSlash of eyeSlashes){
+                    eyeSlash.classList.add("d-none")
+                }
+                let replyBoxes = document.querySelectorAll(".reply")
+                for (let reply of replyBoxes){
+                        reply.classList.remove("d-none")
+                }
+
         })
 
         userDetail.addEventListener('click', () => {
@@ -668,7 +730,11 @@ newPostFormElm.addEventListener('submit', async (e) => {
     })
 
     let result = await res.json()
-    console.log(result.message)
+    if(result.message === "add post success"){
+        console.log(result.message)
+    } else {
+        alert([unauthorized])
+    }
 
     createPostContainer.classList.add("d-none");
 
@@ -735,3 +801,45 @@ newReplyFormElm.addEventListener('submit', async (e) => {
 
     document.querySelector('.createReplyForm').reset()
 })
+
+function storyMode(userID){
+    let replyBoxes = document.querySelectorAll(".reply")
+    for (let reply of replyBoxes){
+        if(reply.classList.contains(`user${userID}`)){
+        } else {
+            reply.classList.add("d-none")
+        }
+    }
+}
+
+async function doxxUser(userId) {
+    let res = await fetch(`/posts/${userId}`, {
+        method: 'GET'
+    })
+    let data = await res.json()
+    let posts = data.data
+    console.log(posts)
+
+    // const { stations, posts } = await res.json();
+
+    // const urlParams = new URLSearchParams(window.location.search);
+    // const postId = urlParams.get('postId');
+    // const page = urlParams.get('page') || 1;
+
+    // console.log((window.location.href)); // current url
+    //console.log(stations[0].id); //stationID
+    // //console.log(postId);// postID
+    // hidePostContainer();
+    // if (stations.length > 0) {
+    //     document.querySelector('.station_name').innerText = stations[0].name;
+    // }
+
+    // goToPost(postId, page);
+    // starClick(postId); //favourite post (C+D)
+    //sharePostClick(postId); //not using
+    // getStationsPost
+    // setPostsOfStation(stations[0], posts);
+
+    //visited onclick function
+    // let visited = postClone.querySelector('.visited')
+}

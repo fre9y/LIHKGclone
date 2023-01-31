@@ -1,22 +1,22 @@
 import express from 'express'
 import { logger } from '../util/logger'
 import { Reply, User } from '../model/model'
-import { isLoggedInAPI, isP, isAdmin, isYourReply  } from '../util/guard'
+import { isLoggedInAPI, isP, isAdmin } from '../util/guard'
 import { client } from '../main'
 import { formParsePromise } from '../util/formidable'
 
 export const replyRoutes = express.Router()
 
-replyRoutes.get('/postId', getReplies)
+// replyRoutes.get('/postId', getReplies)
 replyRoutes.post('/', isLoggedInAPI, createReplies)
-replyRoutes.put('/', isLoggedInAPI, isP, isYourReply, updateReplyById)
-replyRoutes.put('/', isAdmin, hideReplyById)
-replyRoutes.put('/', isAdmin, showReplyById)
-replyRoutes.get('/', getUserReplies)
-replyRoutes.get('/', getHotReplies)
-replyRoutes.patch('/:id/like', isLoggedInAPI, isP, likeReplyById)
-replyRoutes.patch('/:id/dislike', isLoggedInAPI, isP, dislikeReplyById)
-replyRoutes.get('/:userId', getOthersById)
+// replyRoutes.put('/', isLoggedInAPI, isP, isYourReply, updateReplyById)
+// replyRoutes.put('/', isAdmin, hideReplyById)
+// replyRoutes.put('/', isAdmin, showReplyById)
+// replyRoutes.get('/', getUserReplies)
+// replyRoutes.get('/', getHotReplies)
+// replyRoutes.patch('/:id/like', isLoggedInAPI, isP, likeReplyById)
+// replyRoutes.patch('/:id/dislike', isLoggedInAPI, isP, dislikeReplyById)
+// replyRoutes.get('/:userId', getOthersById)
 
 // likes/dislikes check repeat
 export async function getReplies(req: express.Request, res: express.Response) {
