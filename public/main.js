@@ -589,6 +589,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
         doxxButton.addEventListener('click', () => {
             console.log('click_doxx');
             doxxUser(userID)
+            userDetailContent.classList.add("d-none");
             // window.location = `/user/profile/${userID}`;
         });
         //block
@@ -765,6 +766,7 @@ createPost.addEventListener('click', () => {
 const leaveCreatePost = document.querySelector('.leave_createPost_btn');
 leaveCreatePost.addEventListener('click', () => {
     createPostContainer.classList.add("d-none");
+    document.querySelector('.createPostForm').reset()
 })
 
 let newPostFormElm = document.querySelector('.createPostForm')
@@ -785,12 +787,10 @@ newPostFormElm.addEventListener('submit', async (e) => {
     } else {
         alert([unauthorized])
     }
-
     createPostContainer.classList.add("d-none");
 
     let selectStationId = document.getElementById("selectStation").value
     goToStation(Number(selectStationId))
-
     document.querySelector('.createPostForm').reset()
 })
 
@@ -825,6 +825,7 @@ createReply.addEventListener('click', () => {
 const leaveCreateReply = document.querySelector('.leave_createReply_btn');
 leaveCreateReply.addEventListener('click', () => {
     createReplyContainer.classList.add("d-none");
+    document.querySelector('.createReplyForm').reset()
 })
 
 let newReplyFormElm = document.querySelector('.createReplyForm')
@@ -846,7 +847,7 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     console.log(result.message)
 
     createReplyContainer.classList.add("d-none");
-
+    location.reload();
     goToPost(postId, 1)
 
     document.querySelector('.createReplyForm').reset()
@@ -863,7 +864,7 @@ function storyMode(userID) {
 }
 
 async function doxxUser(userId) {
-    let res = await fetch(`/posts/${userId}`, {
+    let res = await fetch(`/posts/${userId}/Users`, {
         method: 'GET'
     })
     let data = await res.json()
@@ -989,4 +990,33 @@ function setPostsOfUser(posts) {
 let followingPosts = document.querySelector(".fa-bell")
 followingPosts.addEventListener('click', async (e) => {
     console.log("followingPosts")
+    document.querySelector('.station_name').innerText = "追蹤中";
+
+    let res = await fetch(`/posts/following`, {
+        method: 'GET'
+    })
+    let data = await res.json()
+    let posts = data.data
+
+    setPostsOfUser(posts)
+
+    document.querySelector('.second_row_btn').classList.add("d-none")
+
+})
+
+let favPosts = document.querySelector(".fa-gamepad")
+favPosts.addEventListener('click', async (e) => {
+
+    document.querySelector('.station_name').innerText = "名已留";
+
+    let res = await fetch(`/posts/fav`, {
+        method: 'GET'
+    })
+    let data = await res.json()
+    let posts = data.data
+
+    setPostsOfUser(posts)
+
+    document.querySelector('.second_row_btn').classList.add("d-none")
+
 })
