@@ -1,11 +1,5 @@
 import { logout, redirectGoogle, loadUserProfileContainer, addPostBookmark, deletePostBookmark, blockUser, unblockUser, addFollowingUser, deleteFollowingUser } from './user.js';
-// window.addEventListener('load', () => {
-//     const hash = window.location.hash
-//     // const anchor = hash.split('#')[1]
-// console.log(hash)
-//     const elem = document.querySelector("#replynum4")
-//     console.log(elem)
-// })
+
 //login
 let loginButton = document.querySelector(".signUp_btn")
 loginButton.addEventListener('click', () => {
@@ -28,12 +22,44 @@ changeProfileButton.addEventListener('click', () => {
     window.location = "/userProfile.html"
 });
 
-// let share_container = document.querySelector(".share_container");
-// let shareButton = document.querySelector(".share_btn");
-// shareButton.addEventListener('click', () => {
-//     console.log('click_share');
-//     //share_container.classList.toggle("d-none");
-// });
+//read blocked list
+let readBlockedListButton = document.querySelector('.blocked_list');
+let leaveBlockedListButton = document.querySelector('.leave_blocked_list');
+readBlockedListButton.addEventListener('click', () => {
+    console.log('click_blocked-list');
+    document.querySelector('.blocked_list_container').classList.remove('d-none');
+    document.querySelector('.userProfile').classList.add('d-none');   
+});
+leaveBlockedListButton.addEventListener('click', () => {
+    console.log('click_leave-blocked-list');
+    document.querySelector('.blocked_list_container').classList.add('d-none');
+    
+});
+async function showBlockedList() {
+    let res = await fetch('/user/block', {
+        method: 'GET' 
+    })
+    if (res.ok) {
+        let data = await res.json()
+        let blockedList = data
+        let blockedListElem = document.querySelector(".blocked_table")
+        blockedListElem.innerHTML = ""
+        for (let i = 0; i < blockedList.length; i++) {
+            let blockedUser = blockedList[i]
+            let blockedUserElem = document.createElement("tr")
+            blockedUserElem.innerHTML = `
+            <td class="blocked_user_id">${blockedUser.id}</td>
+            <td class="blocked_user_nickname">${blockedUser.nickname}</td>
+            <td class="blocked_user_delete"><i class="fas fa-trash-alt"></i></td>
+            `
+            blockedListElem.appendChild(blockedUserElem)
+        }
+    } else {
+        alert("[ERR0R: CANT FETCH]")
+        return
+    }
+}
+
 
 //star
 function starClick(postId) {
