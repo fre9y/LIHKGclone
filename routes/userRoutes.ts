@@ -174,11 +174,18 @@ async function userGetBlockedUsers(
         let user = req.session['user'];
         console.log("SESSION|",user);
         const blockedUsers = await client.query(
-            `SELECT * FROM user_blacklists WHERE user_id_block_others = $1`,
+            `SELECT * FROM user_blacklists join users on user_blacklists.user_id_being_blocked = users.id 
+            WHERE user_blacklists.user_id_block_others = $1`,
             [user.id]
         );
+        // const blockedUsersNickname = await client.query(
+        //     `SELECT nickname FROM users WHERE user_blacklists.user_id_being_blocked = $1`,
+        //     [blockedUsers.rows]
+        // );
         console.log("BLOCKED_USERS| ",blockedUsers.rows);
+        // console.log("BLOCKED_USERS_NICKNAME| ",blockedUsersNickname.rows);
         res.json(blockedUsers.rows)
+        // res.json(blockedUsersNickname.rows)
         return
         } catch (error) {
             console.log("ERR0R",error);

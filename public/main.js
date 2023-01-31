@@ -28,7 +28,8 @@ let leaveBlockedListButton = document.querySelector('.leave_blocked_list');
 readBlockedListButton.addEventListener('click', () => {
     console.log('click_blocked-list');
     document.querySelector('.blocked_list_container').classList.remove('d-none');
-    document.querySelector('.userProfile').classList.add('d-none');   
+    document.querySelector('.userProfile').classList.add('d-none');
+    showBlockedList() 
 });
 leaveBlockedListButton.addEventListener('click', () => {
     console.log('click_leave-blocked-list');
@@ -44,12 +45,26 @@ async function showBlockedList() {
         let blockedList = data
         let blockedListElem = document.querySelector(".blocked_table")
         blockedListElem.innerHTML = ""
+        blockedListElem.innerHTML += /*html*/ `
+        <table>
+            <tr>
+                    <th class = "id">ID</th>
+                    <th class = "nickname">Nickname</th>
+                    <th class = "date">Create Date</th>
+                    <th class = "date">Create Time</th>
+                    <th>DELETE</th>
+            </tr>   
+        </table>
+        `
         for (let i = 0; i < blockedList.length; i++) {
             let blockedUser = blockedList[i]
+            let createDate = blockedList[i].created_at.split('T')[0]
+            let createTime = blockedList[i].created_at.split('T')[1].split('.')[0]
             let blockedUserElem = document.createElement("tr")
             blockedUserElem.innerHTML = `
-            <td class="blocked_user_id">${blockedUser.id}</td>
+            <td class="blocked_user_id">${blockedUser.user_id_being_blocked}</td>
             <td class="blocked_user_nickname">${blockedUser.nickname}</td>
+            <td class="blocked_user_create_time">${createDate}_${createTime}</td>
             <td class="blocked_user_delete"><i class="fas fa-trash-alt"></i></td>
             `
             blockedListElem.appendChild(blockedUserElem)
