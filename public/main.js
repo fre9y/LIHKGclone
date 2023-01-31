@@ -167,6 +167,7 @@ for (let i = 0; i < addAElem.length; i++) {
         e.preventDefault();
         window.history.pushState({}, '', '/stations/' + stationID);
 
+        document.querySelector(".post_template").innerHTML = "";
         goToStation(stationID);
         setTabButtons(stationID);
     })
@@ -229,7 +230,7 @@ function setPostsOfStation(station, posts) {
     const mobileVision = document.querySelector(".mobile_vision");
     const postTemplateNode = document.querySelector(".post_template_sample .post");
 
-    template.innerHTML = "";
+    // template.innerHTML = "";
     for (let child of mobileVision.querySelectorAll(".post")) {
         mobileVision.removeChild(child);
     }
