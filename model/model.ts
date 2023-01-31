@@ -26,7 +26,7 @@ export interface User {
     updated_at: Date,
 }
 
-export interface UserPosts{
+export interface UserPosts {
     nickname: string,
 	updated_at: Date,
 	likes: number,

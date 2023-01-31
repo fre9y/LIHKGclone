@@ -4,10 +4,14 @@
     overflow: auto;
 }
 
-.post_first_row {
+.post_bar {
     height: 50px;
     background-color: #222222;
     border-bottom: 1px solid #3b3a39;
+}
+
+.post_first_row {
+    height: 50px;
 }
 
 .post_first_row button {
@@ -314,4 +318,16 @@
     left: 10px;
     font-size: 20px;
     color: white;
+}
+
+/* blocked_list_container */
+.blocked_list_container {
+    background-color: rgba(38, 38, 38, 0.3);
+}
+
+.blocked_list_content {
+    width: 600px;
+    background-color: #292827;
+    border: 1px solid #292827;
+    border-radius: 5px;
 }

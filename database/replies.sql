@@ -269,3 +269,15 @@ select id,
   where station_id = 2
   and posts.show = true
         order by likes DESC;
+
+select (
+      select  json_agg(name) as images_id  from images  where replies_id = replies.id),      
+      (select is_male
+       from users 
+       where users.id = replies.user_id) as is_male,
+      users.nickname,
+      replies.* from replies
+  inner JOIN users on users.id = replies.user_id
+              where post_id = 2
+        and replies.show = true
+              order by replies.id DESC
