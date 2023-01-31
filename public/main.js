@@ -108,10 +108,13 @@ window.addEventListener('load', async () => {
             break;
         }
     }
+
     const hash = window.location.hash
-    const elem = document.querySelector(hash)
-    console.log(elem)
-    elem.scrollIntoView(true)
+    if (hash){
+        const elem = document.querySelector(hash)
+        console.log(elem)
+        elem.scrollIntoView(true)
+    }
 })
 
 async function setTabButtons(stationId) {
@@ -486,7 +489,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
             })
             tgButton.addEventListener('click', () => {
                 console.log('click_tg');
-                window.location ='tg://msg_url&text=<encoded-text>?url=google.com'
+                window.location =`tg://msg_url?url=${replyClone.querySelector(".share-url").innerText}&text=${replyClone.querySelector(".post-title").innerText}${replyClone.querySelector(".constant-text").innerText}`
             })
         }
         shareReplyClick();
