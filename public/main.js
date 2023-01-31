@@ -528,7 +528,8 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         let doxxButton = replyClone.querySelector('.doxx');
         doxxButton.addEventListener('click', () => {
             console.log('click_doxx');
-            window.location = `/user/profile/${userID}`;
+            doxxUser(userID)
+            // window.location = `/user/profile/${userID}`;
         });
         //block
         let blockButton = replyClone.querySelector('.block');
@@ -787,4 +788,36 @@ function storyMode(userID){
             reply.classList.add("d-none")
         }
     }
+}
+
+async function doxxUser(userId) {
+    let res = await fetch(`/posts/${userId}`, {
+        method: 'GET'
+    })
+    let data = await res.json()
+    let posts = data.data
+    console.log(posts)
+
+    // const { stations, posts } = await res.json();
+
+    // const urlParams = new URLSearchParams(window.location.search);
+    // const postId = urlParams.get('postId');
+    // const page = urlParams.get('page') || 1;
+
+    // console.log((window.location.href)); // current url
+    //console.log(stations[0].id); //stationID
+    // //console.log(postId);// postID
+    // hidePostContainer();
+    // if (stations.length > 0) {
+    //     document.querySelector('.station_name').innerText = stations[0].name;
+    // }
+
+    // goToPost(postId, page);
+    // starClick(postId); //favourite post (C+D)
+    //sharePostClick(postId); //not using
+    // getStationsPost
+    // setPostsOfStation(stations[0], posts);
+
+    //visited onclick function
+    // let visited = postClone.querySelector('.visited')
 }

@@ -1,6 +1,6 @@
 import express from 'express'
 import { logger } from '../util/logger'
-import { Post } from '../model/model'
+import { Post, UserPosts } from '../model/model'
 import { isLoggedInAPI, isP, isAdmin } from '../util/guard'
 import { client } from '../main'
 import { formParsePromise } from '../util/formidable'
@@ -9,6 +9,7 @@ export const postRoutes = express.Router()
 
 // postRoutes.get('/:stationId', getPosts)
 postRoutes.post('/', isLoggedInAPI, isP, createPosts)
+postRoutes.get('/:id', getUserPosts)
 // postRoutes.put('/', isLoggedInAPI, isP, isYourPost, updatePostById)
 // postRoutes.put('/', isLoggedInAPI, isAdmin, hidePostById)
 // postRoutes.put('/', isLoggedInAPI, isAdmin, showPostById)
@@ -176,8 +177,7 @@ export async function getUserPosts(
 	res: express.Response
 ) {
 	try {
-		let userId = req.params.userId
-
+		let userId = req.params.id
 		if (!Number(userId)) {
 			res.status(400).json({
 				message: 'Invalid user id'
@@ -185,7 +185,7 @@ export async function getUserPosts(
 			return
 		}
 
-		let userPosts = (
+		let data = (
 			await client.query(
 				`
 				select (select nickname 
@@ -203,16 +203,24 @@ export async function getUserPosts(
                     post_title, 
                     (select name 
                     from stations
-                    where posts.station_id = stations.id) as station_name
+                    where posts.station_id = stations.id) as station_name,
+					(select id 
+					from stations
+					where posts.station_id = stations.id) as station_id
 				from posts
 				where user_id = $1
 				and show = true
 				`,
 				[Number(userId)]
 			)
-		).rows
+		)
+		
+		let userPostsData: UserPosts[] = data.rows
 
-		res.json(userPosts)
+		res.json({
+			data: userPostsData,
+			message: 'Get userPosts success'
+		})
 	} catch (error) {
 		logger.error(error)
 		res.status(500).json({
