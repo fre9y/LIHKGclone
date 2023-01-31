@@ -1,5 +1,11 @@
 import { logout, redirectGoogle, loadUserProfileContainer, addPostBookmark, deletePostBookmark, blockUser, unblockUser, addFollowingUser, deleteFollowingUser } from './user.js';
-
+// window.addEventListener('load', () => {
+//     const hash = window.location.hash
+//     // const anchor = hash.split('#')[1]
+// console.log(hash)
+//     const elem = document.querySelector("#replynum4")
+//     console.log(elem)
+// })
 //login
 let loginButton = document.querySelector(".signUp_btn")
 loginButton.addEventListener('click', () => {
@@ -105,7 +111,7 @@ function hidePostContainer() {
     postContainer.style.zIndex = 0;
 }
 
-(() => {
+window.addEventListener('load', async () => {
     const cloneNode = document.querySelector(".left_side .second_row_div");
     const leftSideClone = cloneNode.cloneNode(true);
 
@@ -117,16 +123,19 @@ function hidePostContainer() {
         if (word == "stations") {
             if (i + 1 < arr.length) {
                 const stationId = arr[i + 1];
-                goToStation(stationId);
-                setTabButtons(stationId);
+                await goToStation(stationId);
+                await setTabButtons(stationId);
             }
-
             break;
         }
     }
-})();
+    const hash = window.location.hash
+    const elem = document.querySelector(hash)
+    console.log(elem)
+    elem.scrollIntoView(true)
+})
 
-function setTabButtons(stationId) {
+async function setTabButtons(stationId) {
     const newestButtons = document.querySelectorAll(".second_row_div .newest_btn");
     const hitButtons = document.querySelectorAll(".second_row_div .hit_btn");
 
@@ -198,7 +207,7 @@ async function goToStation(stationId) {
         document.querySelector('.station_name').innerText = stations[0].name;
     }
 
-    goToPost(postId, page);
+    await goToPost(postId, page);
     starClick(postId); //favourite post (C+D)
     //sharePostClick(postId); //not using
     // getStationsPost
@@ -222,7 +231,7 @@ async function goToHitStation(stationId) {
         document.querySelector('.station_name').innerText = stations[0].name;
     }
 
-    goToPost(postId, page);
+    await goToPost(postId, page);
     starClick(postId); //favourite post (C+D)
     //sharePostClick(postId); //not using
     // getStationsPost
@@ -359,7 +368,7 @@ async function goToPost(postId, currentPage) {
 
     document.querySelector('.img_container').innerHTML = " ";
     document.querySelector(".total_img").innerText = "0";
-    setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage);
+    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage);
     setPageDropdown(postId, pageCount, currentPage);
 }
 
@@ -438,7 +447,7 @@ function setPageDropdown(postId, pageCount, currentPage) {
     );
 }
 
-function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
+async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
     const replyNumOffset = (currentPage - 1) * pageSize;
     const replyTemplate = document.querySelector(".replies_container_template");
     const reply = document.querySelector(".replies_container_template_sample .reply");
@@ -458,7 +467,7 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         const createImgEle = document.querySelector('.img_container');
 
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
-        replyClone.querySelector('.reply_num').setAttribute('id', r + 1);  //replybox id to link
+        replyClone.querySelector('.reply_num').setAttribute('id','replynum'+ (Number(r) + 1));  //replybox id to link
         nicknameElement.innerText = replies[r].nickname;
         likeElement.innerText = replies[r].likes;
         dislikeElement.innerHTML = replies[r].dislikes;
@@ -470,12 +479,19 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
             let copyButton = replyClone.querySelector(".copy")
             let postTitle = postTitleForReply.innerText
             const constantText = '- 分享自 LIHKG 討論區'
-            let shareURL = window.location.href
+            let shareURL = window.location.href.split('&')[0] + '#replynum' + replyClone.querySelector('.reply_num').innerText
 
             replyClone.querySelector(".post-title").innerText = postTitle 
             replyClone.querySelector(".constant-text").innerText = constantText 
             replyClone.querySelector(".share-url").innerText = shareURL
 
+            // if (r==5) {
+            //     const hash = window.location.hash
+            //     const elem = replyClone.querySelector(hash)
+            //     console.log(elem)
+            //     elem.scrollIntoView(true)
+
+            // }
             shareButton.addEventListener('click', () => {
                 console.log('click_share');
                 replyClone.querySelector('.share_container').classList.remove('d-none');
