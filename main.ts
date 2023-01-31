@@ -221,7 +221,7 @@ app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
       replies.* from replies
   inner JOIN users on users.id = replies.user_id
               where post_id = ${postID}
-        and show = true
+        and replies.show = true
               order by replies.id DESC`
   );
 
