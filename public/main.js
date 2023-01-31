@@ -723,7 +723,11 @@ newPostFormElm.addEventListener('submit', async (e) => {
     })
 
     let result = await res.json()
-    console.log(result.message)
+    if(result.message === "add post success"){
+        console.log(result.message)
+    } else {
+        alert([unauthorized])
+    }
 
     createPostContainer.classList.add("d-none");
 
