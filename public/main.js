@@ -63,28 +63,7 @@ function starClick(postId) {
     }
 }
 
-//share reply
-// function sharePostClick(postTitle,leaveShareButton,copyButton) { 
-//     //box = post title + url
-//     let shareButton = document.querySelector(".share")
-//     //let leaveShareButton = replyClone.querySelector(".leave_share_btn")
-//     //let copyButton = replyClone.querySelector(".fa-copy")
-//     //let postTitle = document.querySelector(".post_title"); //1
-//     const constantText = '- 分享自 LIHKG 討論區' //2
-//     let shareURL = window.location.href //3
-//     shareButton.addEventListener('click', () => {
-//         console.log('click_share');
-//         replyClone.querySelector('.share_container').classList.remove('d-none');
-//     })
-//     // leaveShareButton.addEventListener('click', () => { //not ok
-//     //     console.log('click_leave-share');
-//     //     replyClone.querySelector('.share_container').classList.add('d-none');
-//     // })
-//     // copyButton.addEventListener('click', () => {
-//     //     console.log('click_copy');
-//     // })
-// };
-//sharePostClick();
+
 
 function copyToClipboard() {
 
@@ -152,7 +131,7 @@ async function setTabButtons(stationId) {
             button.classList.remove("active");
         }
     }
-
+    
     active(document.querySelectorAll(".second_row_div .newest_btn"));
     inactive(document.querySelectorAll(".second_row_div .hit_btn"));
 
@@ -171,7 +150,7 @@ async function setTabButtons(stationId) {
         clone.addEventListener("click", () => {
             inactive(document.querySelectorAll(".second_row_div .newest_btn"));
             active(document.querySelectorAll(".second_row_div .hit_btn"));
-
+            
             goToHitStation(stationId);
         });
         button.parentNode.replaceChild(clone, button);
@@ -365,12 +344,12 @@ function setPostsOfStation(station, posts) {
 async function goToPost(postId, currentPage) {
     const pageSize = 25;
     const res = await fetch(`/post/${postId}/replies/pages/${currentPage}`);
-    const { replies, repliesTotal, posts, repliesImage } = await res.json();
+    const { replies, repliesTotal, posts } = await res.json();
     const pageCount = Math.ceil(repliesTotal / pageSize);
 
     document.querySelector('.img_container').innerHTML = " ";
     document.querySelector(".total_img").innerText = "0";
-    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage, repliesImage);
+    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage);
     setPageDropdown(postId, pageCount, currentPage);
 }
 
@@ -449,11 +428,10 @@ function setPageDropdown(postId, pageCount, currentPage) {
     );
 }
 
-async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesImage) {
+async function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
     const replyNumOffset = (currentPage - 1) * pageSize;
     const replyTemplate = document.querySelector(".replies_container_template");
     const reply = document.querySelector(".replies_container_template_sample .reply");
-    const createImgEle = document.querySelector('.img_container');
 
     replyTemplate.innerHTML = "";
     document.querySelector('.post_div').classList.add('d-none');
@@ -468,6 +446,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
         const postTitleForReply = document.querySelector('.post_first_row .post_title');
         const contentElement = replyClone.querySelector(".reply_second_row .reply_content");
         const imageElement = replyClone.querySelector('.reply_second_row .reply_image');
+        const createImgEle = document.querySelector('.img_container');
 
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
         replyClone.querySelector('.reply_num').setAttribute('id', 'replynum' + (Number(r) + 1));  //replybox id to link
@@ -481,6 +460,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
             let shareButton = replyClone.querySelector(".share_btn")
             let leaveShareButton = replyClone.querySelector(".leave_share_btn")
             let copyButton = replyClone.querySelector(".copy")
+            let tgButton = replyClone.querySelector(".telegram")
             let postTitle = postTitleForReply.innerText
             const constantText = '- 分享自 LIHKG 討論區'
             let shareURL = window.location.href.split('&')[0] + '#replynum' + replyClone.querySelector('.reply_num').innerText
@@ -508,6 +488,10 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
                 copyToClipboard()
                 console.log('click_copy');
             })
+            tgButton.addEventListener('click', () => {
+                console.log('click_tg');
+                window.location ='tg://msg_url&text=<encoded-text>?url=google.com'
+            })
         }
         shareReplyClick();
 
@@ -519,7 +503,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
             nicknameElement.style.color = "red";
         }
 
-        // replies content && image
+        //replies content && image
         if (replies[r].images_id == null) {
             contentElement.innerHTML = replies[r].content;
         } else {
@@ -527,8 +511,14 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
                 contentElement.innerHTML = replies[r].content;
                 imageElement.classList.remove('d-none');
                 imageElement.querySelector('img').setAttribute('src', `/${image}`);
-                // imageTotal.push(replies[r].images_id);
+                imageTotal.push(replies[r].images_id);
+
+                const img = document.createElement("img");
+                img.setAttribute('class', 'grid-item img-fluid');
+                img.src = `http://localhost:8080/${image}`;
+                createImgEle.appendChild(img);
             }
+            totalImg.innerText = imageTotal.length;
         }
 
         //replies
@@ -660,19 +650,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
         replyTemplate.appendChild(replyClone);
     }
 
-    for (let image of repliesImage) {
-        if (image.images_id == null) {
-            continue;
-        } else {
-            const img = document.createElement("img");
-            img.setAttribute('class', 'grid-item img-fluid');
-            img.src = `http://localhost:8080/${image.images_id}`;
-            createImgEle.appendChild(img);
 
-            imageTotal.push(image.images_id);
-        }
-    }
-    totalImg.innerText = imageTotal.length;
 }
 
 // refresh_btn
@@ -822,28 +800,120 @@ async function doxxUser(userId) {
     })
     let data = await res.json()
     let posts = data.data
-    console.log(posts)
 
-    // const { stations, posts } = await res.json();
+    document.querySelector('.station_name').innerText = posts[0].nickname;
 
-    // const urlParams = new URLSearchParams(window.location.search);
-    // const postId = urlParams.get('postId');
-    // const page = urlParams.get('page') || 1;
+    setPostsOfUser(posts)
 
-    // console.log((window.location.href)); // current url
-    //console.log(stations[0].id); //stationID
-    // //console.log(postId);// postID
-    // hidePostContainer();
-    // if (stations.length > 0) {
-    //     document.querySelector('.station_name').innerText = stations[0].name;
-    // }
+    document.querySelector('.second_row_btn').classList.add("d-none")
 
-    // goToPost(postId, page);
-    // starClick(postId); //favourite post (C+D)
-    //sharePostClick(postId); //not using
-    // getStationsPost
-    // setPostsOfStation(stations[0], posts);
+}
 
-    //visited onclick function
-    // let visited = postClone.querySelector('.visited')
+function setPostsOfUser(posts) {
+    const pageSize = 25;
+    const template = document.querySelector(".post_template");
+    const mobileVision = document.querySelector(".mobile_vision");
+    const postTemplateNode = document.querySelector(".post_template_sample .post");
+
+    template.innerHTML = "";
+    for (let child of mobileVision.querySelectorAll(".post")) {
+        mobileVision.removeChild(child);
+    }
+
+    for (let post of posts) {
+        const {  nickname, updated_at, likes, number_of_replies, post_title, station_name, user_is_male, post_id } = post;
+        const pageCount = Math.ceil(number_of_replies / pageSize);
+        const postClone = postTemplateNode.cloneNode(true);
+        const pageSelectElement = postClone.querySelector("select");
+
+        function postClick(post) {
+            post.addEventListener('click', async (e) => {
+                e.preventDefault();
+                let urlParams = new URLSearchParams();
+                urlParams.set("postId", post_id)
+                history.pushState({}, '', '?' + urlParams.toString());
+                goToPost(post_id, 1);
+                showPostContainer();
+            });
+        };
+
+
+        for (let k = 0; k < pageCount; k++) {
+            const pageNumber = k + 1;
+            const optionNode = document.createElement('option');
+            const textNode = document.createTextNode(getPageName(pageNumber));
+
+            optionNode.setAttribute('value', `${pageNumber}`);
+            optionNode.appendChild(textNode);
+
+            pageSelectElement.appendChild(optionNode);
+        }
+        pageSelectElement.addEventListener("click", e => e.stopPropagation());
+        pageSelectElement.addEventListener("change", (e) => goToPost(post_id, e.target.value));
+        postClick(postClone);
+
+        //posts-host
+        let postHost = postClone.querySelector(".post_host")
+        let hostNameText = nickname;
+        postHost.innerText = hostNameText;
+
+        // host-gender
+        let hostGender = user_is_male;
+        if (hostGender == true) {
+            postHost.style.color = "#34aadc";
+        } else {
+            postHost.style.color = "red";
+        }
+
+        //post-created-time
+        let createTime = postClone.querySelector('.post_created_time');
+        let now = Date.now();
+        let updatedTime = new Date(updated_at).getTime()
+        let timePassed = (now - updatedTime) / 1000;
+        let showTimePassed = '';
+        if (timePassed > 31104000) {
+            showTimePassed = parseInt(timePassed / 31104000) + '年前'
+        } else if (timePassed > 2592000) {
+            showTimePassed = parseInt(timePassed / 2592000) + '月前'
+        } else if (timePassed > 86400) {
+            showTimePassed = parseInt(timePassed / 86400) + '天前'
+        } else if (timePassed > 3600) {
+            showTimePassed = parseInt(timePassed / 3600) + '小時前'
+        } else if (timePassed > 60) {
+            showTimePassed = parseInt(timePassed / 60) + '分鐘前'
+        } else {
+            showTimePassed = parseInt(timePassed) + '秒前'
+        }
+        createTime.innerText = showTimePassed;
+
+        //posts-like
+        let postLike = postClone.querySelector(".like");
+        let likeNUM = likes;
+        postLike.innerText = likeNUM;
+
+        const countOfLike = Number(likeNUM);
+        if (countOfLike > 0) {
+            postClone.querySelector('.post_like').classList.remove('d-none');
+        } else {
+            postClone.querySelector('.post_dislike').classList.remove('d-none');
+        }
+
+        //posts-title
+        let postTitle = postClone.querySelector('.post_title');
+        let postTitleText = post_title;
+        postTitle.innerText = postTitleText;
+
+        //posts-stations Btn
+        const postStationsBtn = postClone.querySelector('.post_station')
+        postStationsBtn.innerText = post.station_name
+
+        //hidden post_template
+        postClone.classList.remove("d-none");
+        //template + postClone && clone one more for mobileVision
+        template.appendChild(postClone);
+
+        const forMobileVision = postClone.cloneNode(true);
+        postClick(forMobileVision);
+        mobileVision.appendChild(forMobileVision);
+    };
 }
