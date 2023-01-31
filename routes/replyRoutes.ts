@@ -172,7 +172,7 @@ export async function getUserReplies(
 
 		if (!Number(userId)) {
 			res.status(400).json({
-				message: 'Invalid user id'
+				message: 'Invalid user id4'
 			})
 			return
 		}

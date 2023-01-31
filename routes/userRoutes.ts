@@ -174,9 +174,11 @@ async function userGetBlockedUsers(
         let user = req.session['user'];
         console.log("SESSION|",user);
         const blockedUsers = await client.query(
-            `SELECT * FROM user_blacklists WHERE user_id_block_others = $1`,
+            `SELECT * FROM user_blacklists join users on user_blacklists.user_id_being_blocked = users.id 
+            WHERE user_blacklists.user_id_block_others = $1`,
             [user.id]
         );
+
         console.log("BLOCKED_USERS| ",blockedUsers.rows);
         res.json(blockedUsers.rows)
         return
@@ -225,6 +227,7 @@ async function userUnblockOthers(
             [user.id,req.body.id]
         );
         console.log(updatedUnblockUsers.rows[0]);
+        res.end('ok')
     } catch (error) {
         console.log("ERR0R",error);
         res.status(500).json({

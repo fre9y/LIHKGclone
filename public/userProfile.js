@@ -7,7 +7,7 @@ let home = document.querySelector(".home")
 home.addEventListener('click', () => {
     window.location = "/"
 })
-
+//<i class="fas fa-trash-alt"></i>
 
 async function loadProfile() {
     let res = await fetch('/user/profile', {
@@ -48,12 +48,12 @@ async function loadProfileForAdmin() {
         let profileElem = document.querySelector(".profile")
         profileElem.innerHTML = ''
         profileElem.innerHTML += /*html */ `
-        <table>
+    <table>
         <tr>
             <div class= "profile" >
-                <th name = id class = id>ID</th>
-                <th class = nickname>Nickname</th>
-                <th name = email class = email>Email</th>
+                <th name = id class = "id">ID</th>
+                <th class = "nickname">Nickname</th>
+                <th name = email class = "email">Email</th>
                 <th class = "p">P</th>
                 <th class = "admin">Adm</th>
                 <th class = "gender">Male</th>
@@ -75,9 +75,9 @@ async function loadProfileForAdmin() {
             <table>
             <tr>
     
-                <td name = id class = id>${profile[i].id}</td>
-                <td class = nickname>${profile[i].nickname}</td>
-                <td name = email class = email>${profile[i].email}</td>
+                <td name = id class = "id">${profile[i].id}</td>
+                <td class = "nickname">${profile[i].nickname}</td>
+                <td name = email class = "email">${profile[i].email}</td>
                 <td class = "p">${profile[i].is_p}</td>
                 <td class = "admin">${profile[i].is_admin}</td>
                 <td class = "gender">${profile[i].is_male}</td>

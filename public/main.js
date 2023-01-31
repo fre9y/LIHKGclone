@@ -1,11 +1,5 @@
 import { logout, redirectGoogle, loadUserProfileContainer, addPostBookmark, deletePostBookmark, blockUser, unblockUser, addFollowingUser, deleteFollowingUser } from './user.js';
-// window.addEventListener('load', () => {
-//     const hash = window.location.hash
-//     // const anchor = hash.split('#')[1]
-// console.log(hash)
-//     const elem = document.querySelector("#replynum4")
-//     console.log(elem)
-// })
+
 //login
 let loginButton = document.querySelector(".signUp_btn")
 loginButton.addEventListener('click', () => {
@@ -28,12 +22,81 @@ changeProfileButton.addEventListener('click', () => {
     window.location = "/userProfile.html"
 });
 
-// let share_container = document.querySelector(".share_container");
-// let shareButton = document.querySelector(".share_btn");
-// shareButton.addEventListener('click', () => {
-//     console.log('click_share');
-//     //share_container.classList.toggle("d-none");
-// });
+//read blocked list
+let readBlockedListButton = document.querySelector('.blocked_list');
+let leaveBlockedListButton = document.querySelector('.leave_blocked_list');
+readBlockedListButton.addEventListener('click', () => {
+    console.log('click_blocked-list');
+    document.querySelector('.blocked_list_container').classList.remove('d-none');
+    document.querySelector('.userProfile').classList.add('d-none');
+    showBlockedList() 
+});
+leaveBlockedListButton.addEventListener('click', () => {
+    console.log('click_leave-blocked-list');
+    document.querySelector('.blocked_list_container').classList.add('d-none');
+    
+});
+
+
+async function showBlockedList() {
+    let res = await fetch('/user/block', {
+        method: 'GET' 
+    })
+    if (res.ok) {
+        let data = await res.json()
+        let blockedList = data
+        let blockedListElem = document.querySelector(".blocked_table")
+        blockedListElem.innerHTML = ""
+        blockedListElem.innerHTML += /*html*/ `
+
+        <table>
+            <tr>
+                    <th class = "blocked_user_id">ID</th>
+                    <th class = "blocked_user_nickname">Nickname</th>
+                    <th class = "blocked_user_create_date">Create Date</th>
+                    <th class = "blocked_user_create_time">Create Time</th>
+                    <th>DELETE</th>
+            </tr>   
+        </table>
+        `
+        for (let i = 0; i < blockedList.length; i++) {
+            let blockedUser = blockedList[i]
+            let blockedUserId = blockedUser.user_id_being_blocked
+            let createDate = blockedList[i].created_at.split('T')[0]
+            let createTime = blockedList[i].created_at.split('T')[1].split('.')[0]
+            let blockedUserElem = document.createElement("tr")
+            // <i class="fas fa-trash-alt"></i>
+            blockedUserElem.innerHTML = `
+            <td class="blocked_user_id">${blockedUser.user_id_being_blocked}</td>
+            <td class="blocked_user_nickname">${blockedUser.nickname}</td>
+            <td class="blocked_user_create_date">${createDate}</td>
+            <td class="blocked_user_create_time">${createTime}</td>
+            <td class="blocked_user_delete">
+               
+                
+                
+            <button class="unblock_btn" 
+            id="unblock${blockedUserId}" 
+            ">O</button> 
+              
+            </td>
+            `
+            console.log(blockedUserElem);
+            blockedListElem.appendChild(blockedUserElem)
+            let unblockUserElem =document.querySelector(`#unblock${blockedUserId}`)
+            unblockUserElem.addEventListener('click', () => {
+                console.log(blockedUser.user_id_being_blocked);
+                console.log('click_unblock-user');
+                unblockUser(blockedUserId)
+            })  
+
+
+        }
+    } else {
+        alert("[ERR0R: CANT FETCH]")
+        return
+    }
+}
 
 //star
 function starClick(postId) {
@@ -531,6 +594,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
         doxxButton.addEventListener('click', () => {
             console.log('click_doxx');
             doxxUser(userID)
+            userDetailContent.classList.add("d-none");
             // window.location = `/user/profile/${userID}`;
         });
         //block
@@ -707,6 +771,7 @@ createPost.addEventListener('click', () => {
 const leaveCreatePost = document.querySelector('.leave_createPost_btn');
 leaveCreatePost.addEventListener('click', () => {
     createPostContainer.classList.add("d-none");
+    document.querySelector('.createPostForm').reset()
 })
 
 let newPostFormElm = document.querySelector('.createPostForm')
@@ -727,12 +792,10 @@ newPostFormElm.addEventListener('submit', async (e) => {
     } else {
         alert([unauthorized])
     }
-
     createPostContainer.classList.add("d-none");
 
     let selectStationId = document.getElementById("selectStation").value
     goToStation(Number(selectStationId))
-
     document.querySelector('.createPostForm').reset()
 })
 
@@ -767,6 +830,7 @@ createReply.addEventListener('click', () => {
 const leaveCreateReply = document.querySelector('.leave_createReply_btn');
 leaveCreateReply.addEventListener('click', () => {
     createReplyContainer.classList.add("d-none");
+    document.querySelector('.createReplyForm').reset()
 })
 
 let newReplyFormElm = document.querySelector('.createReplyForm')
@@ -788,7 +852,7 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     console.log(result.message)
 
     createReplyContainer.classList.add("d-none");
-
+    location.reload();
     goToPost(postId, 1)
 
     document.querySelector('.createReplyForm').reset()
@@ -805,7 +869,7 @@ function storyMode(userID) {
 }
 
 async function doxxUser(userId) {
-    let res = await fetch(`/posts/${userId}`, {
+    let res = await fetch(`/posts/${userId}/Users`, {
         method: 'GET'
     })
     let data = await res.json()
@@ -931,4 +995,33 @@ function setPostsOfUser(posts) {
 let followingPosts = document.querySelector(".fa-bell")
 followingPosts.addEventListener('click', async (e) => {
     console.log("followingPosts")
+    document.querySelector('.station_name').innerText = "追蹤中";
+
+    let res = await fetch(`/posts/following`, {
+        method: 'GET'
+    })
+    let data = await res.json()
+    let posts = data.data
+
+    setPostsOfUser(posts)
+
+    document.querySelector('.second_row_btn').classList.add("d-none")
+
+})
+
+let favPosts = document.querySelector(".fa-gamepad")
+favPosts.addEventListener('click', async (e) => {
+
+    document.querySelector('.station_name').innerText = "名已留";
+
+    let res = await fetch(`/posts/fav`, {
+        method: 'GET'
+    })
+    let data = await res.json()
+    let posts = data.data
+
+    setPostsOfUser(posts)
+
+    document.querySelector('.second_row_btn').classList.add("d-none")
+
 })
