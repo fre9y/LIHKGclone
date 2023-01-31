@@ -178,14 +178,9 @@ async function userGetBlockedUsers(
             WHERE user_blacklists.user_id_block_others = $1`,
             [user.id]
         );
-        // const blockedUsersNickname = await client.query(
-        //     `SELECT nickname FROM users WHERE user_blacklists.user_id_being_blocked = $1`,
-        //     [blockedUsers.rows]
-        // );
+
         console.log("BLOCKED_USERS| ",blockedUsers.rows);
-        // console.log("BLOCKED_USERS_NICKNAME| ",blockedUsersNickname.rows);
         res.json(blockedUsers.rows)
-        // res.json(blockedUsersNickname.rows)
         return
         } catch (error) {
             console.log("ERR0R",error);
@@ -232,6 +227,7 @@ async function userUnblockOthers(
             [user.id,req.body.id]
         );
         console.log(updatedUnblockUsers.rows[0]);
+        res.end('ok')
     } catch (error) {
         console.log("ERR0R",error);
         res.status(500).json({

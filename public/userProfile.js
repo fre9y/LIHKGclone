@@ -7,7 +7,7 @@ let home = document.querySelector(".home")
 home.addEventListener('click', () => {
     window.location = "/"
 })
-
+//<i class="fas fa-trash-alt"></i>
 
 async function loadProfile() {
     let res = await fetch('/user/profile', {
