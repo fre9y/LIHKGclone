@@ -76,17 +76,64 @@ function hidePostContainer() {
 
 (() => {
     const cloneNode = document.querySelector(".left_side .second_row_div");
-
     const leftSideClone = cloneNode.cloneNode(true);
+
     document.querySelector(".mobile_vision").appendChild(leftSideClone);
 
-    let pathname = window.location.pathname
-    const words = pathname.split('/');
-    if (words.length > 0) {
-        const stationID = words[words.length - 1]
-        goToStation(stationID);
+    const arr = window.location.pathname.split("/"); //stations/38
+    for (let i = 0; i < arr.length; i++) {
+        const word = arr[i].toLowerCase();
+        if (word == "stations") {
+            if (i + 1 < arr.length) {
+                const stationId = arr[i + 1];
+                goToStation(stationId);
+                setTabButtons(stationId);
+            }
+
+            break;
+        }
     }
 })();
+
+function setTabButtons(stationId) {
+    const newestButtons = document.querySelectorAll(".second_row_div .newest_btn");
+    const hitButtons = document.querySelectorAll(".second_row_div .hit_btn");
+
+    function active(buttons) {
+        for (let button of buttons) {
+            button.classList.add("active");
+        }
+    }
+    function inactive(buttons) {
+        for (let button of buttons) {
+            button.classList.remove("active");
+        }
+    }
+    
+    active(document.querySelectorAll(".second_row_div .newest_btn"));
+    inactive(document.querySelectorAll(".second_row_div .hit_btn"));
+
+    for (let button of newestButtons) {
+        const clone = button.cloneNode(true);
+        clone.addEventListener("click", () => {
+            active(document.querySelectorAll(".second_row_div .newest_btn"));
+            inactive(document.querySelectorAll(".second_row_div .hit_btn"));
+
+            goToStation(stationId);
+        });
+        button.parentNode.replaceChild(clone, button);
+    }
+    for (let button of hitButtons) {
+        const clone = button.cloneNode(true);
+        clone.addEventListener("click", () => {
+            inactive(document.querySelectorAll(".second_row_div .newest_btn"));
+            active(document.querySelectorAll(".second_row_div .hit_btn"));
+            
+            goToHitStation(stationId);
+        });
+        button.parentNode.replaceChild(clone, button);
+    }
+}
 
 //stations
 const addAElem = document.querySelectorAll('.stations .link');
@@ -99,6 +146,7 @@ for (let i = 0; i < addAElem.length; i++) {
         window.history.pushState({}, '', '/stations/' + stationID);
 
         goToStation(stationID);
+        setTabButtons(stationID);
     })
 };
 
@@ -121,6 +169,30 @@ async function goToStation(stationId) {
     //sharePostClick(postId); //not using
     // getStationsPost
     setPostsOfStation(stations[0], posts);
+
+    //visited onclick function
+    // let visited = postClone.querySelector('.visited')
+}
+
+//toHitStations && createPost
+async function goToHitStation(stationId) {
+    const res = await fetch(`/stations/${stationId}/hit-posts`);
+    const { stations, hitStation } = await res.json();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('postId');
+    const page = urlParams.get('page') || 1;
+
+    hidePostContainer();
+    if (stations.length > 0) {
+        document.querySelector('.station_name').innerText = stations[0].name;
+    }
+
+    goToPost(postId, page);
+    starClick(postId); //favourite post (C+D)
+    //sharePostClick(postId); //not using
+    // getStationsPost
+    setPostsOfStation(stations[0], hitStation);
 
     //visited onclick function
     // let visited = postClone.querySelector('.visited')
@@ -350,7 +422,7 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         const contentElement = replyClone.querySelector(".reply_second_row .reply_content");
         const imageElement = replyClone.querySelector('.reply_second_row .reply_image');
         const createImgEle = document.querySelector('.img_container');
-        
+
 
         replyClone.querySelector('.reply_num').innerText = r + 1 + replyNumOffset;
         replyClone.querySelector('.reply_num').setAttribute('id', r + 1); //replybox id
@@ -359,11 +431,19 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         dislikeElement.innerHTML = replies[r].dislikes;
         postTitleForReply.innerText = title;
 
+        //user is_male
+        if (replies[r].is_male == true) {
+            nicknameElement.style.color = "#34aadc";
+        } else {
+            nicknameElement.style.color = "red";
+        }
+
         //replies content && image
         if (replies[r].images_id == null) {
             contentElement.innerHTML = replies[r].content;
         } else {
             for (let image of replies[r].images_id) {
+                contentElement.innerHTML = replies[r].content;
                 imageElement.classList.remove('d-none');
                 imageElement.querySelector('img').setAttribute('src', `/${image}`);
                 imageTotal.push(replies[r].images_id);
@@ -508,32 +588,6 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
     }
 
 
-}
-
-//newest & hit switch
-const newestBtns = document.querySelectorAll(".newest_btn");
-const hitBtns = document.querySelectorAll(".hit_btn");
-
-for (let newestBtn of newestBtns) {
-    newestBtn.addEventListener('click', () => {
-        for (let btn of newestBtns) {
-            btn.classList.add('active');
-        }
-        for (let hitBtn of hitBtns) {
-            hitBtn.classList.remove('active');
-        }
-    })
-}
-
-for (let hitBtn of hitBtns) {
-    hitBtn.addEventListener('click', () => {
-        for (let btn of hitBtns) {
-            btn.classList.add('active');
-        }
-        for (let newestBtn of newestBtns) {
-            newestBtn.classList.remove('active');
-        }
-    })
 }
 
 // refresh_btn

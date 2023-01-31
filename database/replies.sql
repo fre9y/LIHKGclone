@@ -156,3 +156,116 @@ UPDATE replies SET likes = likes + 1 WHERE replies.id = 1;
 UPDATE replies set dislikes = 5 where replies.id = 29;
 SELECT * FROM replies where replies.post_id = 2;
 
+select id,
+    (select nickname
+            from users 
+            where users.id = posts.user_id) as nickname, 
+            (select is_male
+            from users 
+            where users.id = posts.user_id) as is_male, 
+            (select max(updated_at)
+            from replies
+            where posts.id = replies.post_id) as updated_at, 
+            (select sum(likes - dislikes)
+            from replies
+            where posts.id = replies.post_id) as likes, 
+            (select count(post_id) 
+            from replies
+            where posts.id = replies.post_id) as number_of_replies, 
+            post_title, 
+            (select stations.id
+            from stations 
+            where posts.station_id = stations.id) as stations_id, 
+            (select name 
+            from stations
+            where posts.station_id = stations.id) as station_name
+        from posts
+  where station_id = 2
+  and posts.show = true
+        order by updated_at ASC;
+
+-- based on created_at
+select id,
+    (select nickname
+            from users 
+            where users.id = posts.user_id) as nickname, 
+            (select is_male
+            from users 
+            where users.id = posts.user_id) as is_male, 
+            (select max(created_at)
+            from replies
+            where posts.id = replies.post_id) as created_at, 
+            (select sum(likes - dislikes)
+            from replies
+            where posts.id = replies.post_id) as likes, 
+            (select count(post_id) 
+            from replies
+            where posts.id = replies.post_id) as number_of_replies, 
+            post_title, 
+            (select stations.id
+            from stations 
+            where posts.station_id = stations.id) as stations_id, 
+            (select name 
+            from stations
+            where posts.station_id = stations.id) as station_name
+        from posts
+  where station_id = 2
+  and posts.show = true
+        order by created_at ASC;
+
+-- all stations
+select id,
+    (select nickname
+            from users 
+            where users.id = posts.user_id) as nickname, 
+            (select is_male
+            from users 
+            where users.id = posts.user_id) as is_male, 
+            (select max(updated_at)
+            from replies
+            where posts.id = replies.post_id) as updated_at, 
+            (select sum(likes - dislikes)
+            from replies
+            where posts.id = replies.post_id) as likes, 
+            (select count(post_id) 
+            from replies
+            where posts.id = replies.post_id) as number_of_replies, 
+            post_title, 
+            (select stations.id
+            from stations 
+            where posts.station_id = stations.id) as stations_id, 
+            (select name 
+            from stations
+            where posts.station_id = stations.id) as station_name
+        from posts
+  where posts.show = true
+        order by likes DESC;
+
+-- one station
+select id,
+    (select nickname
+            from users 
+            where users.id = posts.user_id) as nickname, 
+            (select is_male
+            from users 
+            where users.id = posts.user_id) as is_male, 
+            (select max(updated_at)
+            from replies
+            where posts.id = replies.post_id) as updated_at, 
+            (select sum(likes - dislikes)
+            from replies
+            where posts.id = replies.post_id) as likes, 
+            (select count(post_id) 
+            from replies
+            where posts.id = replies.post_id) as number_of_replies, 
+            post_title, 
+            (select stations.id
+            from stations 
+            where posts.station_id = stations.id) as stations_id, 
+            (select name 
+            from stations
+            where posts.station_id = stations.id) as station_name
+        from posts
+  where station_id = 2
+  and posts.show = true
+        order by likes DESC;
