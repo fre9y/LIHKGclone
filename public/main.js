@@ -557,36 +557,25 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
         });
 
         // Story Mode
+        replyClone.classList.add(`user${userID}`)
         const storyModeButton = replyClone.querySelector('.block_replies_btn')
         let storyModeToggle = false
         storyModeButton.addEventListener('click', () => {
             storyModeToggle = !storyModeToggle
+            console.log(storyModeToggle)
             if (storyModeToggle === true) {
                 console.log('StoryMode')
                 replyClone.querySelector('.fa-eye-slash').classList.remove("d-none");
                 replyClone.querySelector('.fa-eye').classList.add("d-none");
-                console.log(userID)
-                console.log(nicknameElement.innerText)
-                // console.log(replyClone.innerHTML)
-                console.log(replyTemplate.innerHTML.userdetail)
-                // document.querySelector('.reply').classList.add("d-none");
-                // replyTemplate.querySelector('.reply').classList.add("d-none");
-                // (1) newReplyArray = replies filtered by userID
-                // (2) userID -> unique user Nickname
-                //display none / display block : ".reply"
-
-                // for(reply of replyTemplate)
-                //     replyId = reply.querySelector(".userDetail_id").innerText
-                //     if(replyId != userID){
-
-                //     }
-
-
-
+                storyMode(userID)
             } else {
                 console.log('NormalMode')
                 replyClone.querySelector('.fa-eye').classList.remove("d-none");
                 replyClone.querySelector('.fa-eye-slash').classList.add("d-none");
+                let replyBoxes = document.querySelectorAll(".reply")
+                for (let reply of replyBoxes){
+                        reply.classList.remove("d-none")
+                }
                 let urlParams = new URLSearchParams(window.location.search);
                 const postId = urlParams.get('postId');
                 goToPost(postId, 1)
@@ -772,3 +761,13 @@ newReplyFormElm.addEventListener('submit', async (e) => {
 
     document.querySelector('.createReplyForm').reset()
 })
+
+function storyMode(userID){
+    let replyBoxes = document.querySelectorAll(".reply")
+    for (let reply of replyBoxes){
+        if(reply.classList.contains(`user${userID}`)){
+        } else {
+            reply.classList.add("d-none")
+        }
+    }
+}
