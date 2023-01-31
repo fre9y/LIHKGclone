@@ -14,8 +14,8 @@ replyRoutes.post('/', isLoggedInAPI, createReplies)
 // replyRoutes.put('/', isAdmin, showReplyById)
 // replyRoutes.get('/', getUserReplies)
 // replyRoutes.get('/', getHotReplies)
-// replyRoutes.patch('/:id/like', isLoggedInAPI, isP, likeReplyById)
-// replyRoutes.patch('/:id/dislike', isLoggedInAPI, isP, dislikeReplyById)
+replyRoutes.patch('/:id/like', isLoggedInAPI, isP, likeReplyById)
+replyRoutes.patch('/:id/dislike', isLoggedInAPI, isP, dislikeReplyById)
 // replyRoutes.get('/:userId', getOthersById)
 
 // likes/dislikes check repeat

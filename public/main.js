@@ -917,3 +917,8 @@ function setPostsOfUser(posts) {
         mobileVision.appendChild(forMobileVision);
     };
 }
+
+let followingPosts = document.querySelector(".fa-bell")
+followingPosts.addEventListener('click', async (e) => {
+    console.log("followingPosts")
+})
