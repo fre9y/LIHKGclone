@@ -110,7 +110,7 @@ window.addEventListener('load', async () => {
     }
 
     const hash = window.location.hash
-    if (hash){
+    if (hash) {
         const elem = document.querySelector(hash)
         console.log(elem)
         elem.scrollIntoView(true)
@@ -131,7 +131,7 @@ async function setTabButtons(stationId) {
             button.classList.remove("active");
         }
     }
-    
+
     active(document.querySelectorAll(".second_row_div .newest_btn"));
     inactive(document.querySelectorAll(".second_row_div .hit_btn"));
 
@@ -150,7 +150,7 @@ async function setTabButtons(stationId) {
         clone.addEventListener("click", () => {
             inactive(document.querySelectorAll(".second_row_div .newest_btn"));
             active(document.querySelectorAll(".second_row_div .hit_btn"));
-            
+
             goToHitStation(stationId);
         });
         button.parentNode.replaceChild(clone, button);
@@ -165,11 +165,13 @@ for (let i = 0; i < addAElem.length; i++) {
 
     addAElem[i].addEventListener('click', async (e) => {
         e.preventDefault();
+        document.querySelector(".replies_container_template").innerHTML = "";
         window.history.pushState({}, '', '/stations/' + stationID);
 
-        document.querySelector(".post_template").innerHTML = "";
+        // document.querySelector(".post_template").innerHTML = "";
         goToStation(stationID);
         setTabButtons(stationID);
+        document.querySelector('.home_page_cover').classList.remove('d-none');
     })
 };
 
@@ -190,12 +192,14 @@ async function goToStation(stationId) {
         document.querySelector('.station_name').innerText = stations[0].name;
     }
 
-    await goToPost(postId, page);
-    starClick(postId); //favourite post (C+D)
-    //sharePostClick(postId); //not using
+    if (postId) {
+        await goToPost(postId, page);
+        starClick(postId); //favourite post (C+D)
+        //sharePostClick(postId); //not using
+    }
     // getStationsPost
     setPostsOfStation(stations[0], posts);
-
+    document.querySelector('.post_div').classList.add('d-none');
 }
 
 //toHitStations && createPost
@@ -229,8 +233,8 @@ function setPostsOfStation(station, posts) {
     const template = document.querySelector(".post_template");
     const mobileVision = document.querySelector(".mobile_vision");
     const postTemplateNode = document.querySelector(".post_template_sample .post");
+    template.innerHTML = "";
 
-    // template.innerHTML = "";
     for (let child of mobileVision.querySelectorAll(".post")) {
         mobileVision.removeChild(child);
     }
@@ -249,6 +253,7 @@ function setPostsOfStation(station, posts) {
                 history.pushState({}, '', '?' + urlParams.toString());
                 goToPost(id, 1);
                 showPostContainer();
+                document.querySelector('.home_page_cover').classList.add('d-none');
             });
         };
 
@@ -342,16 +347,17 @@ function setPostsOfStation(station, posts) {
 }
 
 async function goToPost(postId, currentPage) {
-    const pageSize = 25;
-    const res = await fetch(`/post/${postId}/replies/pages/${currentPage}`);
-    const { replies, repliesTotal, posts ,repliesImage } = await res.json();
-    const pageCount = Math.ceil(repliesTotal / pageSize);
+        const pageSize = 25;
+        const res = await fetch(`/post/${postId}/replies/pages/${currentPage}`);
+        const { replies, repliesTotal, posts, repliesImage } = await res.json();
+        const pageCount = Math.ceil(repliesTotal / pageSize);
 
-    document.querySelector('.img_container').innerHTML = " ";
-    document.querySelector(".total_img").innerText = "0";
-    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage, repliesImage);
-    setPageDropdown(postId, pageCount, currentPage);
-}
+        document.querySelector('.img_container').innerHTML = " ";
+        document.querySelector(".total_img").innerText = "0";
+        await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage, repliesImage);
+        setPageDropdown(postId, pageCount, currentPage);
+    }
+
 
 function getPageName(pageNumber) {
     return `第${pageNumber}頁`;
@@ -433,9 +439,8 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
     const replyTemplate = document.querySelector(".replies_container_template");
     const reply = document.querySelector(".replies_container_template_sample .reply");
     const createImgEle = document.querySelector('.img_container');
-
+    
     replyTemplate.innerHTML = "";
-    document.querySelector('.post_div').classList.add('d-none');
     const totalImg = document.querySelector(".total_img");
     const imageTotal = [];
 
@@ -490,7 +495,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
             })
             tgButton.addEventListener('click', () => {
                 console.log('click_tg');
-                window.location =`tg://msg_url?url=${replyClone.querySelector(".share-url").innerText}&text=${replyClone.querySelector(".post-title").innerText}${replyClone.querySelector(".constant-text").innerText}`
+                window.location = `tg://msg_url?url=${replyClone.querySelector(".share-url").innerText}&text=${replyClone.querySelector(".post-title").innerText}${replyClone.querySelector(".constant-text").innerText}`
             })
         }
         shareReplyClick();
@@ -826,7 +831,7 @@ function setPostsOfUser(posts) {
     }
 
     for (let post of posts) {
-        const {  nickname, updated_at, likes, number_of_replies, post_title, station_name, user_is_male, post_id } = post;
+        const { nickname, updated_at, likes, number_of_replies, post_title, station_name, user_is_male, post_id } = post;
         const pageCount = Math.ceil(number_of_replies / pageSize);
         const postClone = postTemplateNode.cloneNode(true);
         const pageSelectElement = postClone.querySelector("select");

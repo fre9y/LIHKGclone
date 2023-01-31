@@ -10,6 +10,27 @@
     border-bottom: 1px solid #3b3a39;
 }
 
+.home_page_cover_container {
+    width: 500px;
+    height: 500px;
+    border: 1px solid white;
+}
+
+.home_page_cover .first_row {
+    margin: 15px 0;
+    font-size: 25px;
+    /* border: 1px solid white; */
+}
+
+.home_page_cover .first_row, 
+
+/* .home_page_cover .first_row, 
+.home_page_cover .second_row, 
+.home_page_cover .third_row , 
+.home_page_cover .fourth_row {
+    
+} */
+
 .post_first_row {
     height: 50px;
 }
