@@ -970,8 +970,24 @@ followingPosts.addEventListener('click', async (e) => {
     console.log("followingPosts")
     document.querySelector('.station_name').innerText = "追蹤中";
 
-    console.log('926')
     let res = await fetch(`/posts/following`, {
+        method: 'GET'
+    })
+    let data = await res.json()
+    let posts = data.data
+
+    setPostsOfUser(posts)
+
+    document.querySelector('.second_row_btn').classList.add("d-none")
+
+})
+
+let favPosts = document.querySelector(".fa-gamepad")
+favPosts.addEventListener('click', async (e) => {
+
+    document.querySelector('.station_name').innerText = "名已留";
+
+    let res = await fetch(`/posts/fav`, {
         method: 'GET'
     })
     let data = await res.json()
