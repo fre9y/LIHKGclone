@@ -530,28 +530,36 @@ function setRepliesOfPage(title, replies, pageSize, currentPage, postId) {
 
         // Story Mode
         replyClone.classList.add(`user${userID}`)
-        const storyModeButton = replyClone.querySelector('.block_replies_btn')
-        let storyModeToggle = false
-        storyModeButton.addEventListener('click', () => {
-            storyModeToggle = !storyModeToggle
-            console.log(storyModeToggle)
-            if (storyModeToggle === true) {
+        const storyModeButtonOn = replyClone.querySelector('.fa-eye')
+        const storyModeButtonOff = replyClone.querySelector('.fa-eye-slash')
+        storyModeButtonOn.addEventListener('click', () => {
                 console.log('StoryMode')
-                replyClone.querySelector('.fa-eye-slash').classList.remove("d-none");
-                replyClone.querySelector('.fa-eye').classList.add("d-none");
+                let eyes = document.querySelectorAll(".fa-eye")
+                let eyeSlashes = document.querySelectorAll(".fa-eye-slash")
+                for (let eye of eyes){
+                    eye.classList.add("d-none")
+                }
+                for (let eyeSlash of eyeSlashes){
+                    eyeSlash.classList.remove("d-none")
+                }
                 storyMode(userID)
-            } else {
+        })
+
+        storyModeButtonOff.addEventListener('click', () => {
                 console.log('NormalMode')
-                replyClone.querySelector('.fa-eye').classList.remove("d-none");
-                replyClone.querySelector('.fa-eye-slash').classList.add("d-none");
+                let eyes = document.querySelectorAll(".fa-eye")
+                let eyeSlashes = document.querySelectorAll(".fa-eye-slash")
+                for (let eye of eyes){
+                    eye.classList.remove("d-none")
+                }
+                for (let eyeSlash of eyeSlashes){
+                    eyeSlash.classList.add("d-none")
+                }
                 let replyBoxes = document.querySelectorAll(".reply")
                 for (let reply of replyBoxes){
                         reply.classList.remove("d-none")
                 }
-                let urlParams = new URLSearchParams(window.location.search);
-                const postId = urlParams.get('postId');
-                goToPost(postId, 1)
-            }
+
         })
 
         userDetail.addEventListener('click', () => {
