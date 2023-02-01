@@ -198,7 +198,8 @@ app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
   let postID = req.params.id;
   let currentPage = +req.params.currentPage;
   if (!Number.isFinite(currentPage) || currentPage <= 0) {
-    return res.status(400).end();
+     res.status(400).end();
+     return
   }
 
   const repliesDetail = await client.query(
@@ -241,14 +242,14 @@ app.get('/post/:id/replies/pages/:currentPage', async (req, res) => {
   const repliesTotal =  replyCount.rows[0].count;
 
   console.table(repliesDetail.rows)
-  return res.json({
+   res.json({
     replies: repliesDetail.rows,
     posts: postDetail.rows,
     repliesImage: repliesImage.rows,
     pages: page,
     repliesTotal: repliesTotal
   })
-
+  return
 })
 
 //image
