@@ -372,81 +372,81 @@
         </div>
 
         <!-- post_replies -->
-        <div class="post-container_template position-relative bg-black d-md-block col-12 col-md-7 col-xl-8 d-flex flex-column">
-            <div class="post_bar position-absolute top-0 end-0 start-0">
-                <div class="post_div">
-                    <div class="post_first_row col-12 d-flex justify-content-between">
-                        <div class="d-flex flex-nowrap">
-                            <button class="previous_page_btn">
-                                <a href="#"><i class="fa-solid fa-arrow-left"></i></a>
-                            </button>
-                            <div class="post_title d-flex align-items-center color_yellow" id="replyPostTitle"></div>
-                        </div>
-
-                        <div class="d-flex flex-nowrap col-3 d-flex justify-content-end">
-                            <div class="fav_btn">
-                                <button class="star">
-                                    <i class="fa-solid fa-star"></i>
-                                </button>
-                            </div>
-
-                            <div class="reply_btn">
-                                <button>
-                                    <i class="fa-solid fa-reply"></i>
-                                </button>
-                            </div>
-
-                            <div class="like_btn">
-                                <button>
-                                    <i class="fa-solid fa-thumbs-up"></i>
-                                </button>
-                            </div>
-
-                            <div class="dislike_btn">
-                                <button>
-                                    <i class="fa-solid fa-thumbs-down"></i>
-                                </button>
-                            </div>
-
-                            <div class="img_btn">
-                                <button class="imgBtn">
-                                    <i class="fa-solid fa-images"></i>
-                                </button>
-                            </div>
-
-                            <div class="share">
-                                <button>
-                                    <i class="fa-solid fa-share-nodes"></i>
-                                </button>
-                            </div>
-                        </div>
+        <div
+            class="post-container_template position-relative bg-black d-md-block col-12 col-md-7 col-xl-8 d-flex flex-column">
+            <div class="post_bar position-sticky top-0 start-0 end-0">
+                <div class="post_first_row ol-12 d-flex justify-content-between">
+                    <div class="d-flex flex-nowrap">
+                        <button class="previous_page_btn">
+                            <a href="#"><i class="fa-solid fa-arrow-left"></i></a>
+                        </button>
+                        <div class="post_title d-flex align-items-center color_yellow" id="replyPostTitle"></div>
                     </div>
 
-                    <div class="post_replies">
-                        <div class="post_page d-flex justify-content-around align-items-center">
-                            <div class="previous_page_btn">
-                                <button>上一頁</button>
-                            </div>
+                    <div class="d-flex flex-nowrap col-3 d-flex justify-content-end">
+                        <div class="fav_btn">
+                            <button class="star">
+                                <i class="fa-solid fa-star"></i>
+                            </button>
+                        </div>
 
-                            <div class="current_page_btn sticky-top">
-                                <button class="position-absolute">
-                                    <span style="letter-spacing: 5px;">第<span class="post_pages d-inline">1</span>頁 <i
-                                            class="fa-solid fa-angle-down d-inline"></i></span>
-                                </button>
+                        <div class="reply_btn">
+                            <button>
+                                <i class="fa-solid fa-reply"></i>
+                            </button>
+                        </div>
 
-                                <div class="position-relative ps-2">
-                                    <select id="replies_select">
-                                    </select>
-                                </div>
-                            </div>
+                        <div class="like_btn">
+                            <button>
+                                <i class="fa-solid fa-thumbs-up"></i>
+                            </button>
+                        </div>
 
-                            <div class="next_page_btn">
-                                <button>下一頁</button>
-                            </div>
+                        <div class="dislike_btn">
+                            <button>
+                                <i class="fa-solid fa-thumbs-down"></i>
+                            </button>
+                        </div>
+
+                        <div class="img_btn">
+                            <button class="imgBtn">
+                                <i class="fa-solid fa-images"></i>
+                            </button>
+                        </div>
+
+                        <div class="share">
+                            <button>
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="post_replies">
+                <div class="post_page d-flex justify-content-around align-items-center">
+                    <div class="previous_page_btn">
+                        <button>上一頁</button>
+                    </div>
+
+                    <div class="current_page_btn sticky-top">
+                        <button class="position-absolute">
+                            <span style="letter-spacing: 5px;">第<span class="post_pages d-inline">1</span>頁 <i
+                                    class="fa-solid fa-angle-down d-inline"></i></span>
+                        </button>
+
+                        <div class="position-relative ps-2">
+                            <select id="replies_select">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="next_page_btn">
+                        <button>下一頁</button>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="replies_container_template">
             </div>
@@ -777,7 +777,7 @@
             <div
                 class="userDetail d-none position-fixed top-0 end-0 bottom-0 start-0 d-flex align-items-center justify-content-center">
                 <div class="userDetail_content">
-                    <div class="d-flex justify-content-between px-3 py-3">
+                    <div class="first_row d-flex justify-content-between px-3 py-3">
                         <div>會員資料</div>
 
                         <div class="leave_userDetail_btn">
@@ -785,14 +785,16 @@
                         </div>
                     </div>
 
-                    <div class="userDetail_nickname d-flex align-items-center justify-content-center px-3 py-3">
-                        user_nickname
+                    <div class="second_row">
+                        <div class="userDetail_nickname d-flex align-items-center justify-content-center px-3 py-3">
+                            user_nickname
+                        </div>
+
+                        <div class="userDetail_id d-flex align-items-center justify-content-center px-3 py-3">#id
+                        </div>
                     </div>
 
-                    <div class="userDetail_id d-flex align-items-center justify-content-center px-3 py-3">#id
-                    </div>
-
-                    <div class="d-flex align-items-center justify-content-between px-3 py-3">
+                    <div class="d-flex align-items-center justify-content-between px-3 py-2">
                         <!-- <div>
                             <button>起底</button>
                         </div>
