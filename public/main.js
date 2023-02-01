@@ -246,6 +246,8 @@ async function goToStation(stationId) {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     const page = urlParams.get('page') || 1;
+    
+    document.querySelector('.second_row_btn').classList.remove("d-none")
 
     console.log((window.location.href)); // current url
     //console.log(stations[0].id); //stationID
@@ -303,7 +305,7 @@ function setPostsOfStation(station, posts) {
     }
 
     for (let post of posts) {
-        const { id, nickname, is_male, updated_at, likes, post_title, number_of_replies } = post;
+        const { id, nickname, is_male, is_p, updated_at, likes, post_title, number_of_replies } = post;
         const pageCount = Math.ceil(number_of_replies / pageSize);
         const postClone = postTemplateNode.cloneNode(true);
         const pageSelectElement = postClone.querySelector("select");
@@ -346,6 +348,14 @@ function setPostsOfStation(station, posts) {
             postHost.style.color = "#34aadc";
         } else {
             postHost.style.color = "red";
+        }
+
+        // isP
+        let isP = postClone.querySelector('.isP');
+        if (is_p === true){
+            isP.classList.remove("d-none")
+        } else {
+            isP.classList.add("d-none")
         }
 
         //post-created-time
@@ -895,7 +905,7 @@ function setPostsOfUser(posts) {
     }
 
     for (let post of posts) {
-        const { nickname, updated_at, likes, number_of_replies, post_title, station_name, user_is_male, post_id } = post;
+        const { nickname, is_p, updated_at, likes, number_of_replies, post_title, station_name, user_is_male, post_id } = post;
         const pageCount = Math.ceil(number_of_replies / pageSize);
         const postClone = postTemplateNode.cloneNode(true);
         const pageSelectElement = postClone.querySelector("select");
@@ -937,6 +947,13 @@ function setPostsOfUser(posts) {
             postHost.style.color = "#34aadc";
         } else {
             postHost.style.color = "red";
+        }
+
+        let isP = postClone.querySelector('.isP');
+        if (is_p === true){
+            isP.classList.remove("d-none")
+        } else {
+            isP.classList.add("d-none")
         }
 
         //post-created-time

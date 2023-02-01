@@ -103,6 +103,9 @@ app.get("/stations/:id/posts", async (req, res) => {
             (select is_male
             from users 
             where users.id = posts.user_id) as is_male, 
+            (select is_p
+            from users 
+            where users.id = posts.user_id) as is_p, 
             (select max(updated_at)
             from replies
             where posts.id = replies.post_id) as updated_at, 
@@ -153,6 +156,9 @@ app.get('/stations/:id/hit-posts', async (req, res) => {
               (select is_male
               from users 
               where users.id = posts.user_id) as is_male, 
+              (select is_p
+              from users 
+              where users.id = posts.user_id) as is_p, 
               (select max(updated_at)
               from replies
               where posts.id = replies.post_id) as updated_at, 
