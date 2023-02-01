@@ -604,7 +604,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
         let doxxButton = replyClone.querySelector('.doxx');
         doxxButton.addEventListener('click', () => {
             console.log('click_doxx');
-            doxxUser(userID)
+            doxxUser(userID,replies[r].nickname)
             userDetailContent.classList.add("d-none");
             // window.location = `/user/profile/${userID}`;
         });
@@ -895,18 +895,21 @@ function storyMode(userID) {
     }
 }
 
-export async function doxxUser(userId) {
+export async function doxxUser(userId,nickname) {
     let res = await fetch(`/posts/${userId}/Users`, {
         method: 'GET'
     })
     let data = await res.json()
     let posts = data.data
-
-    document.querySelector('.station_name').innerText = posts[0].nickname;
-
-    setPostsOfUser(posts)
-
-    document.querySelector('.second_row_btn').classList.add("d-none")
+    console.log(posts);
+    if (posts){
+        document.querySelector('.station_name').innerText = nickname;
+        setPostsOfUser(posts)
+        document.querySelector('.second_row_btn').classList.add("d-none")
+        
+    } else {
+        document.querySelector('.station_name').innerText = nickname
+    }
 
 }
 
