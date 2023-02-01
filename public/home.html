@@ -384,7 +384,7 @@
         <div
             class="post-container_template position-relative bg-black d-md-block col-12 col-md-7 col-xl-8 d-flex flex-column">
             <div class="post_bar position-sticky top-0 start-0 end-0">
-                <div class="post_first_row ol-12 d-flex justify-content-between">
+                <div class="post_first_row ol-12 d-flex justify-content-between d-none">
                     <div class="d-flex flex-nowrap">
                         <button class="previous_page_btn">
                             <a href="#"><i class="fa-solid fa-arrow-left"></i></a>
@@ -432,7 +432,7 @@
                 </div>
             </div>
 
-            <div class="post_replies">
+            <div class="post_replies d-none">
                 <div class="post_page d-flex justify-content-around align-items-center">
                     <div class="previous_page_btn">
                         <button>上一頁</button>
@@ -460,7 +460,7 @@
             <div class="replies_container_template">
             </div>
 
-            <div class="home_page_cover d-none">
+            <div class="home_page_cover">
                 <div class="home_page_cover_container">
                     <div class="first_row d-flex justify-content-start">
                         <div class="pe-3">
@@ -819,6 +819,16 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!--block alert-->
+    <div class="block_list position-absolute d-none d-flex justify-content-center align-items-center">
+        <div class="block_list_content">封鎖左！</div>
+    </div>
+
+    <!--follow alert-->
+    <div class="follow_alert position-absolute d-none d-flex justify-content-center align-items-center">
+        <div class="follow_alert_content">追蹤左！</div>
     </div>
 
     <!--user profile-->

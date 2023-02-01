@@ -521,6 +521,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
     const reply = document.querySelector(".replies_container_template_sample .reply");
     const createImgEle = document.querySelector('.img_container');
 
+    document.querySelector('.home_page_cover').classList.add('d-none');
     replyTemplate.innerHTML = "";
     const totalImg = document.querySelector(".total_img");
     const imageTotal = [];
@@ -617,6 +618,9 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
                 replyClone.querySelector('.block').innerText = '解除封鎖'
                 console.log(replyClone.querySelector('.block').innerText);
                 blockUser(userID);
+                const alert = document.querySelector('.block_list');
+                alert.classList.remove('d-none');
+                setTimeout(function() { alert.classList.add('d-none') }, 5000);
             } else {
                 replyClone.querySelector('.block').innerText = '封鎖'
                 console.log(replyClone.querySelector('.block').innerText);
@@ -633,6 +637,9 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
                 replyClone.querySelector('.follow').innerText = '取消追蹤'
                 console.log(replyClone.querySelector('.follow').innerText);
                 addFollowingUser(userID);
+                const alert = document.querySelector('.follow_alert');
+                alert.classList.remove('d-none');
+                setTimeout(function() { alert.classList.add('d-none') }, 5000);
             } else {
                 replyClone.querySelector('.follow').innerText = '追蹤'
                 console.log(replyClone.querySelector('.follow').innerText);
@@ -813,7 +820,7 @@ let createPostSubmit = document.querySelector('.createPostSubmit')
 
 createPostSubmit.addEventListener('click', async (e) => {
     e.preventDefault()
-    let createPostForm = document.querySelector('.createPostForm')
+    let createPostForm = document.querySelector('.createPostForm');
 
     if((createPostForm.content.value === '') && (createPostForm.image.value === '')){
         alert("No Content")
@@ -882,6 +889,7 @@ let newReplyFormElm = document.querySelector('.createReplyForm')
 
 newReplyFormElm.addEventListener('submit', async (e) => {
     e.preventDefault()
+    // document.querySelector('.home_page_cover').classList.add('d-none');
     let formData = new FormData(newReplyFormElm)
     if ((newReplyFormElm.replyContent.value === '') && (newReplyFormElm.image.value === '')) {
         alert("No Content")
