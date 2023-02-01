@@ -886,11 +886,12 @@ export async function doxxUser(userId) {
     let data = await res.json()
     let posts = data.data
 
-    document.querySelector('.station_name').innerText = posts[0].nickname;
-
-    setPostsOfUser(posts)
-
-    document.querySelector('.second_row_btn').classList.add("d-none")
+    if (posts){
+        document.querySelector('.station_name').innerText = posts[0].nickname;
+        setPostsOfUser(posts)
+        document.querySelector('.second_row_btn').classList.add("d-none")
+        
+    }
 
 }
 
