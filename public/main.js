@@ -101,7 +101,7 @@ async function showBlockedList() {
 //star
 function starClick(postId) {
     if (postId) {
-        let starButton = document.querySelector(".fa-star")
+        let starButton = document.querySelector(".star")
         let favButton = document.querySelector(".fav_btn")
         let starToggle = false;
         starButton.style.color = "rgb(255,255,255)"
@@ -253,6 +253,7 @@ async function goToStation(stationId) {
     //console.log(stations[0].id); //stationID
     //console.log(postId);// postID
     hidePostContainer();
+    console.log(stations)
     if (stations.length > 0) {
         document.querySelector('.station_name').innerText = stations[0].name;
     }
@@ -264,7 +265,8 @@ async function goToStation(stationId) {
     }
     // getStationsPost
     setPostsOfStation(stations[0], posts);
-    document.querySelector('.post_div').classList.add('d-none');
+    document.querySelector('.post_replies').classList.add('d-none');
+    document.querySelector('.post_first_row').classList.add('d-none');
 }
 
 //toHitStations && createPost
@@ -539,7 +541,8 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
         nicknameElement.innerText = replies[r].nickname;
         likeElement.innerText = replies[r].likes;
         dislikeElement.innerHTML = replies[r].dislikes;
-        document.querySelector('.post_div').classList.remove('d-none');
+        document.querySelector('.post_replies').classList.remove('d-none');
+        document.querySelector('.post_first_row').classList.remove('d-none');
         postTitleForReply.innerText = title;
 
         function shareReplyClick() {
@@ -752,7 +755,9 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
 const refreshBtns = document.querySelectorAll('.refresh_btn');
 for (let refreshBtn of refreshBtns) {
     refreshBtn.addEventListener('click', () => {
-        location.reload();
+        //location.reload();
+        let currentURL = window.location.href.split('?')[0]
+        location.href = currentURL
     })
 }
 
@@ -1043,7 +1048,7 @@ function setPostsOfUser(posts) {
     };
 }
 
-let followingPosts = document.querySelector(".fa-bell")
+let followingPosts = document.querySelector(".follow_btn")
 followingPosts.addEventListener('click', async (e) => {
     console.log("followingPosts")
     document.querySelector('.station_name').innerText = "追蹤中";
@@ -1068,7 +1073,7 @@ followingPosts.addEventListener('click', async (e) => {
 
 })
 
-let favPosts = document.querySelector(".fa-gamepad")
+let favPosts = document.querySelector(".favourite_btn")
 favPosts.addEventListener('click', async (e) => {
     console.log("favPosts")
     document.querySelector('.station_name').innerText = "名已留";

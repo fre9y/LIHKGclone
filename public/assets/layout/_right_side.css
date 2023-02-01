@@ -8,6 +8,7 @@
     height: 50px;
     background-color: #222222;
     border-bottom: 1px solid #3b3a39;
+    z-index: 10070;
 }
 
 .home_page_cover {
@@ -37,7 +38,7 @@
 }
 
 .post_first_row {
-    height: 50px;
+    background-color: #222222;
 }
 
 .post_first_row button {
@@ -58,10 +59,6 @@
 }
 
 /* post_replies */
-.replies_container_template {
-    margin-top: 120px;
-}
-
 .post_page {
     height: 70px;
     background-color: black;
@@ -94,6 +91,10 @@
     background-color: #222222;
 }
 
+.user_nickname>button {
+    border: none !important;
+}
+
 .reply_like_section {
     height: 30px;
     width: 110px;
@@ -117,7 +118,17 @@
 .userDetail_content {
     width: 600px;
     border-radius: 5px;
-    background-color: #454545;
+    background-color: #222222;
+}
+
+.userDetail_content .first_row {
+
+    border-bottom: 1px solid #3b3a39;
+}
+
+.userDetail_content .second_row {
+    background-color: #292827;
+    border-bottom: 1px solid #3b3a39;
 }
 
 /* CreatePost */
