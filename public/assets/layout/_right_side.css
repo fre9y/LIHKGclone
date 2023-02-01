@@ -142,6 +142,31 @@
     background-color: transparent;
 }
 
+/* block alert */
+.block_list {
+    top: 20px;
+    right: 20px;
+    color: white;
+    width: 200px;
+    height: 100px;
+    background-color: #222222;
+    border: 1px solid #3b3a39;
+    border-radius: 15px;
+    z-index: 18881;
+}
+
+.follow_alert {
+    top: 20px;
+    right: 20px;
+    color: white;
+    width: 200px;
+    height: 100px;
+    background-color: #222222;
+    border: 1px solid #3b3a39;
+    border-radius: 15px;
+    z-index: 18881;
+}
+
 /* CreatePost */
 .createPostForm {
     background-color: #454545;
