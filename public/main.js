@@ -580,6 +580,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
                 console.log('click_tg');
                 window.location = `tg://msg_url?url=${replyClone.querySelector(".share-url").innerText}&text=${replyClone.querySelector(".post-title").innerText}${replyClone.querySelector(".constant-text").innerText}`
             })
+            
         }
         shareReplyClick();
 
