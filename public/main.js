@@ -801,7 +801,6 @@ leaveCreatePost.addEventListener('click', () => {
 
 let createPostSubmit = document.querySelector('.createPostSubmit')
 
-<<<<<<< HEAD
 // newPostFormElm.addEventListener('submit', async (e) => {
 //     e.preventDefault()
 //     if(newPostFormElm.postTitle.value === ''){
@@ -812,8 +811,6 @@ let createPostSubmit = document.querySelector('.createPostSubmit')
 
 
 
-=======
->>>>>>> 18b5e5d597c165ee987edcec6c29eb311f1d9c5c
 createPostSubmit.addEventListener('click', async (e) => {
     e.preventDefault()
     let createPostForm = document.querySelector('.createPostForm')
