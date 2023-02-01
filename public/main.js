@@ -870,7 +870,7 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     console.log(result.message)
 
     createReplyContainer.classList.add("d-none");
-    location.reload();
+    // location.reload();
     goToPost(postId, 1)
 
     document.querySelector('.createReplyForm').reset()
