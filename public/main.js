@@ -77,7 +77,7 @@ async function showBlockedList() {
                 
             <button class="unblock_btn" 
             id="unblock${blockedUserId}" 
-            ">O</button> 
+            "><i class="fas fa-trash-alt"></i></button> 
               
             </td>
             `
@@ -88,8 +88,8 @@ async function showBlockedList() {
                 console.log(blockedUser.user_id_being_blocked);
                 console.log('click_unblock-user');
                 unblockUser(blockedUserId)
+                showBlockedList()
             })  
-
 
         }
     } else {
