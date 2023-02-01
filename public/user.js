@@ -47,7 +47,7 @@ export async function loadUserProfileContainer(){
         nicknameUserIdElem.innerText = profile.nickname + " #" +  profile.id + " >"
 
         nicknameUserIdElem.addEventListener('click', async (e) => {
-            doxxUser(profile.id)
+            doxxUser(profile.id, "發送匣")
             document.querySelector('.userProfile').classList.add('d-none');
         })
 

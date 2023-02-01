@@ -101,7 +101,7 @@ async function showBlockedList() {
 //star
 function starClick(postId) {
     if (postId) {
-        let starButton = document.querySelector(".fa-star")
+        let starButton = document.querySelector(".star")
         let favButton = document.querySelector(".fav_btn")
         let starToggle = false;
         starButton.style.color = "rgb(255,255,255)"
@@ -607,7 +607,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
         let doxxButton = replyClone.querySelector('.doxx');
         doxxButton.addEventListener('click', () => {
             console.log('click_doxx');
-            doxxUser(userID)
+            doxxUser(userID,replies[r].nickname)
             userDetailContent.classList.add("d-none");
             // window.location = `/user/profile/${userID}`;
         });
@@ -699,6 +699,11 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
             });
 
             const likeData = await res.json();
+            if(likeData.message === "like success"){
+            } else {
+                alert("Please Login")
+                return
+            }
             if (res.ok) {
                 const latestReplyLike = likeData.latestReplyLike
                 console.log({ latestReplyLike })
@@ -715,6 +720,11 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
             });
 
             const dislikeData = await res.json()
+            if(dislikeData.message === "dislike success"){
+            } else {
+                alert("Please Login")
+                return
+            }
             if (res.ok) {
                 const latestReplyDislike = dislikeData.latestReplyDislike
                 console.log({ latestReplyDislike })
@@ -806,7 +816,7 @@ newPostFormElm.addEventListener('submit', async (e) => {
     if (result.message === "add post success") {
         console.log(result.message)
     } else {
-        alert([result.message])
+        alert(["Please Login"])
         return
     }
     createPostContainer.classList.add("d-none");
@@ -869,7 +879,7 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     if (result.message === "add reply success") {
         console.log(result.message)
     } else {
-        alert([result.message])
+        alert(['Please Login'])
         return
     }
 
@@ -890,18 +900,21 @@ function storyMode(userID) {
     }
 }
 
-export async function doxxUser(userId) {
+export async function doxxUser(userId,nickname) {
     let res = await fetch(`/posts/${userId}/Users`, {
         method: 'GET'
     })
     let data = await res.json()
     let posts = data.data
-
-    document.querySelector('.station_name').innerText = posts[0].nickname;
-
-    setPostsOfUser(posts)
-
-    document.querySelector('.second_row_btn').classList.add("d-none")
+    console.log(posts);
+    if (posts){
+        document.querySelector('.station_name').innerText = nickname;
+        setPostsOfUser(posts)
+        document.querySelector('.second_row_btn').classList.add("d-none")
+        
+    } else {
+        document.querySelector('.station_name').innerText = nickname
+    }
 
 }
 
@@ -1030,7 +1043,7 @@ function setPostsOfUser(posts) {
     };
 }
 
-let followingPosts = document.querySelector(".fa-bell")
+let followingPosts = document.querySelector(".follow_btn")
 followingPosts.addEventListener('click', async (e) => {
     console.log("followingPosts")
     document.querySelector('.station_name').innerText = "追蹤中";
@@ -1055,7 +1068,7 @@ followingPosts.addEventListener('click', async (e) => {
 
 })
 
-let favPosts = document.querySelector(".fa-gamepad")
+let favPosts = document.querySelector(".favourite_btn")
 favPosts.addEventListener('click', async (e) => {
     console.log("favPosts")
     document.querySelector('.station_name').innerText = "名已留";

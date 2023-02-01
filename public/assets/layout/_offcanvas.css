@@ -61,18 +61,22 @@
     background-color: transparent;
 }
 
-.review_btn, .signUp_btn {
+.review_btn, .signUp_btn, .follow_btn, .favourite_btn {
     font-size: 17px;
     border: none;
     background-color: #1e1e1e;
     color: #ccc6c0;
 }
 
-.review_btn i, .signUp_btn i {
+.review_btn i, .signUp_btn i, .follow_btn i, .favourite_btn i {
     padding: 0 8% 0 10%;
 }
 
-.review_btn:hover i,.review_btn:hover a, .signUp_btn:hover i, .signUp_btn:hover a {
+.review_btn:hover i, .review_btn:hover a, .signUp_btn:hover i, .signUp_btn:hover a {
+    color: #fac208;
+}
+
+.follow_btn:hover i, .follow_btn:hover a, .favourite_btn:hover i, .favourite_btn:hover a {
     color: #fac208;
 }
 
