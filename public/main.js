@@ -811,8 +811,19 @@ let createPostSubmit = document.querySelector('.createPostSubmit')
 createPostSubmit.addEventListener('click', async (e) => {
     e.preventDefault()
     let createPostForm = document.querySelector('.createPostForm')
+
+    if(createPostForm.postTitle.value === ''){
+        alert("No Title")
+        return
+    }
+    if((createPostForm.content.value === '') && (createPostForm.image.value === '')){
+        alert("No Content")
+        return
+    }
+
     const newText = createPostForm.content.value.replace(/\r?\n/g, '<br />')
     createPostForm.content.value = newText
+
     let formData = new FormData(createPostForm)
     let res = await fetch('/posts', {
         method: 'POST',
@@ -830,6 +841,7 @@ createPostSubmit.addEventListener('click', async (e) => {
 
     let selectStationId = document.getElementById("selectStation").value
     goToStation(Number(selectStationId))
+    goToPost(Number(result.data), 1)
     document.querySelector('.createPostForm').reset()
 })
 
@@ -871,12 +883,16 @@ let newReplyFormElm = document.querySelector('.createReplyForm')
 
 newReplyFormElm.addEventListener('submit', async (e) => {
     e.preventDefault()
-    let formData = new FormData(newReplyFormElm)
+    
     if((newReplyFormElm.replyContent.value === '') && (newReplyFormElm.image.value === '')){
         alert("No Content")
         return
     }
 
+    const newText = newReplyFormElm.replyContent.value.replace(/\r?\n/g, '<br />')
+    newReplyFormElm.replyContent.value = newText
+
+    let formData = new FormData(newReplyFormElm)
     let urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     formData.append('postId', postId)
@@ -887,6 +903,8 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     })
 
     let result = await res.json()
+
+    console.log(result.message)
     if (result.message === "add reply success") {
         console.log(result.message)
     } else {
