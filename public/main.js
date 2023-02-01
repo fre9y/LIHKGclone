@@ -868,6 +868,11 @@ let newReplyFormElm = document.querySelector('.createReplyForm')
 newReplyFormElm.addEventListener('submit', async (e) => {
     e.preventDefault()
     let formData = new FormData(newReplyFormElm)
+    if((newReplyFormElm.replyContent.value === '') && (newReplyFormElm.image.value === '')){
+        alert("No Content")
+        return
+    }
+
     let urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     formData.append('postId', postId)
