@@ -47,8 +47,11 @@
 
 
 /* second_row /////////////////////////////////////////////////////////////////////////////////*/
-.second_row {
+.second_row_div .second_row {
     overflow-x: hidden;
+    /* height: 93%; */
+    height: 93vh;
+    overflow-y: scroll;
 }
 
 .second_row_btn {
