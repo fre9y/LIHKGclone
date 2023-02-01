@@ -785,13 +785,18 @@ leaveCreatePost.addEventListener('click', () => {
     document.querySelector('.createPostForm').reset()
 })
 
-let newPostFormElm = document.querySelector('.createPostForm')
+let createPostSubmit = document.querySelector('.createPostSubmit')
 
-newPostFormElm.addEventListener('submit', async (e) => {
+
+
+
+
+createPostSubmit.addEventListener('click', async (e) => {
     e.preventDefault()
-
-    let formData = new FormData(newPostFormElm)
-
+    let createPostForm = document.querySelector('.createPostForm')
+    const newText = createPostForm.content.value.replace(/\r?\n/g, '<br />')
+    createPostForm.content.value = newText
+    let formData = new FormData(createPostForm)
     let res = await fetch('/posts', {
         method: 'POST',
         body: formData
@@ -849,7 +854,6 @@ let newReplyFormElm = document.querySelector('.createReplyForm')
 
 newReplyFormElm.addEventListener('submit', async (e) => {
     e.preventDefault()
-
     let formData = new FormData(newReplyFormElm)
     let urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
@@ -899,6 +903,7 @@ export async function doxxUser(userId,nickname) {
         
     } else {
         document.querySelector('.station_name').innerText = nickname
+         document.querySelector('.second_row_btn').classList.add("d-none")
     }
 
 }

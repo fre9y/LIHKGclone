@@ -47,6 +47,9 @@ insert into stations (name) values ('吹水台'),
                                     ('World'),
                                     ('自選台');
 
-update stations set id = 999 where id = 39
 
 
+
+
+
+update stations set id = 39 where id = 999;
