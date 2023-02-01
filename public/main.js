@@ -555,13 +555,6 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
             replyClone.querySelector(".constant-text").innerText = constantText
             replyClone.querySelector(".share-url").innerText = shareURL
 
-            // if (r==5) {
-            //     const hash = window.location.hash
-            //     const elem = replyClone.querySelector(hash)
-            //     console.log(elem)
-            //     elem.scrollIntoView(true)
-
-            // }
             shareButton.addEventListener('click', () => {
                 console.log('click_share');
                 replyClone.querySelector('.share_container').classList.remove('d-none');
