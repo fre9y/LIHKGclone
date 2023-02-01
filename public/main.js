@@ -804,7 +804,10 @@ let newPostFormElm = document.querySelector('.createPostForm')
 
 newPostFormElm.addEventListener('submit', async (e) => {
     e.preventDefault()
-
+    if(newPostFormElm.postTitle.value === ''){
+        alert("Title Cannot Be Empty")
+        return
+    }
     let formData = new FormData(newPostFormElm)
 
     let res = await fetch('/posts', {
@@ -866,6 +869,11 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     e.preventDefault()
 
     let formData = new FormData(newReplyFormElm)
+    if((newReplyFormElm.replyContent.value === '') && (newReplyFormElm.image.value === '')){
+        alert("No Content")
+        return
+    }
+
     let urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     formData.append('postId', postId)
