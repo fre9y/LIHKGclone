@@ -24,10 +24,10 @@ export const isLoggedInAPI = (
 	} else {
 		console.log('isLoggedInAPI not approved');
 
-		res.redirect('/userProfile.html')
-		// res.status(403).json({
-		// 	message: 'Unauthorized'
-		// })
+		// res.redirect('/userProfile.html')
+		res.status(403).json({
+			message: 'Unauthorized'
+		})
 	}
 }
 

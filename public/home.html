@@ -26,7 +26,7 @@
             border-right: 1px solid #3b3a39;
         }
 
-        .post-container {
+        .post-container_template {
             background-color: #151515;
             height: 100vh;
         }
@@ -344,8 +344,8 @@
                     吹水台</div>
 
                 <div class="col-2 d-flex justify-content-end">
-                    <button class="refresh_btn px-3 padding-top"><i class="fa-solid fa-rotate rotate"></i></button>
-                    <button class="create_post_btn px-3 padding-top"><i class="fa-solid fa-plus"></i></button>
+                    <button class="refresh_btn px-3"><i class="fa-solid fa-rotate rotate"></i></button>
+                    <button class="create_post_btn px-3"><i class="fa-solid fa-plus"></i></button>
                 </div>
             </div>
 
@@ -372,8 +372,8 @@
         </div>
 
         <!-- post_replies -->
-        <div class="post-container_template bg-black d-md-block col-12 col-md-7 col-xl-8 d-flex flex-column">
-            <div class="post_bar">
+        <div class="post-container_template position-relative bg-black d-md-block col-12 col-md-7 col-xl-8 d-flex flex-column">
+            <div class="post_bar position-absolute top-0 end-0 start-0">
                 <div class="post_div">
                     <div class="post_first_row col-12 d-flex justify-content-between">
                         <div class="d-flex flex-nowrap">
@@ -451,8 +451,8 @@
             <div class="replies_container_template">
             </div>
 
-            <div class="home_page_cover position-relative">
-                <div class="home_page_cover_container d-flex d-flex flex-column">
+            <div class="home_page_cover">
+                <div class="home_page_cover_container">
                     <div class="first_row d-flex justify-content-start">
                         <div class="pe-3">
                             <img src="/lihkg_icon.svg" width="35px" alt="linkg_icon">
@@ -463,7 +463,7 @@
                     </div>
 
                     <div class="second_row">
-                        <img src="/hot-reply.webp" width="500px" alt="hot-reply">
+                        <img src="/hot-reply.webp" width="550px" alt="hot-reply">
                     </div>
 
                     <div class="third_row">

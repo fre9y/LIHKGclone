@@ -801,7 +801,8 @@ newPostFormElm.addEventListener('submit', async (e) => {
     if (result.message === "add post success") {
         console.log(result.message)
     } else {
-        alert([unauthorized])
+        alert([result.message])
+        return
     }
     createPostContainer.classList.add("d-none");
 
@@ -860,10 +861,15 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     })
 
     let result = await res.json()
-    console.log(result.message)
+    if (result.message === "add reply success") {
+        console.log(result.message)
+    } else {
+        alert([result.message])
+        return
+    }
 
     createReplyContainer.classList.add("d-none");
-    location.reload();
+    // location.reload();
     goToPost(postId, 1)
 
     document.querySelector('.createReplyForm').reset()
@@ -1029,6 +1035,14 @@ followingPosts.addEventListener('click', async (e) => {
         method: 'GET'
     })
     let data = await res.json()
+
+    if (data.message === "Get FollowingPosts success") {
+        console.log(data.message)
+    } else {
+        alert(["Please Login"])
+        return
+    }
+
     let posts = data.data
 
     setPostsOfUser(posts)
@@ -1039,13 +1053,21 @@ followingPosts.addEventListener('click', async (e) => {
 
 let favPosts = document.querySelector(".fa-gamepad")
 favPosts.addEventListener('click', async (e) => {
-
+    console.log("favPosts")
     document.querySelector('.station_name').innerText = "名已留";
 
     let res = await fetch(`/posts/fav`, {
         method: 'GET'
     })
     let data = await res.json()
+
+    if (data.message === "Get FavPosts success") {
+        console.log(data.message)
+    } else {
+        alert(["Please Login"])
+        return
+    }
+
     let posts = data.data
 
     setPostsOfUser(posts)
