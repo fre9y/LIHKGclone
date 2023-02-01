@@ -19,6 +19,7 @@ export async function createPosts(req: express.Request, res: express.Response) {
 		let title = fields.postTitle
         let station = fields.stationId
 		let content = fields.content
+		console.log({content})
         let user = req.session['user'];
 
 		let postResult = await client.query(
@@ -43,6 +44,7 @@ export async function createPosts(req: express.Request, res: express.Response) {
 		}
 
 		res.json({
+			data: postId,
 			message: 'add post success'
 		})
 	} catch (error) {

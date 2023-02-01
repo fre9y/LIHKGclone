@@ -263,7 +263,6 @@ async function goToStation(stationId) {
     if (postId) {
         await goToPost(postId, page);
         starClick(postId); //favourite post (C+D)
-        //sharePostClick(postId); //not using
     }
     // getStationsPost
     setPostsOfStation(stations[0], posts);
@@ -285,7 +284,6 @@ async function goToHitStation(stationId) {
 
     await goToPost(postId, page);
     starClick(postId); //favourite post (C+D)
-    //sharePostClick(postId); //not using
     // getStationsPost
     setPostsOfStation(stations[0], hitStation);
 
@@ -801,16 +799,23 @@ leaveCreatePost.addEventListener('click', () => {
     document.querySelector('.createPostForm').reset()
 })
 
-let newPostFormElm = document.querySelector('.createPostForm')
+let createPostSubmit = document.querySelector('.createPostSubmit')
 
-newPostFormElm.addEventListener('submit', async (e) => {
+// newPostFormElm.addEventListener('submit', async (e) => {
+//     e.preventDefault()
+//     if(newPostFormElm.postTitle.value === ''){
+//         alert("Title Cannot Be Empty")
+//         return
+//     }
+//     let formData = new FormData(newPostFormElm)})
+
+
+createPostSubmit.addEventListener('click', async (e) => {
     e.preventDefault()
-    if (newPostFormElm.postTitle.value === '') {
-        alert("Title Cannot Be Empty")
-        return
-    }
-    let formData = new FormData(newPostFormElm)
-
+    let createPostForm = document.querySelector('.createPostForm')
+    const newText = createPostForm.content.value.replace(/\r?\n/g, '<br />')
+    createPostForm.content.value = newText
+    let formData = new FormData(createPostForm)
     let res = await fetch('/posts', {
         method: 'POST',
         body: formData
@@ -827,6 +832,7 @@ newPostFormElm.addEventListener('submit', async (e) => {
 
     let selectStationId = document.getElementById("selectStation").value
     goToStation(Number(selectStationId))
+    goToPost(Number(result.data), 1)
     document.querySelector('.createPostForm').reset()
 })
 
@@ -868,7 +874,6 @@ let newReplyFormElm = document.querySelector('.createReplyForm')
 
 newReplyFormElm.addEventListener('submit', async (e) => {
     e.preventDefault()
-
     let formData = new FormData(newReplyFormElm)
     if ((newReplyFormElm.replyContent.value === '') && (newReplyFormElm.image.value === '')) {
         alert("No Content")
@@ -916,13 +921,14 @@ export async function doxxUser(userId, nickname) {
     let data = await res.json()
     let posts = data.data
     console.log(posts);
-    if (posts) {
+    if (posts){
         document.querySelector('.station_name').innerText = nickname;
         setPostsOfUser(posts)
         document.querySelector('.second_row_btn').classList.add("d-none")
 
     } else {
         document.querySelector('.station_name').innerText = nickname
+         document.querySelector('.second_row_btn').classList.add("d-none")
     }
 
 }
