@@ -101,7 +101,7 @@ async function showBlockedList() {
 //star
 function starClick(postId) {
     if (postId) {
-        let starButton = document.querySelector(".fa-star")
+        let starButton = document.querySelector(".star")
         let favButton = document.querySelector(".fav_btn")
         let starToggle = false;
         starButton.style.color = "rgb(255,255,255)"
