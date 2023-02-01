@@ -20,7 +20,7 @@ async function loadProfile() {
         if (!profile.is_admin && profile.show) {
             let profileElem = document.querySelector(".profile")
             profileElem.innerHTML = /*html */ `
-            <table col-6>
+            <table>
                 <tr>
                     <div class= "profile" >
                         <th name = id class = "id">ID</th>
@@ -40,7 +40,7 @@ async function loadProfile() {
                         <th class = "date">${profile.created_at}</th>
                     </div>
                 </tr>   
-            </table>    
+            </table>
                 `
             }
         else if (profile.is_admin && profile.show) {
