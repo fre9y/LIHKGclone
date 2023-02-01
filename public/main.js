@@ -826,6 +826,7 @@ createPostSubmit.addEventListener('click', async (e) => {
 
     let selectStationId = document.getElementById("selectStation").value
     goToStation(Number(selectStationId))
+    goToPost(Number(result.data), 1)
     document.querySelector('.createPostForm').reset()
 })
 

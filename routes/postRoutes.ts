@@ -44,6 +44,7 @@ export async function createPosts(req: express.Request, res: express.Response) {
 		}
 
 		res.json({
+			data: postId,
 			message: 'add post success'
 		})
 	} catch (error) {
