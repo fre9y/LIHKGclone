@@ -804,6 +804,10 @@ createPostSubmit.addEventListener('click', async (e) => {
     e.preventDefault()
     let createPostForm = document.querySelector('.createPostForm')
 
+    if(createPostForm.postTitle.value === ''){
+        alert("No Title")
+        return
+    }
     if((createPostForm.content.value === '') && (createPostForm.image.value === '')){
         alert("No Content")
         return
@@ -887,6 +891,8 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     })
 
     let result = await res.json()
+
+    console.log(result.message)
     if (result.message === "add reply success") {
         console.log(result.message)
     } else {
