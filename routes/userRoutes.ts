@@ -96,7 +96,7 @@ export async function userUpdateSelf(
         console.log("BODY|",req.body);
         //console.log(res)
         let user = req.session['user'];
-        console.log("SESSION|",user);
+        // console.log("SESSION|",user);
         //        console.log(user.id);
         const updatedUser = await client.query(
             `UPDATE users SET nickname = $1, is_male = $2 WHERE id = $3 RETURNING *`,
@@ -172,7 +172,7 @@ async function userGetBlockedUsers(
     ){
     try {
         let user = req.session['user'];
-        console.log("SESSION|",user);
+        // console.log("SESSION|",user);
         const blockedUsers = await client.query(
             `SELECT * FROM user_blacklists join users on user_blacklists.user_id_being_blocked = users.id 
             WHERE user_blacklists.user_id_block_others = $1`,
@@ -198,7 +198,7 @@ async function userBlockOthers(
     try {
         console.log("BODY|",req.body);
         let user = req.session['user'];
-        console.log("SESSION|",user);
+        // console.log("SESSION|",user);
         const updatedBlockUsers = await client.query(
             `INSERT INTO user_blacklists (user_id_block_others, user_id_being_blocked) VALUES ($1,$2) RETURNING *`,
             [user.id,req.body.id]
@@ -221,7 +221,7 @@ async function userUnblockOthers(
     try {
         console.log("BODY|",req.body);
         let user = req.session['user'];
-        console.log("SESSION|",user);
+        // console.log("SESSION|",user);
         const updatedUnblockUsers = await client.query(
             `DELETE FROM user_blacklists WHERE user_id_block_others = $1 AND user_id_being_blocked = $2 RETURNING *`,
             [user.id,req.body.id]
@@ -246,18 +246,22 @@ async function userBookmarkPosts(
     try {
         console.log("BODY|",req.body);
         let user = req.session['user'];
-        console.log("SESSION|",user);
+        // console.log("SESSION|",user);
         const updatedBookmarkPost = await client.query(
             `INSERT INTO favourite_posts (user_id, post_id) VALUES ($1,$2) RETURNING *`,
             [user.id,req.body.id]
         );
         console.log(updatedBookmarkPost.rows[0]);
-
+        res.json({
+            bookmark: updatedBookmarkPost.rows[0]
+        })
+        return
         } catch (error) {
             console.log("ERR0R",error);
             res.status(500).json({
             message: '[USER00? - SERVER ERROR]'
         })
+        return
     }
 }
     
@@ -269,7 +273,7 @@ async function userDeleteBookmarkPosts(
     try {
         console.log("BODY|",req.body);
         let user = req.session['user'];
-        console.log("SESSION|",user);
+        // console.log("SESSION|",user);
         const updatedDeleteBookmarkPost = await client.query(
             `DELETE FROM favourite_posts WHERE user_id = $1 AND post_id = $2 RETURNING *`,
             [user.id,req.body.id]
@@ -291,7 +295,7 @@ async function userAddFollowingUsers(
     try {
         console.log("BODY|",req.body);
         let user = req.session['user'];
-        console.log("SESSION|",user);
+        // console.log("SESSION|",user);
         const updatedAddFollowingUsers = await client.query(
             `INSERT INTO user_followings (user_id_follow_others, user_id_being_followed) VALUES ($1,$2) RETURNING *`,
             [user.id,req.body.id]
@@ -312,7 +316,7 @@ async function userDeleteFollowingUsers(
     try {
         console.log("BODY|",req.body);
         let user = req.session['user'];
-        console.log("SESSION|",user);
+        // console.log("SESSION|",user);
         const updatedDeleteFollowingUsers = await client.query(
             `DELETE FROM user_followings WHERE user_id_follow_others = $1 AND user_id_being_followed = $2 RETURNING *`,
             [user.id,req.body.id]
