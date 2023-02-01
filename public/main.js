@@ -840,10 +840,11 @@ createPostSubmit.addEventListener('click', async (e) => {
     createPostContainer.classList.add("d-none");
 
     let selectStationId = document.getElementById("selectStation").value
-    window.history.pushState({}, '', '/stations/' + selectStationId);
+    window.history.pushState({}, '', '/stations/' + selectStationId+"?postId="+result.data);
     goToStation(Number(selectStationId))
     goToPost(Number(result.data), 1)
     document.querySelector('.createPostForm').reset()
+    document.querySelector('.home_page_cover').classList.add("d-none")
 })
 
 //userProfile
