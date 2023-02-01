@@ -800,15 +800,18 @@ leaveCreatePost.addEventListener('click', () => {
 
 let createPostSubmit = document.querySelector('.createPostSubmit')
 
-
-
-
-
 createPostSubmit.addEventListener('click', async (e) => {
     e.preventDefault()
     let createPostForm = document.querySelector('.createPostForm')
+
+    if((createPostForm.content.value === '') && (createPostForm.image.value === '')){
+        alert("No Content")
+        return
+    }
+
     const newText = createPostForm.content.value.replace(/\r?\n/g, '<br />')
     createPostForm.content.value = newText
+
     let formData = new FormData(createPostForm)
     let res = await fetch('/posts', {
         method: 'POST',
