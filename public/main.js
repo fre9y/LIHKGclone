@@ -810,6 +810,7 @@ let createPostSubmit = document.querySelector('.createPostSubmit')
 //     let formData = new FormData(newPostFormElm)})
 
 
+
 createPostSubmit.addEventListener('click', async (e) => {
     e.preventDefault()
     let createPostForm = document.querySelector('.createPostForm')
