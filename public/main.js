@@ -907,7 +907,7 @@ export async function doxxUser(userId,nickname) {
     let posts = data.data
     console.log(posts);
     if (posts){
-        document.querySelector('.station_name').innerText = nickname;
+        document.querySelector('.station_name').innerText = posts[0].nickname;
         setPostsOfUser(posts)
         document.querySelector('.second_row_btn').classList.add("d-none")
         
