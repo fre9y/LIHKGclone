@@ -86,13 +86,13 @@
     cursor: pointer;
 }
 
+.user_nickname_btn:hover, .reply_first_row i:hover {
+    cursor: pointer;
+}
+
 /* reply */
 .reply {
     background-color: #222222;
-}
-
-.user_nickname>button {
-    border: none !important;
 }
 
 .reply_like_section {
@@ -107,7 +107,6 @@
     border: none;
     color: #ccc6c0;
     background-color: transparent;
-    background-color: rgb(38, 38, 38);
 }
 
 /* userDetail */
@@ -116,19 +115,31 @@
 }
 
 .userDetail_content {
-    width: 600px;
+    width: 400px;
     border-radius: 5px;
+    border: 1px solid #3b3a39;
     background-color: #222222;
 }
 
-.userDetail_content .first_row {
+.userDetail div {
+    color: white;
+}
 
+.userDetail_content .first_row {
+    font-size: 17px;
     border-bottom: 1px solid #3b3a39;
 }
 
 .userDetail_content .second_row {
+    font-size: 20px;
     background-color: #292827;
     border-bottom: 1px solid #3b3a39;
+}
+
+.userDetail button {
+    color: white;
+    border: none;
+    background-color: transparent;
 }
 
 /* CreatePost */
