@@ -1,3 +1,4 @@
+import { doxxUser } from './main.js';
 //testing
 
 //LOGIN
@@ -44,6 +45,12 @@ export async function loadUserProfileContainer(){
         let nicknameUserIdElem = document.querySelector(".nickname_user_id")
         let createdAtElem = document.querySelector(".created_at")
         nicknameUserIdElem.innerText = profile.nickname + " #" +  profile.id + " >"
+
+        nicknameUserIdElem.addEventListener('click', async (e) => {
+            doxxUser(profile.id)
+            document.querySelector('.userProfile').classList.add('d-none');
+        })
+
         let date = profile.created_at.split('T')[0];
         createdAtElem.innerHTML = "註冊日期 " + date
         //show
@@ -53,7 +60,6 @@ export async function loadUserProfileContainer(){
         redirectGoogle();
     }
 };
-
 
 //bookmark posts (star)
 export async function addPostBookmark(post_id) {

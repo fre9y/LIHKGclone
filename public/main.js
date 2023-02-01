@@ -379,6 +379,14 @@ function setPostsOfStation(station, posts) {
         }
         createTime.innerText = showTimePassed;
 
+        // heat icon
+        let heat = postClone.querySelector('.fa-bolt');
+        if ((timePassed < 3600) && (number_of_replies > 9)){
+            heat.classList.remove("d-none")
+        } else {
+            heat.classList.add("d-none")
+        }        
+
         //posts-like
         let postLike = postClone.querySelector(".like");
         let likeNUM = likes;
@@ -878,7 +886,7 @@ function storyMode(userID) {
     }
 }
 
-async function doxxUser(userId) {
+export async function doxxUser(userId) {
     let res = await fetch(`/posts/${userId}/Users`, {
         method: 'GET'
     })
@@ -949,6 +957,7 @@ function setPostsOfUser(posts) {
             postHost.style.color = "red";
         }
 
+        // isP
         let isP = postClone.querySelector('.isP');
         if (is_p === true){
             isP.classList.remove("d-none")
@@ -976,6 +985,14 @@ function setPostsOfUser(posts) {
             showTimePassed = parseInt(timePassed) + '秒前'
         }
         createTime.innerText = showTimePassed;
+
+        // heat icon
+        let heat = postClone.querySelector('.fa-bolt');
+        if ((timePassed < 3600) && (number_of_replies > 9)){
+            heat.classList.remove("d-none")
+        } else {
+            heat.classList.add("d-none")
+        }        
 
         //posts-like
         let postLike = postClone.querySelector(".like");
