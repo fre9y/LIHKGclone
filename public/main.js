@@ -696,6 +696,11 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
             });
 
             const likeData = await res.json();
+            if(likeData.message === "like success"){
+            } else {
+                alert("Please Login")
+                return
+            }
             if (res.ok) {
                 const latestReplyLike = likeData.latestReplyLike
                 console.log({ latestReplyLike })
@@ -712,6 +717,11 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
             });
 
             const dislikeData = await res.json()
+            if(dislikeData.message === "dislike success"){
+            } else {
+                alert("Please Login")
+                return
+            }
             if (res.ok) {
                 const latestReplyDislike = dislikeData.latestReplyDislike
                 console.log({ latestReplyDislike })
@@ -806,7 +816,7 @@ createPostSubmit.addEventListener('click', async (e) => {
     if (result.message === "add post success") {
         console.log(result.message)
     } else {
-        alert([result.message])
+        alert(["Please Login"])
         return
     }
     createPostContainer.classList.add("d-none");
@@ -868,7 +878,7 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     if (result.message === "add reply success") {
         console.log(result.message)
     } else {
-        alert([result.message])
+        alert(['Please Login'])
         return
     }
 
