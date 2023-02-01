@@ -261,7 +261,6 @@ async function goToStation(stationId) {
     if (postId) {
         await goToPost(postId, page);
         starClick(postId); //favourite post (C+D)
-        //sharePostClick(postId); //not using
     }
     // getStationsPost
     setPostsOfStation(stations[0], posts);
@@ -285,7 +284,6 @@ async function goToHitStation(stationId) {
 
     await goToPost(postId, page);
     starClick(postId); //favourite post (C+D)
-    //sharePostClick(postId); //not using
     // getStationsPost
     setPostsOfStation(stations[0], hitStation);
 
