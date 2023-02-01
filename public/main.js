@@ -29,18 +29,18 @@ readBlockedListButton.addEventListener('click', () => {
     console.log('click_blocked-list');
     document.querySelector('.blocked_list_container').classList.remove('d-none');
     document.querySelector('.userProfile').classList.add('d-none');
-    showBlockedList() 
+    showBlockedList()
 });
 leaveBlockedListButton.addEventListener('click', () => {
     console.log('click_leave-blocked-list');
     document.querySelector('.blocked_list_container').classList.add('d-none');
-    
+
 });
 
 
 async function showBlockedList() {
     let res = await fetch('/user/block', {
-        method: 'GET' 
+        method: 'GET'
     })
     if (res.ok) {
         let data = await res.json()
@@ -83,13 +83,13 @@ async function showBlockedList() {
             `
             console.log(blockedUserElem);
             blockedListElem.appendChild(blockedUserElem)
-            let unblockUserElem =document.querySelector(`#unblock${blockedUserId}`)
+            let unblockUserElem = document.querySelector(`#unblock${blockedUserId}`)
             unblockUserElem.addEventListener('click', () => {
                 console.log(blockedUser.user_id_being_blocked);
                 console.log('click_unblock-user');
                 unblockUser(blockedUserId)
                 showBlockedList()
-            })  
+            })
 
         }
     } else {
@@ -238,6 +238,8 @@ for (let i = 0; i < addAElem.length; i++) {
         goToStation(stationID);
         setTabButtons(stationID);
         document.querySelector('.home_page_cover').classList.remove('d-none');
+        document.querySelector('.post_replies').classList.add('d-none');
+        document.querySelector('.post_first_row').classList.add('d-none');
     })
 };
 
@@ -250,7 +252,7 @@ async function goToStation(stationId) {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     const page = urlParams.get('page') || 1;
-    
+
     document.querySelector('.second_row_btn').classList.remove("d-none")
 
     console.log((window.location.href)); // current url
@@ -269,8 +271,6 @@ async function goToStation(stationId) {
     }
     // getStationsPost
     setPostsOfStation(stations[0], posts);
-    document.querySelector('.post_replies').classList.add('d-none');
-    document.querySelector('.post_first_row').classList.add('d-none');
 }
 
 //toHitStations && createPost
@@ -358,7 +358,7 @@ function setPostsOfStation(station, posts) {
 
         // isP
         let isP = postClone.querySelector('.isP');
-        if (is_p === true){
+        if (is_p === true) {
             isP.classList.remove("d-none")
         } else {
             isP.classList.add("d-none")
@@ -387,11 +387,11 @@ function setPostsOfStation(station, posts) {
 
         // heat icon
         let heat = postClone.querySelector('.fa-bolt');
-        if ((timePassed < 3600) && (number_of_replies > 9)){
+        if ((timePassed < 3600) && (number_of_replies > 9)) {
             heat.classList.remove("d-none")
         } else {
             heat.classList.add("d-none")
-        }        
+        }
 
         //posts-like
         let postLike = postClone.querySelector(".like");
@@ -441,11 +441,11 @@ async function goToPost(postId, currentPage) {
         const { replies, repliesTotal, posts, repliesImage } = await res.json();
         const pageCount = Math.ceil(repliesTotal / pageSize);
 
-        document.querySelector('.img_container').innerHTML = " ";
-        document.querySelector(".total_img").innerText = "0";
-        await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage, repliesImage);
-        setPageDropdown(postId, pageCount, currentPage);
-    }
+    document.querySelector('.img_container').innerHTML = " ";
+    document.querySelector(".total_img").innerText = "0";
+    await setRepliesOfPage(posts[0]?.post_title, replies, pageSize, currentPage, repliesImage);
+    setPageDropdown(postId, pageCount, currentPage);
+}
 
 
 function getPageName(pageNumber) {
@@ -528,7 +528,8 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
     const replyTemplate = document.querySelector(".replies_container_template");
     const reply = document.querySelector(".replies_container_template_sample .reply");
     const createImgEle = document.querySelector('.img_container');
-    
+
+    document.querySelector('.home_page_cover').classList.add('d-none');
     replyTemplate.innerHTML = "";
     const totalImg = document.querySelector(".total_img");
     const imageTotal = [];
@@ -614,7 +615,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
         let doxxButton = replyClone.querySelector('.doxx');
         doxxButton.addEventListener('click', () => {
             console.log('click_doxx');
-            doxxUser(userID,replies[r].nickname)
+            doxxUser(userID, replies[r].nickname)
             userDetailContent.classList.add("d-none");
             // window.location = `/user/profile/${userID}`;
         });
@@ -626,6 +627,9 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
                 replyClone.querySelector('.block').innerText = '解除封鎖'
                 console.log(replyClone.querySelector('.block').innerText);
                 blockUser(userID);
+                const alert = document.querySelector('.block_list');
+                alert.classList.remove('d-none');
+                setTimeout(function() { alert.classList.add('d-none') }, 5000);
             } else {
                 replyClone.querySelector('.block').innerText = '封鎖'
                 console.log(replyClone.querySelector('.block').innerText);
@@ -642,6 +646,9 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
                 replyClone.querySelector('.follow').innerText = '取消追蹤'
                 console.log(replyClone.querySelector('.follow').innerText);
                 addFollowingUser(userID);
+                const alert = document.querySelector('.follow_alert');
+                alert.classList.remove('d-none');
+                setTimeout(function() { alert.classList.add('d-none') }, 5000);
             } else {
                 replyClone.querySelector('.follow').innerText = '追蹤'
                 console.log(replyClone.querySelector('.follow').innerText);
@@ -706,7 +713,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
             });
 
             const likeData = await res.json();
-            if(likeData.message === "like success"){
+            if (likeData.message === "like success") {
             } else {
                 alert("Please Login")
                 return
@@ -727,7 +734,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
             });
 
             const dislikeData = await res.json()
-            if(dislikeData.message === "dislike success"){
+            if (dislikeData.message === "dislike success") {
             } else {
                 alert("Please Login")
                 return
@@ -763,8 +770,9 @@ const refreshBtns = document.querySelectorAll('.refresh_btn');
 for (let refreshBtn of refreshBtns) {
     refreshBtn.addEventListener('click', () => {
         //location.reload();
-        let currentURL = window.location.href.split('?')[0]
-        location.href = currentURL
+        // let currentURL = window.location.href.split('?')[0]
+        // location.href = currentURL
+        location.reload();
     })
 }
 
@@ -809,9 +817,19 @@ leaveCreatePost.addEventListener('click', () => {
 
 let createPostSubmit = document.querySelector('.createPostSubmit')
 
+// newPostFormElm.addEventListener('submit', async (e) => {
+//     e.preventDefault()
+//     if(newPostFormElm.postTitle.value === ''){
+//         alert("Title Cannot Be Empty")
+//         return
+//     }
+//     let formData = new FormData(newPostFormElm)})
+
+
+
 createPostSubmit.addEventListener('click', async (e) => {
     e.preventDefault()
-    let createPostForm = document.querySelector('.createPostForm')
+    let createPostForm = document.querySelector('.createPostForm');
 
     if(createPostForm.postTitle.value === ''){
         alert("No Title")
@@ -841,9 +859,11 @@ createPostSubmit.addEventListener('click', async (e) => {
     createPostContainer.classList.add("d-none");
 
     let selectStationId = document.getElementById("selectStation").value
+    window.history.pushState({}, '', '/stations/' + selectStationId);
     goToStation(Number(selectStationId))
     goToPost(Number(result.data), 1)
     document.querySelector('.createPostForm').reset()
+    document.querySelector('.home_page_cover').classList.add("d-none")
 })
 
 //userProfile
@@ -884,8 +904,9 @@ let newReplyFormElm = document.querySelector('.createReplyForm')
 
 newReplyFormElm.addEventListener('submit', async (e) => {
     e.preventDefault()
-    
-    if((newReplyFormElm.replyContent.value === '') && (newReplyFormElm.image.value === '')){
+    // document.querySelector('.home_page_cover').classList.add('d-none');
+    let formData = new FormData(newReplyFormElm)
+    if ((newReplyFormElm.replyContent.value === '') && (newReplyFormElm.image.value === '')) {
         alert("No Content")
         return
     }
@@ -893,7 +914,7 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     const newText = newReplyFormElm.replyContent.value.replace(/\r?\n/g, '<br />')
     newReplyFormElm.replyContent.value = newText
 
-    let formData = new FormData(newReplyFormElm)
+    // let formData = new FormData(newReplyFormElm)
     let urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     formData.append('postId', postId)
@@ -930,7 +951,7 @@ function storyMode(userID) {
     }
 }
 
-export async function doxxUser(userId,nickname) {
+export async function doxxUser(userId, nickname) {
     let res = await fetch(`/posts/${userId}/Users`, {
         method: 'GET'
     })
@@ -938,10 +959,10 @@ export async function doxxUser(userId,nickname) {
     let posts = data.data
     console.log(posts);
     if (posts){
-        document.querySelector('.station_name').innerText = posts[0].nickname;
+        document.querySelector('.station_name').innerText = nickname;
         setPostsOfUser(posts)
         document.querySelector('.second_row_btn').classList.add("d-none")
-        
+
     } else {
         document.querySelector('.station_name').innerText = nickname
          document.querySelector('.second_row_btn').classList.add("d-none")
@@ -1011,7 +1032,7 @@ function setPostsOfUser(posts) {
 
         // isP
         let isP = postClone.querySelector('.isP');
-        if (is_p === true){
+        if (is_p === true) {
             isP.classList.remove("d-none")
         } else {
             isP.classList.add("d-none")
@@ -1040,11 +1061,11 @@ function setPostsOfUser(posts) {
 
         // heat icon
         let heat = postClone.querySelector('.fa-bolt');
-        if ((timePassed < 3600) && (number_of_replies > 9)){
+        if ((timePassed < 3600) && (number_of_replies > 9)) {
             heat.classList.remove("d-none")
         } else {
             heat.classList.add("d-none")
-        }        
+        }
 
         //posts-like
         let postLike = postClone.querySelector(".like");

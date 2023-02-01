@@ -17,6 +17,7 @@ export async function createReplies(req: express.Request, res: express.Response)
         let user = req.session['user'];
 		let post = fields.postId
 
+		console.log('testsastasg',user)
 		let replyResult = await client.query(
 			`insert into replies (user_id, post_id, content, created_at, updated_at) values ($1, $2, $3, now(), now()) returning id`,
 			[user.id, Number(post), content]
