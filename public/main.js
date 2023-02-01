@@ -1038,7 +1038,7 @@ function setPostsOfUser(posts) {
     };
 }
 
-let followingPosts = document.querySelector(".fa-bell")
+let followingPosts = document.querySelector(".follow_btn")
 followingPosts.addEventListener('click', async (e) => {
     console.log("followingPosts")
     document.querySelector('.station_name').innerText = "追蹤中";
@@ -1063,7 +1063,7 @@ followingPosts.addEventListener('click', async (e) => {
 
 })
 
-let favPosts = document.querySelector(".fa-gamepad")
+let favPosts = document.querySelector(".favourite_btn")
 favPosts.addEventListener('click', async (e) => {
     console.log("favPosts")
     document.querySelector('.station_name').innerText = "名已留";

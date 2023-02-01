@@ -61,7 +61,7 @@
     background-color: transparent;
 }
 
-.review_btn, .signUp_btn, .follow_btn, favourite_btn {
+.review_btn, .signUp_btn, .follow_btn, .favourite_btn {
     font-size: 17px;
     border: none;
     background-color: #1e1e1e;
