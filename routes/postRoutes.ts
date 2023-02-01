@@ -193,6 +193,9 @@ export async function getUserPosts(
 				select (select nickname 
                     from users 
                     where users.id = posts.user_id) as nickname, 
+					(select is_p
+					from users 
+					where users.id = posts.user_id) as is_p, 
                     (select max(updated_at)
                     from replies
                     where posts.id = replies.post_id) as updated_at, 
@@ -294,6 +297,9 @@ export async function getMyPosts(
 				select (select nickname 
                     from users 
                     where users.id = posts.user_id) as nickname, 
+					(select is_p
+					from users 
+					where users.id = posts.user_id) as is_p, 
                     (select max(updated_at)
                     from replies
                     where posts.id = replies.post_id) as updated_at, 
@@ -343,6 +349,9 @@ export async function getFollowingPosts(
 				select 
 					(select nickname from users
 					where users.id = user_id_being_followed) as nickname,
+					(select is_p
+					from users 
+					where users.id = posts.user_id) as is_p, 
 					(select max(updated_at)
 					from replies
 					where posts.id = replies.post_id) as updated_at,
@@ -403,6 +412,9 @@ export async function getFavPosts(
 				select
 					(select nickname from users
 					where users.id = posts.user_id) as nickname,
+					(select is_p
+					from users 
+					where users.id = posts.user_id) as is_p, 
 					(select max(updated_at)
 					from replies
 					where posts.id = replies.post_id) as updated_at,
