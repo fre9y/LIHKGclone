@@ -216,6 +216,7 @@ export async function getUserPosts(
 				from posts
 				where user_id = $1
 				and posts.show = true
+				order by updated_at Desc
 				`,
 				[Number(userId)]
 			)
