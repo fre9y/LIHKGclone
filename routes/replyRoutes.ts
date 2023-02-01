@@ -50,6 +50,8 @@ export async function likeReplyById(
 	try {
 		let replyId = req.params.id
 
+		// 1. check if user has liked the reply
+		// 2. if no record existing => insert a record into user_likes_replies of table
 		await client.query(`update replies set likes = likes + 1 where id = $1`, [
 			replyId,
 		])

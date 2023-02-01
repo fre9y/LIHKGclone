@@ -100,6 +100,7 @@ async function showBlockedList() {
 
 //star
 function starClick(postId) {
+    console.log({starClick: postId})
     if (postId) {
         let starButton = document.querySelector(".star")
         let favButton = document.querySelector(".fav_btn")
@@ -171,7 +172,9 @@ window.addEventListener('load', async () => {
             break;
         }
     }
-
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('postId');
+    starClick(postId)
     const hash = window.location.hash
     if (hash) {
         const elem = document.querySelector(hash)
@@ -242,9 +245,10 @@ for (let i = 0; i < addAElem.length; i++) {
 
 //toStations && createPost
 async function goToStation(stationId) {
+    console.log({goToStation: stationId})
     const res = await fetch(`/stations/${stationId}/posts`);
     const { stations, posts } = await res.json();
-
+    setPostsOfUser(posts)
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     const page = urlParams.get('page') || 1;
@@ -259,8 +263,9 @@ async function goToStation(stationId) {
     if (stations.length > 0) {
         document.querySelector('.station_name').innerText = stations[0].name;
     }
+    console.log({postId: postId})
 
-    if (postId) {
+    if (postId != null) {
         await goToPost(postId, page);
         starClick(postId); //favourite post (C+D)
     }
@@ -303,7 +308,7 @@ function setPostsOfStation(station, posts) {
     for (let child of mobileVision.querySelectorAll(".post")) {
         mobileVision.removeChild(child);
     }
-
+    console.log("setPostsOfStation: ", posts)
     for (let post of posts) {
         const { id, nickname, is_male, is_p, updated_at, likes, post_title, number_of_replies } = post;
         const pageCount = Math.ceil(number_of_replies / pageSize);
@@ -311,6 +316,7 @@ function setPostsOfStation(station, posts) {
         const pageSelectElement = postClone.querySelector("select");
 
         function postClick(post) {
+            //console.log("postClick: ", post)
             post.addEventListener('click', async (e) => {
                 e.preventDefault();
                 let urlParams = new URLSearchParams();
@@ -321,6 +327,7 @@ function setPostsOfStation(station, posts) {
                 document.querySelector('.home_page_cover').classList.add('d-none');
             });
         };
+        postClick(postClone);
 
 
         for (let k = 0; k < pageCount; k++) {
@@ -335,7 +342,6 @@ function setPostsOfStation(station, posts) {
         }
         pageSelectElement.addEventListener("click", e => e.stopPropagation());
         pageSelectElement.addEventListener("change", (e) => goToPost(id, e.target.value));
-        postClick(postClone);
 
         //posts-host
         let postHost = postClone.querySelector(".post_host")
@@ -428,10 +434,12 @@ function setPostsOfStation(station, posts) {
 }
 
 async function goToPost(postId, currentPage) {
-    const pageSize = 25;
-    const res = await fetch(`/post/${postId}/replies/pages/${currentPage}`);
-    const { replies, repliesTotal, posts, repliesImage } = await res.json();
-    const pageCount = Math.ceil(repliesTotal / pageSize);
+    console.log("goToPost: ", postId);
+    starClick(postId)
+        const pageSize = 25;
+        const res = await fetch(`/post/${postId}/replies/pages/${currentPage}`);
+        const { replies, repliesTotal, posts, repliesImage } = await res.json();
+        const pageCount = Math.ceil(repliesTotal / pageSize);
 
     document.querySelector('.img_container').innerHTML = " ";
     document.querySelector(".total_img").innerText = "0";
@@ -822,6 +830,10 @@ createPostSubmit.addEventListener('click', async (e) => {
     e.preventDefault()
     let createPostForm = document.querySelector('.createPostForm');
 
+    if(createPostForm.postTitle.value === ''){
+        alert("No Title")
+        return
+    }
     if((createPostForm.content.value === '') && (createPostForm.image.value === '')){
         alert("No Content")
         return
@@ -846,9 +858,11 @@ createPostSubmit.addEventListener('click', async (e) => {
     createPostContainer.classList.add("d-none");
 
     let selectStationId = document.getElementById("selectStation").value
+    window.history.pushState({}, '', '/stations/' + selectStationId+"?postId="+result.data);
     goToStation(Number(selectStationId))
     goToPost(Number(result.data), 1)
     document.querySelector('.createPostForm').reset()
+    document.querySelector('.home_page_cover').classList.add("d-none")
 })
 
 //userProfile
@@ -896,6 +910,10 @@ newReplyFormElm.addEventListener('submit', async (e) => {
         return
     }
 
+    const newText = newReplyFormElm.replyContent.value.replace(/\r?\n/g, '<br />')
+    newReplyFormElm.replyContent.value = newText
+
+    // let formData = new FormData(newReplyFormElm)
     let urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     formData.append('postId', postId)
@@ -906,6 +924,8 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     })
 
     let result = await res.json()
+
+    console.log(result.message)
     if (result.message === "add reply success") {
         console.log(result.message)
     } else {
@@ -950,6 +970,7 @@ export async function doxxUser(userId, nickname) {
 }
 
 function setPostsOfUser(posts) {
+    console.log("setPostsOfUser: ", posts)
     const pageSize = 25;
     const template = document.querySelector(".post_template");
     const mobileVision = document.querySelector(".mobile_vision");
@@ -966,13 +987,17 @@ function setPostsOfUser(posts) {
         const postClone = postTemplateNode.cloneNode(true);
         const pageSelectElement = postClone.querySelector("select");
 
+        postClick(postClone);
         function postClick(post) {
             post.addEventListener('click', async (e) => {
                 e.preventDefault();
+                console.log("clone post click")
                 let urlParams = new URLSearchParams();
                 urlParams.set("postId", post_id)
                 history.pushState({}, '', '?' + urlParams.toString());
                 goToPost(post_id, 1);
+                starClick(post_id)
+
                 showPostContainer();
             });
         };
@@ -990,7 +1015,6 @@ function setPostsOfUser(posts) {
         }
         pageSelectElement.addEventListener("click", e => e.stopPropagation());
         pageSelectElement.addEventListener("change", (e) => goToPost(post_id, e.target.value));
-        postClick(postClone);
 
         //posts-host
         let postHost = postClone.querySelector(".post_host")

@@ -19,6 +19,7 @@ CREATE TABLE user_blacklists (
 
 
 
+
 insert into user_blacklists
 (user_id_block_others, user_id_being_blocked)
 values
@@ -51,3 +52,13 @@ values
 (11,4),
 (11,10),
 (11,6);
+
+insert into user_blacklists
+(user_id_block_others, user_id_being_blocked)
+values
+(13,2),
+(13,1),
+(13,3),
+(13,4),
+(13,10),
+(13,6);
