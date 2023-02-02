@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PROFILE</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <style>
-        body{
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -15,68 +17,86 @@
             background-color: #222222;
             color: white;
         }
-        .profile{
+
+        .profile {
             background-color: #3b3a39;
             color: white;
             border: solid 1px #c2bcb7;
         }
-        .data{
+
+        .data {
             border: solid 1px #c2bcb7;
         }
-        .table, th, td {
-            border:1px solid white;
+
+        .table,
+        th,
+        td {
+            border: 1px solid white;
         }
-        .id{
+
+        .id {
             width: 20px;
         }
-        .nickname{
+
+        .nickname {
             width: 180px;
         }
-        .email{
+
+        .email {
             width: 220px;
         }
-        .p{
+
+        .p {
             width: 50px;
         }
-        .admin{
+
+        .admin {
             width: 50px;
         }
-        .gender{
+
+        .gender {
             width: 50px;
         }
-        .show{
+
+        .show {
             width: 50px;
         }
-        .date{
+
+        .date {
             width: 250px;
         }
-        .displayLeft{
+
+        .displayLeft {
             display: flex;
             justify-content: left;
         }
     </style>
 </head>
+
 <body>
-    <div class="col-11">
-        <div>
-            <div class = "profile row"></div>
-        </div>
-        <div class="row" style="margin-top: 10px; min-width: 655px;">
-            <div class = "col-7">
-                <form class = "update-profile">
-                    <input type="text" name="nickname" required/>
-                    <input type="radio" name="gender" value="male">巴打
-                    <input type="radio" name="gender" value="female">絲打
-                    <input type="submit" value="Submit" />
-                </form>
+    <div class="col-11 position-relative">
+        <div class="w-75 position-absolute top-0 end-0 bottom-0 start-0" style="margin-top: 20%;margin-left: 10%">
+            <div>
+                <div class="profile row"></div>
             </div>
-            <div class = "col-5 displayLeft">
-                <!-- <button class="change-profile"></button> -->
-                <button class="home">HOME</button>
+            <div class="row" style="margin-top: 10px; min-width: 655px;">
+                <div class="col-7">
+                    <form class="update-profile">
+                        <input type="text" name="nickname" required />
+                        <input type="radio" name="gender" value="male">巴打
+                        <input type="radio" name="gender" value="female">絲打
+                        <input type="submit" value="Submit" />
+                    </form>
+                </div>
+                <div class="col-5 displayLeft">
+                    <!-- <button class="change-profile"></button> -->
+                    <button class="home">HOME</button>
+                </div>
             </div>
         </div>
     </div>
-    <script src = "/userProfile.js"></script>
+    <script src="/userProfile.js"></script>
     <script src="/changeUserProfile.js"></script>
 </body>
-</html> 
+
+</html>

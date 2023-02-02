@@ -68,7 +68,7 @@ async function showBlockedList() {
         }
         blockedListDetail.classList.add('d-none');
     } else {
-        alert("[ERR0R: CANT FETCH]")
+        // alert("[ERR0R: CANT FETCH]")
         return
     }
 }
@@ -142,6 +142,7 @@ window.addEventListener('load', async () => {
                 const stationId = arr[i + 1];
                 await goToStation(stationId);
                 await setTabButtons(stationId);
+                document.querySelector('.post_replies').classList.add('d-none');
             }
             break;
         }
@@ -243,6 +244,7 @@ async function goToStation(stationId) {
     }
     // getStationsPost
     setPostsOfStation(stations[0], posts);
+    document.querySelector('.post_replies').classList.remove('d-none');
 }
 
 //toHitStations && createPost
@@ -253,6 +255,8 @@ async function goToHitStation(stationId) {
     const urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     const page = urlParams.get('page') || 1;
+
+    document.querySelector('.second_row_btn').classList.remove("d-none")
 
     hidePostContainer();
     if (stations.length > 0) {
@@ -741,6 +745,7 @@ const refreshBtns = document.querySelectorAll('.refresh_btn');
 for (let refreshBtn of refreshBtns) {
     refreshBtn.addEventListener('click', () => {
         location.reload();
+        document.querySelector('.post_replies').classList.remove('d-none');
     })
 }
 
@@ -877,7 +882,7 @@ let newReplyFormElm = document.querySelector('.createReplyForm')
 newReplyFormElm.addEventListener('submit', async (e) => {
     e.preventDefault()
     // document.querySelector('.home_page_cover').classList.add('d-none');
-    let formData = new FormData(newReplyFormElm)
+    // let formData = new FormData(newReplyFormElm)
     if ((newReplyFormElm.replyContent.value === '') && (newReplyFormElm.image.value === '')) {
         alert("No Content")
         return
@@ -886,7 +891,7 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     const newText = newReplyFormElm.replyContent.value.replace(/\r?\n/g, '<br />')
     newReplyFormElm.replyContent.value = newText
 
-    // let formData = new FormData(newReplyFormElm)
+    let formData = new FormData(newReplyFormElm)
     let urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     formData.append('postId', postId)
