@@ -44,7 +44,7 @@ export async function loadUserProfileContainer(){
         console.log(profile);
         let nicknameUserIdElem = document.querySelector(".nickname_user_id")
         let createdAtElem = document.querySelector(".created_at")
-        nicknameUserIdElem.innerText = profile.nickname + " #" +  profile.id + " >"
+        nicknameUserIdElem.innerText = profile.nickname + "\n" +" #" +  profile.id + '  >'
 
         nicknameUserIdElem.addEventListener('click', async (e) => {
             doxxUser(profile.id, "發送匣")

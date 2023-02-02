@@ -5,10 +5,12 @@
 }
 
 .post_bar {
+    min-height: 50px;
     height: 50px;
     background-color: #222222;
     border-bottom: 1px solid #3b3a39;
     z-index: 10070;
+    overflow-y: hidden;
 }
 
 .home_page_cover {
@@ -225,10 +227,21 @@
 }
 
 .userProfile_container {
-    width: 600px;
-    border-radius: 5px;
+    width: 450px;
+    border: 1px solid #3c3c3b;
+    border-radius: 10px;
     background-color: #222222;
     z-index: 10084;
+}
+
+.userProfile span {
+    color: white;
+}
+
+.userProfile div{
+    width: 450px;
+    text-align: center;
+    color: white;
 }
 
 .userProfile_container button {
@@ -240,7 +253,8 @@
 
 .userProfile_container .d-flex {
     height: 50px;
-    border: 1px solid #3c3c3b;
+    border-bottom: 1px solid #3c3c3b;
+
 }
 
 .log_out {
@@ -248,8 +262,9 @@
     border-bottom-right-radius: 5px;
 }
 
-.userProfile_container button:hover {
+.userProfile_container .second_row:hover, .userProfile_container button:hover {
     background-color: #3c3c3b;
+    cursor: pointer;
 }
 
 #image {
