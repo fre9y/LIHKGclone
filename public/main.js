@@ -45,53 +45,28 @@ async function showBlockedList() {
     if (res.ok) {
         let data = await res.json()
         let blockedList = data
-        let blockedListElem = document.querySelector(".blocked_table")
-        blockedListElem.innerHTML = ""
-        blockedListElem.innerHTML += /*html*/ `
+        const blockedListDetail = document.querySelector('.blocked_table .second_row');
+        const blockedContainer = document.querySelector('.blocked_table_div');
 
-        <table>
-            <tr>
-                    <th class = "blocked_user_id">ID</th>
-                    <th class = "blocked_user_nickname">Nickname</th>
-                    <th class = "blocked_user_create_date">Create Date</th>
-                    <th class = "blocked_user_create_time">Create Time</th>
-                    <th>DELETE</th>
-            </tr>   
-        </table>
-        `
         for (let i = 0; i < blockedList.length; i++) {
+            console.log(blockedList)
+            const blockedListClone = blockedListDetail.cloneNode(true);
             let blockedUser = blockedList[i]
             let blockedUserId = blockedUser.user_id_being_blocked
-            let createDate = blockedList[i].created_at.split('T')[0]
-            let createTime = blockedList[i].created_at.split('T')[1].split('.')[0]
-            let blockedUserElem = document.createElement("tr")
-            // <i class="fas fa-trash-alt"></i>
-            blockedUserElem.innerHTML = `
-            <td class="blocked_user_id">${blockedUser.user_id_being_blocked}</td>
-            <td class="blocked_user_nickname">${blockedUser.nickname}</td>
-            <td class="blocked_user_create_date">${createDate}</td>
-            <td class="blocked_user_create_time">${createTime}</td>
-            <td class="blocked_user_delete">
-               
-                
-                
-            <button class="unblock_btn" 
-            id="unblock${blockedUserId}" 
-            "><i class="fas fa-trash-alt"></i></button> 
-              
-            </td>
-            `
-            console.log(blockedUserElem);
-            blockedListElem.appendChild(blockedUserElem)
-            let unblockUserElem = document.querySelector(`#unblock${blockedUserId}`)
-            unblockUserElem.addEventListener('click', () => {
-                console.log(blockedUser.user_id_being_blocked);
-                console.log('click_unblock-user');
-                unblockUser(blockedUserId)
-                showBlockedList()
-            })
+            let blockedUserNickname = blockedUser.nickname
+            let createDate = blockedUser.created_at.split('T')[0]
+            // let createTime = blockedUser.created_at.split('T')[1].split('.')[0]
 
+            blockedListClone.querySelector('.blocked_id').innerText = blockedUserId;
+            blockedListClone.querySelector('.blocked_nickname').innerText = blockedUserNickname;
+            blockedListClone.querySelector('.blocked_create_date').innerText = createDate;
+            const blockBtn = blockedListClone.querySelector('.unblock_btn');
+            blockBtn.addEventListener('click', () => {
+                blockedListClone.parentNode.removeChild(blockedListClone)
+            })
+            blockedContainer.appendChild(blockedListClone);
         }
+        blockedListDetail.classList.add('d-none');
     } else {
         alert("[ERR0R: CANT FETCH]")
         return
@@ -100,7 +75,6 @@ async function showBlockedList() {
 
 //star
 function starClick(postId) {
-    console.log({starClick: postId})
     if (postId) {
         let starButton = document.querySelector(".star")
         let favButton = document.querySelector(".fav_btn")
@@ -245,7 +219,6 @@ for (let i = 0; i < addAElem.length; i++) {
 
 //toStations && createPost
 async function goToStation(stationId) {
-    console.log({goToStation: stationId})
     const res = await fetch(`/stations/${stationId}/posts`);
     const { stations, posts } = await res.json();
     setPostsOfUser(posts)
@@ -255,18 +228,17 @@ async function goToStation(stationId) {
 
     document.querySelector('.second_row_btn').classList.remove("d-none")
 
-    console.log((window.location.href)); // current url
+    // console.log((window.location.href)); // current url
     //console.log(stations[0].id); //stationID
     //console.log(postId);// postID
     hidePostContainer();
-    console.log(stations)
     if (stations.length > 0) {
         document.querySelector('.station_name').innerText = stations[0].name;
     }
-    console.log({postId: postId})
 
     if (postId != null) {
         await goToPost(postId, page);
+        showPostContainer();
         starClick(postId); //favourite post (C+D)
     }
     // getStationsPost
@@ -308,7 +280,7 @@ function setPostsOfStation(station, posts) {
     for (let child of mobileVision.querySelectorAll(".post")) {
         mobileVision.removeChild(child);
     }
-    console.log("setPostsOfStation: ", posts)
+
     for (let post of posts) {
         const { id, nickname, is_male, is_p, updated_at, likes, post_title, number_of_replies } = post;
         const pageCount = Math.ceil(number_of_replies / pageSize);
@@ -316,7 +288,6 @@ function setPostsOfStation(station, posts) {
         const pageSelectElement = postClone.querySelector("select");
 
         function postClick(post) {
-            //console.log("postClick: ", post)
             post.addEventListener('click', async (e) => {
                 e.preventDefault();
                 let urlParams = new URLSearchParams();
@@ -436,10 +407,10 @@ function setPostsOfStation(station, posts) {
 async function goToPost(postId, currentPage) {
     console.log("goToPost: ", postId);
     starClick(postId)
-        const pageSize = 25;
-        const res = await fetch(`/post/${postId}/replies/pages/${currentPage}`);
-        const { replies, repliesTotal, posts, repliesImage } = await res.json();
-        const pageCount = Math.ceil(repliesTotal / pageSize);
+    const pageSize = 25;
+    const res = await fetch(`/post/${postId}/replies/pages/${currentPage}`);
+    const { replies, repliesTotal, posts, repliesImage } = await res.json();
+    const pageCount = Math.ceil(repliesTotal / pageSize);
 
     document.querySelector('.img_container').innerHTML = " ";
     document.querySelector(".total_img").innerText = "0";
@@ -629,7 +600,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
                 blockUser(userID);
                 const alert = document.querySelector('.block_list');
                 alert.classList.remove('d-none');
-                setTimeout(function() { alert.classList.add('d-none') }, 5000);
+                setTimeout(function () { alert.classList.add('d-none') }, 5000);
             } else {
                 replyClone.querySelector('.block').innerText = '封鎖'
                 console.log(replyClone.querySelector('.block').innerText);
@@ -648,7 +619,7 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
                 addFollowingUser(userID);
                 const alert = document.querySelector('.follow_alert');
                 alert.classList.remove('d-none');
-                setTimeout(function() { alert.classList.add('d-none') }, 5000);
+                setTimeout(function () { alert.classList.add('d-none') }, 5000);
             } else {
                 replyClone.querySelector('.follow').innerText = '追蹤'
                 console.log(replyClone.querySelector('.follow').innerText);
@@ -769,9 +740,6 @@ async function setRepliesOfPage(title, replies, pageSize, currentPage, repliesIm
 const refreshBtns = document.querySelectorAll('.refresh_btn');
 for (let refreshBtn of refreshBtns) {
     refreshBtn.addEventListener('click', () => {
-        //location.reload();
-        // let currentURL = window.location.href.split('?')[0]
-        // location.href = currentURL
         location.reload();
     })
 }
@@ -831,11 +799,11 @@ createPostSubmit.addEventListener('click', async (e) => {
     e.preventDefault()
     let createPostForm = document.querySelector('.createPostForm');
 
-    if(createPostForm.postTitle.value === ''){
+    if (createPostForm.postTitle.value === '') {
         alert("No Title")
         return
     }
-    if((createPostForm.content.value === '') && (createPostForm.image.value === '')){
+    if ((createPostForm.content.value === '') && (createPostForm.image.value === '')) {
         alert("No Content")
         return
     }
@@ -849,9 +817,10 @@ createPostSubmit.addEventListener('click', async (e) => {
         body: formData
     })
 
-    let result = await res.json()
-    if (result.message === "add post success") {
-        console.log(result.message)
+    const result = await res.json()
+    const { message, data } = result;
+    if (message === "add post success") {
+        console.log(message)
     } else {
         alert(["Please Login"])
         return
@@ -859,9 +828,12 @@ createPostSubmit.addEventListener('click', async (e) => {
     createPostContainer.classList.add("d-none");
 
     let selectStationId = document.getElementById("selectStation").value
-    window.history.pushState({}, '', '/stations/' + selectStationId);
+    const urlParams = new URLSearchParams();
+    urlParams.set("postId", data);
+    window.history.pushState({}, '', '/stations/' + selectStationId + `?${urlParams.toString()}`);
+
     goToStation(Number(selectStationId))
-    goToPost(Number(result.data), 1)
+    goToPost(Number(data), 1)
     document.querySelector('.createPostForm').reset()
     document.querySelector('.home_page_cover').classList.add("d-none")
 })
@@ -958,20 +930,19 @@ export async function doxxUser(userId, nickname) {
     let data = await res.json()
     let posts = data.data
     console.log(posts);
-    if (posts){
+    if (posts) {
         document.querySelector('.station_name').innerText = nickname;
         setPostsOfUser(posts)
         document.querySelector('.second_row_btn').classList.add("d-none")
 
     } else {
         document.querySelector('.station_name').innerText = nickname
-         document.querySelector('.second_row_btn').classList.add("d-none")
+        document.querySelector('.second_row_btn').classList.add("d-none")
     }
 
 }
 
 function setPostsOfUser(posts) {
-    console.log("setPostsOfUser: ", posts)
     const pageSize = 25;
     const template = document.querySelector(".post_template");
     const mobileVision = document.querySelector(".mobile_vision");
@@ -1147,4 +1118,11 @@ favPosts.addEventListener('click', async (e) => {
 
     document.querySelector('.second_row_btn').classList.add("d-none")
 
+})
+
+const previousBtn = document.querySelector('#previous_page_btn');
+previousBtn.addEventListener('click', () => {
+    let currentURL = window.location.href.split('?')[0]
+    location.href = currentURL
+    console.log(currentURL)
 })
