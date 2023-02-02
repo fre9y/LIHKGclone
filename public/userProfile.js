@@ -1,11 +1,11 @@
-let changeProfile = document.querySelector(".change-profile")
-changeProfile.addEventListener('click', () => {
-    window.location = "/changeUserProfile.html"
-})
+// let changeProfile = document.querySelector(".change-profile")
+// changeProfile.addEventListener('click', () => {
+//     window.location = "/changeUserProfile.html"
+// })
 
 let home = document.querySelector(".home")
 home.addEventListener('click', () => {
-    window.location = "/"
+    window.location = "http://localhost:8080/stations/1"
 })
 //<i class="fas fa-trash-alt"></i>
 

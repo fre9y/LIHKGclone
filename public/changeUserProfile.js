@@ -30,7 +30,7 @@ updateProfileElem.addEventListener('submit', async (e) => {
 	if (!res.ok) {
 		return
 	}
-	window.location = "/home.html"
+	window.location = "http://localhost:8080/stations/1"
 })
 
 
