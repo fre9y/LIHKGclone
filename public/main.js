@@ -877,7 +877,7 @@ let newReplyFormElm = document.querySelector('.createReplyForm')
 newReplyFormElm.addEventListener('submit', async (e) => {
     e.preventDefault()
     // document.querySelector('.home_page_cover').classList.add('d-none');
-    let formData = new FormData(newReplyFormElm)
+    //let formData = new FormData(newReplyFormElm)
     if ((newReplyFormElm.replyContent.value === '') && (newReplyFormElm.image.value === '')) {
         alert("No Content")
         return
@@ -886,7 +886,7 @@ newReplyFormElm.addEventListener('submit', async (e) => {
     const newText = newReplyFormElm.replyContent.value.replace(/\r?\n/g, '<br />')
     newReplyFormElm.replyContent.value = newText
 
-    // let formData = new FormData(newReplyFormElm)
+    let formData = new FormData(newReplyFormElm)
     let urlParams = new URLSearchParams(window.location.search);
     const postId = urlParams.get('postId');
     formData.append('postId', postId)
