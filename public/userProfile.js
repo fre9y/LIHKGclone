@@ -20,12 +20,27 @@ async function loadProfile() {
         if (!profile.is_admin && profile.show) {
             let profileElem = document.querySelector(".profile")
             profileElem.innerHTML = /*html */ `
-                <div class= "profile">
-                    <div class="profile-nickname">${profile.nickname}</div>
-                    <div class ="profile-id">#${profile.id}</div>
-                    <div class="profile-email">${profile.email}</div>
-                    <div class="profile-created-at">${profile.created_at}</div>
-                </div>
+            <table>
+                <tr>
+                    <div class= "profile" >
+                        <th name = id class = "id">ID</th>
+                        <th class = "nickname">Nickname</th>
+                        <th name = email class = "email">Email</th>
+                        <th class = "date">Create Time</th>
+                    </div>
+                </tr>   
+            </table>    
+                ` + `
+            <table>
+                <tr>
+                    <div class= "profile" >
+                        <th name = id class = "id">${profile.id}</th>
+                        <th class = "nickname">${profile.nickname}</th>
+                        <th name = email class = "email">${profile.email}</th>
+                        <th class = "date">${profile.created_at}</th>
+                    </div>
+                </tr>   
+            </table>
                 `
             }
         else if (profile.is_admin && profile.show) {
