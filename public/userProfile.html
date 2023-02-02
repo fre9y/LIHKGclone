@@ -13,6 +13,7 @@
             align-items: center;
             text-align: center;
             background-color: #222222;
+            color: white;
         }
         .profile{
             background-color: #3b3a39;
@@ -49,23 +50,33 @@
         .date{
             width: 250px;
         }
-
-        .col-11 {
-            height: 100vh;
+        .displayLeft{
+            display: flex;
+            justify-content: left;
         }
     </style>
 </head>
 <body>
-    <div class="col-11 d-flex justify-content-center align-items-center">
+    <div class="col-11">
         <div>
             <div class = "profile row"></div>
-           
         </div>
-        <div class = "row-6">
-            <button class="change-profile">CHANGE PROFILE</button>
-            <button class="home">HOME</button>
+        <div class="row" style="margin-top: 10px; min-width: 655px;">
+            <div class = "col-7">
+                <form class = "update-profile">
+                    <input type="text" name="nickname" required/>
+                    <input type="radio" name="gender" value="male">巴打
+                    <input type="radio" name="gender" value="female">絲打
+                    <input type="submit" value="Submit" />
+                </form>
+            </div>
+            <div class = "col-5 displayLeft">
+                <button class="change-profile">CHANGE PROFILE</button>
+                <button class="home">HOME</button>
+            </div>
         </div>
     </div>
     <script src = "/userProfile.js"></script>
+    <script src="/changeUserProfile.js"></script>
 </body>
 </html> 
