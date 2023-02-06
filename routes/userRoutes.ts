@@ -30,6 +30,7 @@ async function loginGoogle (
     ){
     try {
         const accessToken = req.session?.['grant'].response.access_token;
+        // console.log("accessToken: ", accessToken)
         const fetchRes = await fetch(
             'https://www.googleapis.com/oauth2/v2/userinfo',{
             method:"get",
@@ -38,16 +39,17 @@ async function loginGoogle (
             }
         });
         const googleUserProfile = await fetchRes.json();
+        // console.log({googleUserProfile})
         let users = (
             await client.query(
             `SELECT * FROM users WHERE users.email = $1`,
             [googleUserProfile.email])).rows;
 
         let user = users[0];
-        console.log("GOGO|",user);
+        // console.log("GOGO|",user);
         if(!user){
             // Create the user when the user does not exist
-            console.log("no user");
+            // console.log("no user");
             let emailPrefix = googleUserProfile.email.split('@')[0];
             user = ( await client.query(
                     `INSERT INTO users (email,nickname) VALUES ($1,$2) RETURNING *`,
@@ -105,7 +107,9 @@ export async function userUpdateSelf(
         console.log(updatedUser.rows[0]);
         req.session['user'] = updatedUser.rows[0]
         console.log("NAME|isMALE|ID",req.body.nickname,req.body.gender,user.id);
-        res.json('[REDIRECTED TO HOME]')
+        res.json({
+            msg: '[REDIRECTED TO HOME]'
+        })
         
     } catch (error) {
         console.log("ERR0R",error);
@@ -302,6 +306,9 @@ async function userAddFollowingUsers(
             [user.id,req.body.id]
         ); 
         console.log(updatedAddFollowingUsers.rows[0]);
+        res.json({
+            data: updatedAddFollowingUsers
+        })
         } catch (error) {
             console.log("ERR0R",error);
             res.status(500).json({

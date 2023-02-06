@@ -154,7 +154,7 @@ function getPageName(pageNumber) {
     return `第${pageNumber}頁`;
 }
 
-function setPageDropdown(postId, pageCount, currentPage) {
+export function setPageDropdown(postId, pageCount, currentPage) {
     const repliesSelect = document.querySelector('#replies_select');
     const repliesSelectClone = repliesSelect.cloneNode();
     const nextButton = document.querySelector('.next_page_btn');

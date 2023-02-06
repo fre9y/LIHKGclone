@@ -1,4 +1,5 @@
 import { doxxUser } from './main.js';
+// import { logout } from './api/userfetch.js';
 //testing
 
 //LOGIN
@@ -9,28 +10,9 @@ export async function redirectGoogle() {
     if (!res.ok) {
         window.location = "/connect/google"
     } else {
-        //window.location = "/userProfile.html"
+        window.location = "/userProfile.html"
         return
     }
-}
-
-//LOGOUT
-export async function logout() {
-    let res = await fetch('/user/logout', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    if (!res.ok) {
-        alert("[ERR0R: CANT LOGOUT]")
-        return
-    } else {
-        alert("LOGGED OUT")
-        window.location = "/"
-        return
-    }
-            
 }
 
 export async function loadUserProfileContainer(){

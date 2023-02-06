@@ -13,14 +13,72 @@ postRoutes.get('/:id/Users', getUserPosts)
 postRoutes.get('/following', isLoggedInAPI, getFollowingPosts)
 postRoutes.get('/fav', isLoggedInAPI, getFavPosts)
 
+postRoutes.get('/:id/replies/pages/:currentPage', async (req, res) => {
+	let postID = req.params.id;
+	let currentPage = +req.params.currentPage;
+	if (!Number.isFinite(currentPage) || currentPage <= 0) {
+		res.status(400).end();
+		return
+	}
+
+	const repliesDetail = await client.query(
+		`select (
+		select  json_agg(name) as images_id  from images  where replies_id = replies.id),      
+		(select is_male
+		 from users 
+		 where users.id = replies.user_id) as is_male,
+		users.nickname,
+		replies.* from replies
+		inner JOIN users on users.id = replies.user_id
+				where post_id = ${postID}
+		  and replies.show = true
+				order by replies.id ASC
+				LIMIT 25 OFFSET 25 * (${currentPage} -1);`
+	);
+
+	const repliesImage = await client.query(
+		`select (
+		select  json_agg(name) as images_id  from images  where replies_id = replies.id),      
+		(select is_male
+		 from users 
+		 where users.id = replies.user_id) as is_male,
+		users.nickname,
+		replies.* from replies
+	inner JOIN users on users.id = replies.user_id
+				where post_id = ${postID}
+		  and replies.show = true
+				order by replies.id DESC`
+	);
+
+	const replyCount = await client.query(
+		`select count(id) as count from replies where post_id = ${postID}`
+	);
+
+	const postDetail = await client.query(
+		`SELECT * FROM posts JOIN users ON posts.user_id = users.id JOIN stations ON posts.station_id = stations.id WHERE posts.id = ${postID};`
+	)
+	const page = Math.ceil(replyCount.rows[0].count / 25);
+	const repliesTotal = replyCount.rows[0].count;
+
+	console.table(repliesDetail.rows)
+	res.json({
+		replies: repliesDetail.rows,
+		posts: postDetail.rows,
+		repliesImage: repliesImage.rows,
+		pages: page,
+		repliesTotal: repliesTotal
+	})
+	return
+})
+
 export async function createPosts(req: express.Request, res: express.Response) {
 	try {
 		let { fields, files } = await formParsePromise(req)
 		let title = fields.postTitle
-        let station = fields.stationId
+		let station = fields.stationId
 		let content = fields.content
-		console.log({content})
-        let user = req.session['user'];
+		console.log({ content })
+		let user = req.session['user'];
 
 		let postResult = await client.query(
 			`insert into posts (post_title, station_id, user_id, created_at, updated_at) values ($1, $2, $3, now(), now()) returning id`,
@@ -35,7 +93,7 @@ export async function createPosts(req: express.Request, res: express.Response) {
 
 		let replyId = replyResult.rows[0].id
 
-		if (files.image){
+		if (files.image) {
 			let fileName = files.image['newFilename']
 			await client.query(
 				`insert into images (name, posts_id, replies_id, created_at, updated_at) values ($1, $2, $3, now(), now())`,
@@ -102,7 +160,7 @@ export async function getUserPosts(
 				[Number(userId)]
 			)
 		)
-		
+
 		let userPostsData: UserPosts[] = data.rows
 
 		res.json({
@@ -122,7 +180,7 @@ export async function getFollowingPosts(
 	res: express.Response
 ) {
 	try {
-        let user = req.session['user'];
+		let user = req.session['user'];
 		if (!Number(user.id)) {
 			res.status(400).json({
 				message: 'Invalid user id3'
@@ -165,7 +223,7 @@ export async function getFollowingPosts(
 				[Number(user.id)]
 			)
 		)
-		
+
 		let followingPostsData: UserPosts[] = data.rows
 
 		res.json({
@@ -185,7 +243,7 @@ export async function getFavPosts(
 	res: express.Response
 ) {
 	try {
-        let user = req.session['user'];
+		let user = req.session['user'];
 		if (!Number(user.id)) {
 			res.status(400).json({
 				message: 'Invalid user id5'
@@ -196,15 +254,13 @@ export async function getFavPosts(
 		let data = (
 			await client.query(
 				`
+				with max_time_replies as (
+					select max(updated_at) as updated_at, post_id from replies group by post_id
+				)
 				select
-					(select nickname from users
-					where users.id = posts.user_id) as nickname,
-					(select is_p
-					from users 
-					where users.id = posts.user_id) as is_p, 
-					(select max(updated_at)
-					from replies
-					where posts.id = replies.post_id) as updated_at,
+					users.nickname as nickname,
+					users.is_p as is_p,
+					max_time_replies.updated_at,
 					(select sum(likes - dislikes)
 					from replies
 					where posts.id = replies.post_id) as likes,
@@ -220,7 +276,9 @@ export async function getFavPosts(
 					where users.id = posts.user_id) as user_is_male,
 					posts.id as post_id
 				from favourite_posts 
+				join users on users.id = favourite_posts.post_id
 				left join posts on posts.id = favourite_posts.post_id
+				left join max_time_replies on max_time_replies.post_id = favourite_posts.post_id
 				where favourite_posts.user_id  = $1
 				and posts.show = true
 				order by updated_at DESC
@@ -228,7 +286,7 @@ export async function getFavPosts(
 				[Number(user.id)]
 			)
 		)
-		
+
 		let favPostsData: UserPosts[] = data.rows
 
 		res.json({
