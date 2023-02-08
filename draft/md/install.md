@@ -1,4 +1,6 @@
 npm init
+npm install cross-fetch
+npm install grant
 npm install node-fetch
 npm install -D ts-node typescript @types/node
 npm install express
